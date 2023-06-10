@@ -1,0 +1,5 @@
+SkuuApiLogAutoConfiguration
+SkuuJacksonAutoConfiguration
+SkuuSwaggerAutoConfiguration
+SkuuWebAutoConfiguration
+SkuuApiLogRpcAutoConfiguration
