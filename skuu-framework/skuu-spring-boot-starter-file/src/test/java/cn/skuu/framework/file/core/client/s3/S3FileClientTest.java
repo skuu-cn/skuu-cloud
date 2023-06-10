@@ -17,7 +17,7 @@ public class S3FileClientTest {
         // 配置成你自己的
         config.setAccessKey("admin");
         config.setAccessSecret("password");
-        config.setBucket("yudaoyuanma");
+        config.setBucket("skuuyuanma");
         config.setDomain(null);
         // 默认 9000 endpoint
         config.setEndpoint("http://127.0.0.1:9000");
@@ -68,7 +68,7 @@ public class S3FileClientTest {
         config.setAccessKey("b7yvuhBSAGjmtPhMFcn9iMOxUOY_I06cA_p0ZUx8");
         config.setAccessSecret("kXM1l5ia1RvSX3QaOEcwI3RLz3Y2rmNszWonKZtP");
         config.setBucket("ruoyi-vue-pro");
-        config.setDomain("http://test.yudao.iocoder.cn"); // 如果有自定义域名，则可以设置。http://static.yudao.iocoder.cn
+        config.setDomain("http://test.skuu.iocoder.cn"); // 如果有自定义域名，则可以设置。http://static.skuu.iocoder.cn
         // 默认上海的 endpoint
         config.setEndpoint("s3-cn-south-1.qiniucs.com");
 
@@ -83,7 +83,7 @@ public class S3FileClientTest {
         // 配置成你自己的
 //        config.setAccessKey(System.getenv("HUAWEI_CLOUD_ACCESS_KEY"));
 //        config.setAccessSecret(System.getenv("HUAWEI_CLOUD_SECRET_KEY"));
-        config.setBucket("yudao");
+        config.setBucket("skuu");
         config.setDomain(null); // 如果有自定义域名，则可以设置。
         // 默认上海的 endpoint
         config.setEndpoint("obs.cn-east-3.myhuaweicloud.com");

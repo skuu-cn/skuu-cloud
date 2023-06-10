@@ -1,2 +1,2 @@
-SkuuDataPermissionAutoConfiguration
-SkuuDeptDataPermissionAutoConfiguration
+cn.skuu.framework.datapermission.config.SkuuDataPermissionAutoConfiguration
+cn.skuu.framework.datapermission.config.SkuuDeptDataPermissionAutoConfiguration

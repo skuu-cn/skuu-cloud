@@ -18,7 +18,7 @@ import static cn.skuu.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY
 @ToString(callSuper = true)
 public class FilePageReqVO extends PageParam {
 
-    @Schema(description = "文件路径,模糊匹配", example = "yudao")
+    @Schema(description = "文件路径,模糊匹配", example = "skuu")
     private String path;
 
     @Schema(description = "文件类型,模糊匹配", example = "jpg")

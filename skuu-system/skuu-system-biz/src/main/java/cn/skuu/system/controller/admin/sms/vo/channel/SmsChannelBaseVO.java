@@ -24,7 +24,7 @@ public class SmsChannelBaseVO {
     @Schema(description = "备注", example = "好吃！")
     private String remark;
 
-    @Schema(description = "短信 API 的账号", required = true, example = "yudao")
+    @Schema(description = "短信 API 的账号", required = true, example = "skuu")
     @NotNull(message = "短信 API 的账号不能为空")
     private String apiKey;
 

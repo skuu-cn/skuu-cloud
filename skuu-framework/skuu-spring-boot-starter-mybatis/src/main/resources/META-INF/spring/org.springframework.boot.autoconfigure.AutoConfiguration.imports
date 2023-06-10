@@ -1,2 +1,2 @@
-SkuuDataSourceAutoConfiguration
-SkuuMybatisAutoConfiguration
+cn.skuu.framework.datasource.config.SkuuDataSourceAutoConfiguration
+cn.skuu.framework.mybatis.config.SkuuMybatisAutoConfiguration

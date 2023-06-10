@@ -276,7 +276,7 @@ public class CodegenEngine {
     }
 
     private static String vueFilePath(String path) {
-        return "yudao-ui-${sceneEnum.basePackage}/" + // 顶级目录
+        return "skuu-ui-${sceneEnum.basePackage}/" + // 顶级目录
                 "src/" + path;
     }
 
@@ -285,7 +285,7 @@ public class CodegenEngine {
     }
 
     private static String vue3FilePath(String path) {
-        return "yudao-ui-${sceneEnum.basePackage}-vue3/" + // 顶级目录
+        return "skuu-ui-${sceneEnum.basePackage}-vue3/" + // 顶级目录
                 "src/" + path;
     }
 

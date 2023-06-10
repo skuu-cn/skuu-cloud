@@ -18,13 +18,13 @@ import static cn.skuu.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY
 @ToString(callSuper = true)
 public class CodegenTablePageReqVO extends PageParam {
 
-    @Schema(description = "表名称,模糊匹配", example = "yudao")
+    @Schema(description = "表名称,模糊匹配", example = "skuu")
     private String tableName;
 
     @Schema(description = "表描述,模糊匹配", example = "芋道")
     private String tableComment;
 
-    @Schema(description = "实体,模糊匹配", example = "Yudao")
+    @Schema(description = "实体,模糊匹配", example = "skuu")
     private String className;
 
     @Schema(description = "创建时间", example = "[2022-07-01 00:00:00, 2022-07-01 23:59:59]")

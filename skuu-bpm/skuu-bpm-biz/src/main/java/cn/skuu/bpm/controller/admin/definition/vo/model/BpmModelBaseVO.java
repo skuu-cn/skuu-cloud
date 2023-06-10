@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class BpmModelBaseVO {
 
-    @Schema(description = "流程标识", required = true, example = "process_yudao")
+    @Schema(description = "流程标识", required = true, example = "process_skuu")
     @NotEmpty(message = "流程标识不能为空")
     private String key;
 

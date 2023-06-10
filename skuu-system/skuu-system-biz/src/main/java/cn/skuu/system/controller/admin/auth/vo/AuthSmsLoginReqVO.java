@@ -17,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class AuthSmsLoginReqVO {
 
-    @Schema(description = "手机号", required = true, example = "yudaoyuanma")
+    @Schema(description = "手机号", required = true, example = "skuuyuanma")
     @NotEmpty(message = "手机号不能为空")
     @Mobile
     private String mobile;

@@ -24,7 +24,7 @@ public class SmsTemplateBaseVO {
     @NotNull(message = "模板编码不能为空")
     private String code;
 
-    @Schema(description = "模板名称", required = true, example = "yudao")
+    @Schema(description = "模板名称", required = true, example = "skuu")
     @NotNull(message = "模板名称不能为空")
     private String name;
 

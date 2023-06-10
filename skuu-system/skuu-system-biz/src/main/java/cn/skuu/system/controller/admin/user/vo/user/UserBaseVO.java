@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 public class UserBaseVO {
 
-    @Schema(description = "用户账号", required = true, example = "yudao")
+    @Schema(description = "用户账号", required = true, example = "skuu")
     @NotBlank(message = "用户账号不能为空")
     @Pattern(regexp = "^[a-zA-Z0-9]{4,30}$", message = "用户账号由 数字、字母 组成")
     @Size(min = 4, max = 30, message = "用户账号长度为 4-30 个字符")
@@ -36,7 +36,7 @@ public class UserBaseVO {
     @Schema(description = "岗位编号数组", example = "1")
     private Set<Long> postIds;
 
-    @Schema(description = "用户邮箱", example = "yudao@iocoder.cn")
+    @Schema(description = "用户邮箱", example = "skuu@iocoder.cn")
     @Email(message = "邮箱格式不正确")
     @Size(max = 50, message = "邮箱长度不能超过 50 个字符")
     private String email;

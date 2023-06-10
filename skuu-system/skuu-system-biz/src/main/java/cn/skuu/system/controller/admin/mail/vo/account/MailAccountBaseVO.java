@@ -13,12 +13,12 @@ import javax.validation.constraints.NotNull;
 @Data
 public class MailAccountBaseVO {
 
-    @Schema(description = "邮箱", required = true, example = "yudaoyuanma@123.com")
+    @Schema(description = "邮箱", required = true, example = "skuuyuanma@123.com")
     @NotNull(message = "邮箱不能为空")
     @Email(message = "必须是 Email 格式")
     private String mail;
 
-    @Schema(description = "用户名", required = true, example = "yudao")
+    @Schema(description = "用户名", required = true, example = "skuu")
     @NotNull(message = "用户名不能为空")
     private String username;
 

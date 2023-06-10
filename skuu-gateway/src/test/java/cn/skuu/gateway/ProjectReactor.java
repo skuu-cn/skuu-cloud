@@ -26,7 +26,7 @@ import static java.io.File.separator;
 public class ProjectReactor {
 
     private static final String GROUP_ID = "cn.iocoder.cloud";
-    private static final String ARTIFACT_ID = "yudao";
+    private static final String ARTIFACT_ID = "skuu";
     private static final String PACKAGE_NAME = "cn.skuu";
     private static final String TITLE = "芋道管理系统";
 

@@ -23,7 +23,7 @@ public class LoginLogBaseVO {
     @NotEmpty(message = "链路追踪编号不能为空")
     private String traceId;
 
-    @Schema(description = "用户账号", required = true, example = "yudao")
+    @Schema(description = "用户账号", required = true, example = "skuu")
     @NotBlank(message = "用户账号不能为空")
     @Size(max = 30, message = "用户账号长度不能超过30个字符")
     private String username;

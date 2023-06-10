@@ -8,11 +8,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author dcx
  */
-@ConfigurationProperties(prefix = "yudao.env")
+@ConfigurationProperties(prefix = "skuu.env")
 @Data
 public class EnvProperties {
 
-    public static final String TAG_KEY = "yudao.env.tag";
+    public static final String TAG_KEY = "skuu.env.tag";
 
     /**
      * 环境标签

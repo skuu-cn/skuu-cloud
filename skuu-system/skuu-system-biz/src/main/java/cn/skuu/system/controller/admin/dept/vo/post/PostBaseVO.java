@@ -19,7 +19,7 @@ public class PostBaseVO {
     @Size(max = 50, message = "岗位名称长度不能超过50个字符")
     private String name;
 
-    @Schema(description = "岗位编码", required = true, example = "yudao")
+    @Schema(description = "岗位编码", required = true, example = "skuu")
     @NotBlank(message = "岗位编码不能为空")
     @Size(max = 64, message = "岗位编码长度不能超过64个字符")
     private String code;

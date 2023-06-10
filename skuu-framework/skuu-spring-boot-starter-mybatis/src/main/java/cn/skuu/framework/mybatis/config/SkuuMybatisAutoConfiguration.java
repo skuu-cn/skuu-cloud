@@ -25,7 +25,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @author dcx
  */
 @AutoConfiguration
-@MapperScan(value = "${yudao.info.base-package}", annotationClass = Mapper.class,
+@MapperScan(value = "${skuu.info.base-package}", annotationClass = Mapper.class,
         lazyInitialization = "${mybatis.lazy-initialization:false}") // Mapper 懒加载，目前仅用于单元测试
 public class SkuuMybatisAutoConfiguration {
 

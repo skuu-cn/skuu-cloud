@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class CodegenPreviewRespVO {
 
-    @Schema(description = "文件路径", required = true, example = "java/cn/iocoder/yudao/adminserver/modules/system/controller/test/SysTestDemoController.java")
+    @Schema(description = "文件路径", required = true, example = "java/cn/iocoder/skuu/adminserver/modules/system/controller/test/SysTestDemoController.java")
     private String filePath;
 
     @Schema(description = "代码", required = true, example = "Hello World")

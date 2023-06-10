@@ -1,2 +1,2 @@
-SkuuRedisAutoConfiguration
-SkuuAutoConfiguration
+cn.skuu.framework.redis.config.SkuuCacheAutoConfiguration
+cn.skuu.framework.redis.config.SkuuRedisAutoConfiguration

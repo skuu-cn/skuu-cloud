@@ -24,10 +24,10 @@ public class SkuuSocialAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "justauth", value = "enabled", havingValue = "true", matchIfMissing = true)
-    public SkuuAuthRequestFactory yudaoAuthRequestFactory(JustAuthProperties properties, AuthStateCache authStateCache) {
+    public SkuuAuthRequestFactory skuuAuthRequestFactory(JustAuthProperties properties, AuthStateCache authStateCache) {
         // 需要修改 HttpUtil 使用的实现，避免类报错
         HttpUtil.setHttp(new HutoolImpl());
-        // 创建 YudaoAuthRequestFactory
+        // 创建 skuuAuthRequestFactory
         return new SkuuAuthRequestFactory(properties, authStateCache);
     }
 

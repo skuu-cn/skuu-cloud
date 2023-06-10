@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@ConfigurationProperties(prefix = "yudao.web")
+@ConfigurationProperties(prefix = "skuu.web")
 @Validated
 @Data
 public class WebProperties {

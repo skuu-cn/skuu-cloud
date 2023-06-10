@@ -68,7 +68,7 @@ public class BpmFormServiceTest extends BaseDbUnitTest {
         // 准备参数
         BpmFormUpdateReqVO reqVO = randomPojo(BpmFormUpdateReqVO.class, o -> {
             o.setId(dbForm.getId()); // 设置更新的 ID
-            o.setConf("{'yudao': 'yuanma'}");
+            o.setConf("{'skuu': 'yuanma'}");
             o.setFields(randomFields());
         });
 
@@ -83,7 +83,7 @@ public class BpmFormServiceTest extends BaseDbUnitTest {
     public void testUpdateForm_notExists() {
         // 准备参数
         BpmFormUpdateReqVO reqVO = randomPojo(BpmFormUpdateReqVO.class, o -> {
-            o.setConf("{'yudao': 'yuanma'}");
+            o.setConf("{'skuu': 'yuanma'}");
             o.setFields(randomFields());
         });
 

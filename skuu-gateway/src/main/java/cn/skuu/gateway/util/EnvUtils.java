@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * 环境 Utils
  *
- * copy from yudao-spring-boot-starter-env 的 EnvUtils 类
+ * copy from skuu-spring-boot-starter-env 的 EnvUtils 类
  *
  * @author 芋道源码
  */

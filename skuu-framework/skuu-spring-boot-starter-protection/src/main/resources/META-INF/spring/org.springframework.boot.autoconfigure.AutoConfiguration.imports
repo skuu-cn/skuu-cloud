@@ -1,2 +1,2 @@
-SkuuIdempotentConfiguration
-SkuuLock4jConfiguration
+cn.skuu.framework.idempotent.config.SkuuIdempotentConfiguration
+cn.skuu.framework.lock4j.config.SkuuLock4jConfiguration

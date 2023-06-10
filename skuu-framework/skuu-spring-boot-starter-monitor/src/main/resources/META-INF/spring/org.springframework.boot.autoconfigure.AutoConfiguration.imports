@@ -1,2 +1,2 @@
-SkuuTracerAutoConfiguration
-SkuuMetricsAutoConfiguration
+cn.skuu.framework.tracer.config.SkuuMetricsAutoConfiguration
+cn.skuu.framework.tracer.config.SkuuTracerAutoConfiguration

@@ -105,14 +105,14 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
                 }));
         when(postService.getPostList(eq(reqVO.getPostIds()), isNull())).thenReturn(posts);
         // mock passwordEncoder 的方法
-        when(passwordEncoder.encode(eq(reqVO.getPassword()))).thenReturn("yudaoyuanma");
+        when(passwordEncoder.encode(eq(reqVO.getPassword()))).thenReturn("skuuyuanma");
 
         // 调用
         Long userId = userService.createUser(reqVO);
         // 断言
         AdminUserDO user = userMapper.selectById(userId);
         assertPojoEquals(reqVO, user, "password");
-        assertEquals("yudaoyuanma", user.getPassword());
+        assertEquals("skuuyuanma", user.getPassword());
         assertEquals(CommonStatusEnum.ENABLE.getStatus(), user.getStatus());
         // 断言关联岗位
         List<UserPostDO> userPosts = userPostMapper.selectListByUserId(user.getId());
@@ -260,7 +260,7 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
         userMapper.insert(dbUser);
         // 准备参数
         Long userId = dbUser.getId();
-        String password = "yudao";
+        String password = "skuu";
         // mock 方法
         when(passwordEncoder.encode(anyString())).then(
                 (Answer<String>) invocationOnMock -> "encode:" + invocationOnMock.getArgument(0));
@@ -471,7 +471,7 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
         });
         when(deptService.getDept(eq(dept.getId()))).thenReturn(dept);
         // mock passwordEncoder 的方法
-        when(passwordEncoder.encode(eq("yudaoyuanma"))).thenReturn("java");
+        when(passwordEncoder.encode(eq("skuuyuanma"))).thenReturn("java");
 
         // 调用
         UserImportRespVO respVO = userService.importUserList(newArrayList(importUser), true);

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.integration.config.GlobalChannelInterceptor;
 
 @AutoConfiguration
-@ConditionalOnProperty(prefix = "skuu.tenant", value = "enable", matchIfMissing = true) // 允许使用 yudao.tenant.enable=false 禁用多租户
+@ConditionalOnProperty(prefix = "skuu.tenant", value = "enable", matchIfMissing = true) // 允许使用 skuu.tenant.enable=false 禁用多租户
 @ConditionalOnClass(name = {
         "org.springframework.messaging.support.ChannelInterceptor",
         "org.springframework.cloud.function.context.catalog.FunctionAroundWrapper"

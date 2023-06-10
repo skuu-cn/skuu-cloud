@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
-@ConfigurationProperties(prefix = "yudao.codegen")
+@ConfigurationProperties(prefix = "skuu.codegen")
 @Validated
 @Data
 public class CodegenProperties {

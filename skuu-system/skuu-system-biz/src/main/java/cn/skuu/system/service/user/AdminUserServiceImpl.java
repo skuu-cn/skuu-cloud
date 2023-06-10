@@ -50,7 +50,7 @@ import static cn.skuu.system.enums.ErrorCodeConstants.*;
 @Slf4j
 public class AdminUserServiceImpl implements AdminUserService {
 
-    @Value("${sys.user.init-password:yudaoyuanma}")
+    @Value("${sys.user.init-password:skuuyuanma}")
     private String userInitPassword;
 
     @Resource

@@ -31,7 +31,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.Objects;
 
 @AutoConfiguration
-@ConditionalOnProperty(prefix = "skuu.tenant", value = "enable", matchIfMissing = true) // 允许使用 yudao.tenant.enable=false 禁用多租户
+@ConditionalOnProperty(prefix = "skuu.tenant", value = "enable", matchIfMissing = true) // 允许使用 skuu.tenant.enable=false 禁用多租户
 @EnableConfigurationProperties(TenantProperties.class)
 public class SkuuTenantAutoConfiguration {
 

@@ -1,2 +1,2 @@
-SkuuEnvWebAutoConfiguration
-SkuuEnvRpcAutoConfiguration
+cn.skuu.framework.env.config.SkuuEnvWebAutoConfiguration
+cn.skuu.framework.env.config.SkuuEnvRpcAutoConfiguration

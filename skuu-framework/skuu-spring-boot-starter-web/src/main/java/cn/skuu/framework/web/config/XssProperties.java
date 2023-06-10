@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author dcx
  */
-@ConfigurationProperties(prefix = "yudao.xss")
+@ConfigurationProperties(prefix = "skuu.xss")
 @Validated
 @Data
 public class XssProperties {

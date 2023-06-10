@@ -16,7 +16,7 @@ public class CodegenTableBaseVO {
     @NotNull(message = "导入类型不能为空")
     private Integer scene;
 
-    @Schema(description = "表名称", required = true, example = "yudao")
+    @Schema(description = "表名称", required = true, example = "skuu")
     @NotNull(message = "表名称不能为空")
     private String tableName;
 
