@@ -1,6 +1,5 @@
 package cn.skuu.system.service.social;
 
-import cn.skuu.framework.common.exception.ServiceException;
 import cn.skuu.system.dal.dataobject.social.SocialUserDO;
 import cn.skuu.system.api.social.dto.SocialUserBindReqDTO;
 import cn.skuu.system.enums.social.SocialTypeEnum;
@@ -27,7 +26,7 @@ public interface SocialUserService {
 
     /**
      * 授权获得对应的社交用户
-     * 如果授权失败，则会抛出 {@link ServiceException} 异常
+     * 如果授权失败，则会抛出 {@link ServiceException1} 异常
      *
      * @param type 社交平台的类型 {@link SocialTypeEnum}
      * @param code 授权码
@@ -66,7 +65,7 @@ public interface SocialUserService {
     /**
      * 获得社交用户的绑定用户编号
      * 注意，返回的是 MemberUser 或者 AdminUser 的 id 编号！
-     * 在认证信息不正确的情况下，也会抛出 {@link ServiceException} 业务异常
+     * 在认证信息不正确的情况下，也会抛出 {@link ServiceException1} 业务异常
      *
      * @param userType 用户类型
      * @param type 社交平台的类型

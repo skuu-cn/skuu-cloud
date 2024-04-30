@@ -2,8 +2,8 @@ package cn.skuu.framework.tracer.core.aop;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.skuu.framework.common.util.spring.SpringExpressionUtils;
 import cn.skuu.framework.tracer.core.annotation.BizTrace;
+import cn.skuu.framework.tracer.core.util.SpringExpressionUtils;
 import cn.skuu.framework.tracer.core.util.TracerFrameworkUtils;
 import io.opentracing.Span;
 import io.opentracing.Tracer;

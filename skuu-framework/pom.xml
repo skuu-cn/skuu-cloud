@@ -26,7 +26,6 @@
     <modules>
         <module>skuu-common</module>
         <module>skuu-spring-boot-starter-env</module>
-        <module>skuu-spring-boot-starter-banner</module>
         <module>skuu-spring-boot-starter-web</module>
         <module>skuu-spring-boot-starter-rpc</module>
         <module>skuu-spring-boot-starter-mybatis</module>
@@ -45,7 +44,6 @@
         <module>skuu-spring-boot-starter-mq</module>
         <module>skuu-spring-boot-starter-biz-dict</module>
         <module>skuu-spring-boot-starter-biz-data-permission</module>
-        <module>skuu-spring-boot-starter-biz-error-code</module>
         <module>skuu-spring-boot-starter-biz-operatelog</module>
         <module>skuu-spring-boot-starter-biz-tenant</module>
         <module>skuu-spring-boot-starter-excel</module>

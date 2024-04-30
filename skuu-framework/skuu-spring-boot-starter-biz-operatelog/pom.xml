@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>操作日志</description>
+    <description>操作日志，用户操作日志：记录用户的操作，用于对用户的操作的审计与追溯，永久保存。</description>
     <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
 
     <dependencies>

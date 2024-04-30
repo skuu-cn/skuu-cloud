@@ -1,6 +1,5 @@
 package cn.skuu.framework.common.core;
 
-import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

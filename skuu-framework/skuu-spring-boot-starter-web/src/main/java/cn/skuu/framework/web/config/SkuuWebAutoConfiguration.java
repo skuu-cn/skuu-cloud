@@ -1,6 +1,5 @@
 package cn.skuu.framework.web.config;
 
-import cn.skuu.framework.apilog.core.service.ApiErrorLogFrameworkService;
 import cn.skuu.framework.common.enums.WebFilterOrderEnum;
 import cn.skuu.framework.web.core.clean.JsoupXssCleaner;
 import cn.skuu.framework.web.core.clean.XssCleaner;
@@ -64,8 +63,8 @@ public class SkuuWebAutoConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public GlobalExceptionHandler globalExceptionHandler(ApiErrorLogFrameworkService ApiErrorLogFrameworkService) {
-        return new GlobalExceptionHandler(applicationName, ApiErrorLogFrameworkService);
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 
     @Bean

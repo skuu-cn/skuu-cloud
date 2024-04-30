@@ -1,7 +1,7 @@
 package cn.skuu.framework.security.core.rpc;
 
-import cn.skuu.framework.rpc.core.util.FeignUtils;
 import cn.skuu.framework.security.core.LoginUser;
+import cn.skuu.framework.security.core.util.FeignUtils;
 import cn.skuu.framework.security.core.util.SecurityFrameworkUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

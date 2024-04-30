@@ -1,31 +1,29 @@
 package cn.skuu.framework.common.exception;
 
-import cn.skuu.framework.common.exception.enums.ServiceErrorCodeRange;
+import cn.skuu.framework.common.enums.CommonResponseEnum;
+import cn.skuu.framework.common.enums.ICode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 业务逻辑异常 Exception
- */
-@Data
+ * 业务异常
+ *
+ * @author dcx
+ * @date 2024/4/26 17:29
+ **/
 @EqualsAndHashCode(callSuper = true)
-public final class ServiceException extends RuntimeException {
+@Data
+public class ServiceException extends RuntimeException {
 
-    /**
-     * 业务错误码
-     *
-     * @see ServiceErrorCodeRange
-     */
     private Integer code;
-    /**
-     * 错误提示
-     */
     private String message;
 
-    /**
-     * 空构造方法，避免反序列化问题
-     */
     public ServiceException() {
+    }
+
+    public ServiceException(String message) {
+        this.code = CommonResponseEnum.BIZ_ERROR.getCode();
+        this.message = message;
     }
 
     public ServiceException(ErrorCode errorCode) {
@@ -38,23 +36,19 @@ public final class ServiceException extends RuntimeException {
         this.message = message;
     }
 
-    public Integer getCode() {
-        return code;
+    public ServiceException(CommonResponseEnum responseEnum) {
+        this.code = responseEnum.getCode();
+        this.message = responseEnum.getMessage();
     }
 
-    public ServiceException setCode(Integer code) {
-        this.code = code;
-        return this;
+    public ServiceException(ICode iCode) {
+        this.code = iCode.getCode();
+        this.message = iCode.getMsg();
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public ServiceException setMessage(String message) {
-        this.message = message;
-        return this;
+    public ServiceException(ICode exceptionCode, String... strings) {
+        this.code = exceptionCode.getCode();
+        this.message = String.format(exceptionCode.getMsg(), strings);
     }
 
 }

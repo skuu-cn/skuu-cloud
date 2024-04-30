@@ -1,4 +1,4 @@
-package cn.skuu.framework.common.util.spring;
+package cn.skuu.framework.tracer.core.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;

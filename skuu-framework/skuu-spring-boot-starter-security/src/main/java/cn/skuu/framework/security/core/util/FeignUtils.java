@@ -1,4 +1,4 @@
-package cn.skuu.framework.rpc.core.util;
+package cn.skuu.framework.security.core.util;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.skuu.framework.common.util.json.JsonUtils;

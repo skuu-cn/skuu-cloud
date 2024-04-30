@@ -44,10 +44,6 @@
         <!-- 业务组件 -->
         <dependency>
             <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-banner</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.skuu.cloud</groupId>
             <artifactId>skuu-spring-boot-starter-biz-operatelog</artifactId>
         </dependency>
         <dependency>
