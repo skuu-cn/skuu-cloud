@@ -51,10 +51,6 @@
             <groupId>cn.skuu.cloud</groupId>
             <artifactId>skuu-spring-boot-starter-biz-tenant</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-biz-error-code</artifactId>
-        </dependency>
 
         <!-- Web 相关 -->
         <dependency>
@@ -75,8 +71,12 @@
 
         <!-- RPC 远程调用相关 -->
         <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-rpc</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!-- Registry 注册中心相关 -->

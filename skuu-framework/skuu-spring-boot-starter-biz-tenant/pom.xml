@@ -40,17 +40,16 @@
 
         <!-- RPC 远程调用相关 -->
         <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-rpc</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!-- Job 定时任务相关 -->
-        <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-job</artifactId>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.skuu.cloud</groupId>-->
+<!--            <artifactId>skuu-spring-boot-starter-job</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
         <!-- 消息队列相关 -->
         <dependency>

@@ -27,7 +27,6 @@
         <module>skuu-common</module>
         <module>skuu-spring-boot-starter-env</module>
         <module>skuu-spring-boot-starter-web</module>
-        <module>skuu-spring-boot-starter-rpc</module>
         <module>skuu-spring-boot-starter-mybatis</module>
         <module>skuu-spring-boot-starter-redis</module>
         <module>skuu-spring-boot-starter-test</module>
@@ -39,7 +38,6 @@
         <module>skuu-spring-boot-starter-biz-social</module>
         <module>skuu-spring-boot-starter-biz-weixin</module>
         <module>skuu-spring-boot-starter-desensitize</module>
-        <module>skuu-spring-boot-starter-job</module>
         <module>skuu-spring-boot-starter-monitor</module>
         <module>skuu-spring-boot-starter-mq</module>
         <module>skuu-spring-boot-starter-biz-dict</module>

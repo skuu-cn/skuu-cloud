@@ -4,7 +4,6 @@ import cn.skuu.framework.common.enums.WebFilterOrderEnum;
 import cn.skuu.framework.mybatis.core.util.MyBatisUtils;
 import cn.skuu.framework.tenant.core.aop.TenantIgnoreAspect;
 import cn.skuu.framework.tenant.core.db.TenantDatabaseInterceptor;
-import cn.skuu.framework.tenant.core.job.TenantJobAspect;
 import cn.skuu.framework.tenant.core.redis.TenantRedisCacheManager;
 import cn.skuu.framework.tenant.core.security.TenantSecurityWebFilter;
 import cn.skuu.framework.tenant.core.service.TenantFrameworkService;
@@ -16,7 +15,6 @@ import cn.skuu.system.api.tenant.TenantApi;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -85,11 +83,11 @@ public class SkuuTenantAutoConfiguration {
 
     // ========== Job ==========
 
-    @Bean
-    @ConditionalOnClass(name = "com.xxl.job.core.handler.annotation.XxlJob")
-    public TenantJobAspect tenantJobAspect(TenantFrameworkService tenantFrameworkService) {
-        return new TenantJobAspect(tenantFrameworkService);
-    }
+//    @Bean
+//    @ConditionalOnClass(name = "com.xxl.job.core.handler.annotation.XxlJob")
+//    public TenantJobAspect tenantJobAspect(TenantFrameworkService tenantFrameworkService) {
+//        return new TenantJobAspect(tenantFrameworkService);
+//    }
 
     // ========== Redis ==========
 

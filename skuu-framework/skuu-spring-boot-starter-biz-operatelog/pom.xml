@@ -36,9 +36,12 @@
 
         <!-- RPC 远程调用相关 -->
         <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-rpc</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!-- 业务组件 -->

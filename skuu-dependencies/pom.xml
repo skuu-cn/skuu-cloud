@@ -146,11 +146,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-error-code</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
                 <artifactId>skuu-spring-boot-starter-biz-ip</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -280,6 +275,11 @@
 
             <!-- RPC 远程调用相关 -->
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>4.1.1</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-common</artifactId> <!-- 兜底，保证在不引入 spring-cloud-starter-dubbo 时，注解等不报错 -->
                 <version>${dubbo.version}</version>
@@ -293,11 +293,6 @@
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-rpc-api</artifactId> <!-- 兜底，保证在不引入 spring-cloud-starter-dubbo 时，注解等不报错 -->
                 <version>${dubbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-rpc</artifactId>
-                <version>${revision}</version>
             </dependency>
 
             <!-- Registry 注册中心相关 -->
