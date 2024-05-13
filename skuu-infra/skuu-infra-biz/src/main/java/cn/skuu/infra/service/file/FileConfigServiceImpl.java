@@ -12,10 +12,10 @@ import cn.skuu.framework.file.core.enums.FileStorageEnum;
 import cn.skuu.infra.controller.admin.file.vo.config.FileConfigCreateReqVO;
 import cn.skuu.infra.controller.admin.file.vo.config.FileConfigPageReqVO;
 import cn.skuu.infra.controller.admin.file.vo.config.FileConfigUpdateReqVO;
+import cn.skuu.infra.convert.file.FileConfigConvert;
 import cn.skuu.infra.dal.dataobject.file.FileConfigDO;
 import cn.skuu.infra.dal.mysql.file.FileConfigMapper;
 import cn.skuu.infra.mq.producer.file.FileConfigProducer;
-import cn.skuu.infra.convert.file.FileConfigConvert;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.validation.Validator;
-import java.util.List;
 import java.util.Map;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
@@ -65,17 +64,17 @@ public class FileConfigServiceImpl implements FileConfigService {
     @PostConstruct
     public void initLocalCache() {
         // 第一步：查询数据
-        List<FileConfigDO> configs = fileConfigMapper.selectList();
-        log.info("[initLocalCache][缓存文件配置，数量为:{}]", configs.size());
+//        List<FileConfigDO> configs = fileConfigMapper.selectList();
+//        log.info("[initLocalCache][缓存文件配置，数量为:{}]", configs.size());
 
         // 第二步：构建缓存：创建或更新文件 Client
-        configs.forEach(config -> {
-            fileClientFactory.createOrUpdateFileClient(config.getId(), config.getStorage(), config.getConfig());
-            // 如果是 master，进行设置
-            if (Boolean.TRUE.equals(config.getMaster())) {
-                masterFileClient = fileClientFactory.getFileClient(config.getId());
-            }
-        });
+//        configs.forEach(config -> {
+//            fileClientFactory.createOrUpdateFileClient(config.getId(), config.getStorage(), config.getConfig());
+//            // 如果是 master，进行设置
+//            if (Boolean.TRUE.equals(config.getMaster())) {
+//                masterFileClient = fileClientFactory.getFileClient(config.getId());
+//            }
+//        });
     }
 
     @Override

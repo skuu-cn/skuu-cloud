@@ -1,10 +1,10 @@
-package cn.skuu.infra.api.file;
+package cn.skuu.module.infra.api.file;
 
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.infra.api.file.dto.FileCreateReqDTO;
 import cn.skuu.infra.enums.ApiConstants;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
