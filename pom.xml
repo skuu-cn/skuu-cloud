@@ -12,7 +12,7 @@
         <module>skuu-gateway</module>
         <module>skuu-framework</module>
         <!--  各种 module 拓展 -->
-<!--        <module>skuu-module-member</module>-->
+        <module>skuu-member</module>
         <module>skuu-bpm</module>
         <module>skuu-system</module>
         <module>skuu-infra</module>
