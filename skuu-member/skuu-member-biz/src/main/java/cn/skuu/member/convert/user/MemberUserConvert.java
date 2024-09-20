@@ -10,8 +10,11 @@ import cn.skuu.member.dal.dataobject.group.MemberGroupDO;
 import cn.skuu.member.dal.dataobject.level.MemberLevelDO;
 import cn.skuu.member.dal.dataobject.tag.MemberTagDO;
 import cn.skuu.member.dal.dataobject.user.MemberUserDO;
+import com.google.common.collect.Lists;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -35,12 +38,33 @@ public interface MemberUserConvert {
 
     List<MemberUserRespDTO> convertList2(List<MemberUserDO> list);
 
+    @Mapping(source = "tagIds", target = "tagIds", qualifiedByName = "tagIdsToString")
     MemberUserDO convert(MemberUserUpdateReqVO bean);
 
     PageResult<MemberUserRespVO> convertPage(PageResult<MemberUserDO> page);
 
     @Mapping(source = "areaId", target = "areaName", qualifiedByName = "convertAreaIdToAreaName")
+    @Mapping(source = "tagIds", target = "tagIds", qualifiedByName = "tagIdsStrToList")
     MemberUserRespVO convert03(MemberUserDO bean);
+
+    @Named("tagIdsToString")
+    default String tagIdsToString(List<Long> tagIds) {
+        StringBuilder str = new StringBuilder();
+        for (Long tagId : tagIds) {
+            str.append(tagId).append(",");
+        }
+        return str.deleteCharAt(str.length() - 1).toString();
+    }
+
+    @Named("tagIdsStrToList")
+    default List<Long>  tagIdsStrToList(String tagIds) {
+        String[] split = tagIds.split(",");
+        List<@Nullable Long> res = Lists.newArrayList();
+        for (String s : split) {
+            res.add(Long.parseLong(s));
+        }
+        return res;
+    }
 
     default PageResult<MemberUserRespVO> convertPage(PageResult<MemberUserDO> pageResult,
                                                      List<MemberTagDO> tags,
