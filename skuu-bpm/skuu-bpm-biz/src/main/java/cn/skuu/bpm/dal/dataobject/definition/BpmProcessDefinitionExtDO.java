@@ -1,7 +1,7 @@
 package cn.skuu.bpm.dal.dataobject.definition;
 
-import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import cn.skuu.bpm.enums.definition.BpmModelFormTypeEnum;
+import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +14,7 @@ import java.util.List;
  * Bpm 流程定义的拓展表
  * 主要解决 Activiti {@link ProcessDefinition} 不支持拓展字段，所以新建拓展表
  *
- * @author 芋道源码
+ * @author skuu
  */
 @TableName(value = "bpm_process_definition_ext", autoResultMap = true)
 @Data

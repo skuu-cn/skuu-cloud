@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 /**
  * 跨域 Filter
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Component
 public class CorsFilter implements WebFilter {

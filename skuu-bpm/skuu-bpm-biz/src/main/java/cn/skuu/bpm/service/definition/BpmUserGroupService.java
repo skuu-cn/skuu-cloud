@@ -1,18 +1,20 @@
 package cn.skuu.bpm.service.definition;
 
-import java.util.*;
-import javax.validation.*;
-
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupCreateReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupPageReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupUpdateReqVO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmUserGroupDO;
 import cn.skuu.framework.common.pojo.PageResult;
 
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 /**
  * 用户组 Service 接口
  *
- * @author 芋道源码
+ * @author skuu
  */
 public interface BpmUserGroupService {
 

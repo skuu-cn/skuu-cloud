@@ -1,11 +1,11 @@
 package cn.skuu.bpm.service.message;
 
-import cn.skuu.framework.web.config.WebProperties;
 import cn.skuu.bpm.convert.message.BpmMessageConvert;
 import cn.skuu.bpm.enums.message.BpmMessageEnum;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenProcessInstanceApproveReqDTO;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenProcessInstanceRejectReqDTO;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenTaskCreatedReqDTO;
+import cn.skuu.framework.web.config.WebProperties;
 import cn.skuu.system.api.sms.SmsSendApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * BPM 消息 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

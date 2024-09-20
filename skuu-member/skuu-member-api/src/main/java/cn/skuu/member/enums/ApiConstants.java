@@ -6,7 +6,7 @@ import cn.skuu.framework.common.enums.RpcConstants;
 /**
  * API 相关的枚举
  *
- * @author 芋道源码
+ * @author skuu
  */
 public class ApiConstants {
 

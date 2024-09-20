@@ -2,19 +2,18 @@ package cn.skuu.bpm.service.definition;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.skuu.bpm.controller.admin.definition.vo.model.*;
+import cn.skuu.bpm.convert.definition.BpmModelConvert;
+import cn.skuu.bpm.dal.dataobject.definition.BpmFormDO;
+import cn.skuu.bpm.enums.ErrorCodeConstants;
+import cn.skuu.bpm.enums.definition.BpmModelFormTypeEnum;
+import cn.skuu.bpm.service.definition.dto.BpmModelMetaInfoRespDTO;
+import cn.skuu.bpm.service.definition.dto.BpmProcessDefinitionCreateReqDTO;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.common.util.collection.CollectionUtils;
 import cn.skuu.framework.common.util.json.JsonUtils;
 import cn.skuu.framework.common.util.object.PageUtils;
 import cn.skuu.framework.common.util.validation.ValidationUtils;
-import cn.skuu.bpm.controller.admin.definition.vo.model.*;
-import cn.skuu.bpm.convert.definition.BpmModelConvert;
-import cn.skuu.bpm.dal.dataobject.definition.BpmFormDO;
-import cn.skuu.bpm.enums.definition.BpmModelFormTypeEnum;
-import cn.skuu.bpm.service.definition.dto.BpmModelMetaInfoRespDTO;
-import cn.skuu.bpm.service.definition.dto.BpmProcessDefinitionCreateReqDTO;
-import cn.skuu.bpm.controller.admin.definition.vo.model.*;
-import cn.skuu.bpm.enums.ErrorCodeConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
@@ -42,7 +41,7 @@ import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMa
  * 主要进行 Flowable {@link Model} 的维护
  *
  * @author yunlongn
- * @author 芋道源码
+ * @author skuu
  * @author jason
  */
 @Service

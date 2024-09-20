@@ -1,8 +1,8 @@
 package cn.skuu.bpm.framework.flowable.core.behavior.script.impl;
 
-import cn.skuu.framework.common.util.number.NumberUtils;
 import cn.skuu.bpm.framework.flowable.core.behavior.script.BpmTaskAssignScript;
 import cn.skuu.bpm.service.task.BpmProcessInstanceService;
+import cn.skuu.framework.common.util.number.NumberUtils;
 import cn.skuu.system.api.dept.DeptApi;
 import cn.skuu.system.api.dept.dto.DeptRespDTO;
 import cn.skuu.system.api.user.AdminUserApi;
@@ -22,7 +22,7 @@ import static java.util.Collections.emptySet;
  * 分配给发起人的 Leader 审批的 Script 实现类
  * 目前 Leader 的定义是，
  *
- * @author 芋道源码
+ * @author skuu
  */
 public abstract class BpmTaskAssignLeaderAbstractScript implements BpmTaskAssignScript {
 

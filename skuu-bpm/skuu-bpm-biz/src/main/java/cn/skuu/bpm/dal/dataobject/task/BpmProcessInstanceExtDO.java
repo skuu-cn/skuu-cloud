@@ -1,8 +1,8 @@
 package cn.skuu.bpm.dal.dataobject.task;
 
-import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import cn.skuu.bpm.enums.task.BpmProcessInstanceResultEnum;
 import cn.skuu.bpm.enums.task.BpmProcessInstanceStatusEnum;
+import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Bpm 流程实例的拓展表
  * 主要解决 Activiti ProcessInstance 和 HistoricProcessInstance 不支持拓展字段，所以新建拓展表
  *
- * @author 芋道源码
+ * @author skuu
  */
 @TableName(value = "bpm_process_instance_ext", autoResultMap = true)
 @Data

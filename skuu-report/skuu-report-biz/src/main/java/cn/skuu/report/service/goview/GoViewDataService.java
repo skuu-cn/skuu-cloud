@@ -5,7 +5,7 @@ import cn.skuu.report.controller.admin.goview.vo.data.GoViewDataRespVO;
 /**
  * GoView 数据 Service 接口
  *
- * @author 芋道源码
+ * @author skuu
  */
 public interface GoViewDataService {
 

@@ -1,9 +1,9 @@
 package cn.skuu.bpm.dal.dataobject.definition;
 
-import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
-import cn.skuu.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import cn.skuu.bpm.enums.definition.BpmTaskAssignRuleTypeEnum;
 import cn.skuu.bpm.enums.definition.BpmTaskRuleScriptEnum;
+import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
+import cn.skuu.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -18,7 +18,7 @@ import java.util.Set;
  * 1. 默认情况下，{@link #processDefinitionId} 为 {@link #PROCESS_DEFINITION_ID_NULL} 值，表示贵改则与流程模型关联
  * 2. 在流程模型部署后，会将他的所有规则记录，复制出一份新部署出来的流程定义，通过设置 {@link #processDefinitionId} 为新的流程定义的编号进行关联
  *
- * @author 芋道源码
+ * @author skuu
  */
 @TableName(value = "bpm_task_assign_rule", autoResultMap = true)
 @Data

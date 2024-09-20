@@ -1,10 +1,10 @@
 package cn.skuu.bpm.framework.flowable.core.behavior.script.impl;
 
-import cn.skuu.framework.common.util.collection.SetUtils;
-import cn.skuu.framework.common.util.number.NumberUtils;
 import cn.skuu.bpm.enums.definition.BpmTaskRuleScriptEnum;
 import cn.skuu.bpm.framework.flowable.core.behavior.script.BpmTaskAssignScript;
 import cn.skuu.bpm.service.task.BpmProcessInstanceService;
+import cn.skuu.framework.common.util.collection.SetUtils;
+import cn.skuu.framework.common.util.number.NumberUtils;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.springframework.context.annotation.Lazy;
@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * 分配给发起人审批的 Script 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Component
 public class BpmTaskAssignStartUserScript implements BpmTaskAssignScript {

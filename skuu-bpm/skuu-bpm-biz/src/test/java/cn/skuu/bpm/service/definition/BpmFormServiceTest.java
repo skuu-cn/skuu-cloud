@@ -1,15 +1,15 @@
 package cn.skuu.bpm.service.definition;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.common.util.json.JsonUtils;
-import cn.skuu.framework.test.core.ut.BaseDbUnitTest;
 import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormCreateReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormPageReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormUpdateReqVO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmFormDO;
 import cn.skuu.bpm.dal.mysql.definition.BpmFormMapper;
 import cn.skuu.bpm.service.definition.dto.BpmFormFieldRespDTO;
+import cn.skuu.framework.common.pojo.PageResult;
+import cn.skuu.framework.common.util.json.JsonUtils;
+import cn.skuu.framework.test.core.ut.BaseDbUnitTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 
@@ -18,18 +18,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static cn.skuu.bpm.enums.ErrorCodeConstants.FORM_NOT_EXISTS;
 import static cn.skuu.framework.common.util.object.ObjectUtils.cloneIgnoreId;
 import static cn.skuu.framework.test.core.util.AssertUtils.assertPojoEquals;
 import static cn.skuu.framework.test.core.util.AssertUtils.assertServiceException;
 import static cn.skuu.framework.test.core.util.RandomUtils.randomLongId;
 import static cn.skuu.framework.test.core.util.RandomUtils.randomPojo;
-import static cn.skuu.bpm.enums.ErrorCodeConstants.FORM_NOT_EXISTS;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * {@link BpmFormServiceImpl} 的单元测试类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Import(BpmFormServiceImpl.class)
 public class BpmFormServiceTest extends BaseDbUnitTest {
@@ -118,7 +118,7 @@ public class BpmFormServiceTest extends BaseDbUnitTest {
     public void testGetFormPage() {
         // mock 数据
         BpmFormDO dbForm = randomPojo(BpmFormDO.class, o -> { // 等会查询到
-            o.setName("芋道源码");
+            o.setName("skuu");
         });
         formMapper.insert(dbForm);
         // 测试 name 不匹配

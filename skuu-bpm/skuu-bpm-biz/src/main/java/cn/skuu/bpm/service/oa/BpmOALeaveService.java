@@ -1,10 +1,10 @@
 package cn.skuu.bpm.service.oa;
 
 
-import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.bpm.controller.admin.oa.vo.BpmOALeaveCreateReqVO;
 import cn.skuu.bpm.controller.admin.oa.vo.BpmOALeavePageReqVO;
 import cn.skuu.bpm.dal.dataobject.oa.BpmOALeaveDO;
+import cn.skuu.framework.common.pojo.PageResult;
 
 import javax.validation.Valid;
 
@@ -12,7 +12,7 @@ import javax.validation.Valid;
  * 请假申请 Service 接口
  *
  * @author jason
- * @author 芋道源码
+ * @author skuu
  */
 public interface BpmOALeaveService {
 

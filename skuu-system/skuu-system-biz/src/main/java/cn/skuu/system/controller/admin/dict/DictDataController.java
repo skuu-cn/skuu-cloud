@@ -1,16 +1,16 @@
 package cn.skuu.system.controller.admin.dict;
 
-import cn.skuu.system.convert.dict.DictDataConvert;
-import cn.skuu.system.dal.dataobject.dict.DictDataDO;
-import cn.skuu.system.service.dict.DictDataService;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.excel.core.util.ExcelUtils;
 import cn.skuu.framework.operatelog.core.annotations.OperateLog;
 import cn.skuu.system.controller.admin.dict.vo.data.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
+import cn.skuu.system.convert.dict.DictDataConvert;
+import cn.skuu.system.dal.dataobject.dict.DictDataDO;
+import cn.skuu.system.service.dict.DictDataService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +58,7 @@ public class DictDataController {
         return success(true);
     }
 
-    @GetMapping("/list-all-simple")
+    @GetMapping(value = {"/list-all-simple", "simple-list"})
     @Operation(summary = "获得全部字典数据列表", description = "一般用于管理后台缓存字典数据在本地")
     // 无需添加权限认证，因为前端全局都需要
     public CommonResult<List<DictDataSimpleRespVO>> getSimpleDictDataList() {

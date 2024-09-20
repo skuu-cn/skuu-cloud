@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
  *
  * copy from skuu-spring-boot-starter-web 的 WebFrameworkUtils 类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Slf4j
 public class WebFrameworkUtils {

@@ -12,7 +12,7 @@ import org.springframework.web.server.ServerWebExchange;
  *
  * copy from skuu-spring-boot-starter-security 的 SecurityFrameworkUtils 类
  *
- * @author 芋道源码
+ * @author skuu
  */
 public class SecurityFrameworkUtils {
 

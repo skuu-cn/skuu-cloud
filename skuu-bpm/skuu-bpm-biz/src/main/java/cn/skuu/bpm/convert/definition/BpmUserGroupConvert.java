@@ -1,10 +1,10 @@
 package cn.skuu.bpm.convert.definition;
 
-import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupCreateReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupRespVO;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupUpdateReqVO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmUserGroupDO;
+import cn.skuu.framework.common.pojo.PageResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 用户组 Convert
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Mapper
 public interface BpmUserGroupConvert {

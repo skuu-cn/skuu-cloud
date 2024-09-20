@@ -1,10 +1,13 @@
 package cn.skuu.bpm.controller.admin.oa.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import java.util.*;
 import cn.skuu.framework.common.pojo.PageParam;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 import static cn.skuu.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
 
@@ -20,7 +23,7 @@ public class BpmOALeavePageReqVO extends PageParam {
     @Schema(description = "请假类型,参见 bpm_oa_type", example = "1")
     private Integer type;
 
-    @Schema(description = "原因,模糊匹配", example = "阅读芋道源码")
+    @Schema(description = "原因,模糊匹配", example = "阅读skuu")
     private String reason;
 
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)

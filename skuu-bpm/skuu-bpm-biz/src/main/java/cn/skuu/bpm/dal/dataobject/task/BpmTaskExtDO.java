@@ -1,7 +1,7 @@
 package cn.skuu.bpm.dal.dataobject.task;
 
-import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import cn.skuu.bpm.enums.task.BpmProcessInstanceResultEnum;
+import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * Bpm 流程任务的拓展表
  * 主要解决 Flowable Task 和 HistoricTaskInstance 不支持拓展字段，所以新建拓展表
  *
- * @author 芋道源码
+ * @author skuu
  */
 @TableName(value = "bpm_task_ext", autoResultMap = true)
 @Data

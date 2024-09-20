@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 /**
  * 用户收件地址 API 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @RestController // 提供 RESTful API 接口，给 Feign 调用
 @Validated

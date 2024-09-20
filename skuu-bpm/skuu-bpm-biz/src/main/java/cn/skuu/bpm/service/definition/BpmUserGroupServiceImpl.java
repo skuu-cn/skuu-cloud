@@ -7,11 +7,11 @@ import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupUpdateReqVO;
 import cn.skuu.bpm.convert.definition.BpmUserGroupConvert;
 import cn.skuu.bpm.dal.dataobject.definition.BpmUserGroupDO;
 import cn.skuu.bpm.dal.mysql.definition.BpmUserGroupMapper;
+import cn.skuu.bpm.enums.ErrorCodeConstants;
 import cn.skuu.framework.common.enums.CommonStatusEnum;
 import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.common.util.collection.CollectionUtils;
-import cn.skuu.bpm.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -26,7 +26,7 @@ import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.excep
 /**
  * 用户组 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

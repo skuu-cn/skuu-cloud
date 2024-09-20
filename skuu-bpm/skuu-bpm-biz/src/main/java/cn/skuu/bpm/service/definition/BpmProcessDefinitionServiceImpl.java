@@ -3,9 +3,6 @@ package cn.skuu.bpm.service.definition;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.common.util.object.PageUtils;
-import cn.skuu.framework.flowable.core.util.FlowableUtils;
 import cn.skuu.bpm.controller.admin.definition.vo.process.BpmProcessDefinitionListReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.process.BpmProcessDefinitionPageItemRespVO;
 import cn.skuu.bpm.controller.admin.definition.vo.process.BpmProcessDefinitionPageReqVO;
@@ -14,8 +11,11 @@ import cn.skuu.bpm.convert.definition.BpmProcessDefinitionConvert;
 import cn.skuu.bpm.dal.dataobject.definition.BpmFormDO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmProcessDefinitionExtDO;
 import cn.skuu.bpm.dal.mysql.definition.BpmProcessDefinitionExtMapper;
-import cn.skuu.bpm.service.definition.dto.BpmProcessDefinitionCreateReqDTO;
 import cn.skuu.bpm.enums.ErrorCodeConstants;
+import cn.skuu.bpm.service.definition.dto.BpmProcessDefinitionCreateReqDTO;
+import cn.skuu.framework.common.pojo.PageResult;
+import cn.skuu.framework.common.util.object.PageUtils;
+import cn.skuu.framework.flowable.core.util.FlowableUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
@@ -34,7 +34,6 @@ import java.util.*;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.skuu.framework.common.util.collection.CollectionUtils.*;
-import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMap;
 import static java.util.Collections.emptyList;
 
 /**
@@ -43,7 +42,7 @@ import static java.util.Collections.emptyList;
  *
  * @author yunlongn
  * @author ZJQ
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

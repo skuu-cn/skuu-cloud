@@ -1,15 +1,15 @@
 package cn.skuu.bpm.service.definition;
 
 import cn.hutool.core.map.MapUtil;
-import cn.skuu.framework.common.enums.CommonStatusEnum;
-import cn.skuu.framework.common.util.collection.CollectionUtils;
-import cn.skuu.framework.test.core.ut.BaseDbUnitTest;
 import cn.skuu.bpm.dal.dataobject.definition.BpmTaskAssignRuleDO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmUserGroupDO;
 import cn.skuu.bpm.enums.definition.BpmTaskAssignRuleTypeEnum;
 import cn.skuu.bpm.enums.definition.BpmTaskRuleScriptEnum;
 import cn.skuu.bpm.framework.flowable.core.behavior.script.BpmTaskAssignScript;
 import cn.skuu.bpm.framework.flowable.core.behavior.script.impl.BpmTaskAssignStartUserScript;
+import cn.skuu.framework.common.enums.CommonStatusEnum;
+import cn.skuu.framework.common.util.collection.CollectionUtils;
+import cn.skuu.framework.test.core.ut.BaseDbUnitTest;
 import cn.skuu.system.api.dept.DeptApi;
 import cn.skuu.system.api.dept.PostApi;
 import cn.skuu.system.api.dept.dto.DeptRespDTO;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 /**
  * {@link BpmTaskAssignRuleService} 的单元测试
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Import({BpmTaskAssignRuleServiceImpl.class, BpmTaskAssignStartUserScript.class}) // Import 引入 BpmTaskAssignStartUserScript 目的是保证不报错
 public class BpmTaskAssignRuleServiceImplTest extends BaseDbUnitTest {

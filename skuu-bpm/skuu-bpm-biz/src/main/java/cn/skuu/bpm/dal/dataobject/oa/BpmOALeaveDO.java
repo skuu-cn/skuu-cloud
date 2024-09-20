@@ -1,12 +1,13 @@
 package cn.skuu.bpm.dal.dataobject.oa;
 
 import cn.skuu.bpm.enums.task.BpmProcessInstanceResultEnum;
+import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
-import com.baomidou.mybatisplus.annotation.*;
-import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 
 /**
  * OA 请假申请 DO
@@ -14,7 +15,7 @@ import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
  * {@link #day} 请假天数，目前先简单做。一般是分成请假上午和下午，可以是 1 整天，可以是 0.5 半天
  *
  * @author jason
- * @author 芋道源码
+ * @author skuu
  */
 @TableName("bpm_oa_leave")
 @Data
