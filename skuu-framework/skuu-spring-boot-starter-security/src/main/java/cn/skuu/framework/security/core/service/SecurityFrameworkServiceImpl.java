@@ -2,7 +2,6 @@ package cn.skuu.framework.security.core.service;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.skuu.framework.common.core.KeyValue;
-import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.common.util.cache.CacheUtils;
 import cn.skuu.framework.security.core.LoginUser;
 import cn.skuu.framework.security.core.util.SecurityFrameworkUtils;
@@ -31,7 +30,7 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
     /**
      * 针对 {@link #hasAnyRoles(String...)} 的缓存
      */
-    private final LoadingCache<KeyValue<Long, List<String>>, Boolean> hasAnyRolesCache = CacheUtils.buildAsyncReloadingCache(
+    private final LoadingCache<KeyValue<Long, List<String>>, Boolean> hasAnyRolesCache = CacheUtils.buildCache(
             Duration.ofMinutes(1L), // 过期时间 1 分钟
             new CacheLoader<KeyValue<Long, List<String>>, Boolean>() {
 
@@ -45,7 +44,7 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
     /**
      * 针对 {@link #hasAnyPermissions(String...)} 的缓存
      */
-    private final LoadingCache<KeyValue<Long, List<String>>, Boolean> hasAnyPermissionsCache = CacheUtils.buildAsyncReloadingCache(
+    private final LoadingCache<KeyValue<Long, List<String>>, Boolean> hasAnyPermissionsCache = CacheUtils.buildCache(
             Duration.ofMinutes(1L), // 过期时间 1 分钟
             new CacheLoader<KeyValue<Long, List<String>>, Boolean>() {
 
@@ -64,7 +63,11 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
     @Override
     @SneakyThrows
     public boolean hasAnyPermissions(String... permissions) {
-        return hasAnyPermissionsCache.get(new KeyValue<>(getLoginUserId(), Arrays.asList(permissions)));
+        Long userId = getLoginUserId();
+        if (userId == null) {
+            return false;
+        }
+        return hasAnyPermissionsCache.get(new KeyValue<>(userId, Arrays.asList(permissions)));
     }
 
     @Override
@@ -75,7 +78,11 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
     @Override
     @SneakyThrows
     public boolean hasAnyRoles(String... roles) {
-        return hasAnyRolesCache.get(new KeyValue<>(getLoginUserId(), Arrays.asList(roles)));
+        Long userId = getLoginUserId();
+        if (userId == null) {
+            return false;
+        }
+        return hasAnyRolesCache.get(new KeyValue<>(userId, Arrays.asList(roles)));
     }
 
     @Override

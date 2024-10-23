@@ -1,28 +1,34 @@
 package cn.skuu.framework.security.config;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.skuu.framework.common.util.collection.CollectionUtils;
 import cn.skuu.framework.security.core.filter.TokenAuthenticationFilter;
 import cn.skuu.framework.web.config.WebProperties;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.util.pattern.PathPattern;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +39,9 @@ import java.util.Set;
  * @author dcx
  */
 @AutoConfiguration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@AutoConfigureOrder(-1) // 目的：先于 Spring Security 自动配置，避免一键改包后，org.* 基础包无法生效
+@EnableMethodSecurity(securedEnabled = true)
 public class SkuuWebSecurityConfigurerAdapter {
 
     @Resource
@@ -60,7 +68,7 @@ public class SkuuWebSecurityConfigurerAdapter {
     /**
      * 自定义的权限映射 Bean 们
      *
-     * @see #configure(HttpSecurity)
+     * @see #filterChain(HttpSecurity)
      */
     @Resource
     private List<AuthorizeRequestsCustomizer> authorizeRequestsCustomizers;
@@ -79,7 +87,7 @@ public class SkuuWebSecurityConfigurerAdapter {
 
     /**
      * 配置 URL 的安全配置
-     *
+     * <p>
      * anyRequest          |   匹配所有请求路径
      * access              |   SpringEl表达式结果为true时可以访问
      * anonymous           |   匿名可以访问
@@ -95,7 +103,7 @@ public class SkuuWebSecurityConfigurerAdapter {
      * authenticated       |   用户登录后可访问
      */
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+    protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // 登出
         httpSecurity
                 // 开启跨域
@@ -123,10 +131,12 @@ public class SkuuWebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, permitAllUrls.get(HttpMethod.POST).toArray(new String[0])).permitAll()
                 .antMatchers(HttpMethod.PUT, permitAllUrls.get(HttpMethod.PUT).toArray(new String[0])).permitAll()
                 .antMatchers(HttpMethod.DELETE, permitAllUrls.get(HttpMethod.DELETE).toArray(new String[0])).permitAll()
+                .antMatchers(HttpMethod.HEAD, permitAllUrls.get(HttpMethod.HEAD).toArray(new String[0])).permitAll()
+                .antMatchers(HttpMethod.PATCH, permitAllUrls.get(HttpMethod.PATCH).toArray(new String[0])).permitAll()
                 // 基于 skuu.security.permit-all-urls 无需认证
                 .antMatchers(securityProperties.getPermitAllUrls().toArray(new String[0])).permitAll()
                 // 设置 App API 无需认证
-                .antMatchers(buildAppApi("/**")).permitAll()
+//                .antMatchers(buildAppApi("/**")).permitAll()
                 // ②：每个项目的自定义规则
                 .and().authorizeRequests(registry -> // 下面，循环设置自定义规则
                         authorizeRequestsCustomizers.forEach(customizer -> customizer.customize(registry)))
@@ -156,10 +166,28 @@ public class SkuuWebSecurityConfigurerAdapter {
             if (!handlerMethod.hasMethodAnnotation(PermitAll.class)) {
                 continue;
             }
-            if (entry.getKey().getPatternsCondition() == null) {
+            Set<String> urls = new HashSet<>();
+            if (entry.getKey().getPatternsCondition() != null) {
+                urls.addAll(entry.getKey().getPatternsCondition().getPatterns());
+            }
+            if (entry.getKey().getPathPatternsCondition() != null) {
+                urls.addAll(CollectionUtils.convertList(entry.getKey().getPathPatternsCondition().getPatterns(), PathPattern::getPatternString));
+            }
+            if (urls.isEmpty()) {
                 continue;
             }
-            Set<String> urls = entry.getKey().getPatternsCondition().getPatterns();
+
+            // 特殊：使用 @RequestMapping 注解，并且未写 method 属性，此时认为都需要免登录
+            Set<RequestMethod> methods = entry.getKey().getMethodsCondition().getMethods();
+            if (CollUtil.isEmpty(methods)) {
+                result.putAll(HttpMethod.GET, urls);
+                result.putAll(HttpMethod.POST, urls);
+                result.putAll(HttpMethod.PUT, urls);
+                result.putAll(HttpMethod.DELETE, urls);
+                result.putAll(HttpMethod.HEAD, urls);
+                result.putAll(HttpMethod.PATCH, urls);
+                continue;
+            }
             // 根据请求方法，添加到 result 结果
             entry.getKey().getMethodsCondition().getMethods().forEach(requestMethod -> {
                 switch (requestMethod) {
@@ -174,6 +202,12 @@ public class SkuuWebSecurityConfigurerAdapter {
                         break;
                     case DELETE:
                         result.putAll(HttpMethod.DELETE, urls);
+                        break;
+                    case HEAD:
+                        result.putAll(HttpMethod.HEAD, urls);
+                        break;
+                    case PATCH:
+                        result.putAll(HttpMethod.PATCH, urls);
                         break;
                 }
             });
