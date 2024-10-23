@@ -45,7 +45,6 @@ public class SkuuTracerAutoConfiguration {
      * 创建 TraceFilter 过滤器，响应 header 设置 traceId
      */
     @Bean
-    @ConditionalOnClass(name = "javax.servlet.Filter")
     public FilterRegistrationBean<TraceFilter> traceFilter() {
         FilterRegistrationBean<TraceFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new TraceFilter());
