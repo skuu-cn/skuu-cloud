@@ -5,10 +5,7 @@ import cn.skuu.framework.mybatis.core.handler.DefaultDBFieldHandler;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
-import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
-import com.baomidou.mybatisplus.extension.incrementer.KingbaseKeyGenerator;
-import com.baomidou.mybatisplus.extension.incrementer.OracleKeyGenerator;
-import com.baomidou.mybatisplus.extension.incrementer.PostgreKeyGenerator;
+import com.baomidou.mybatisplus.extension.incrementer.*;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.apache.ibatis.annotations.Mapper;
@@ -16,7 +13,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
@@ -37,7 +33,7 @@ public class SkuuMybatisAutoConfiguration {
     }
 
     @Bean
-    public MetaObjectHandler defaultMetaObjectHandler(){
+    public MetaObjectHandler defaultMetaObjectHandler() {
         return new DefaultDBFieldHandler(); // 自动填充参数类
     }
 
@@ -56,6 +52,8 @@ public class SkuuMybatisAutoConfiguration {
                     return new H2KeyGenerator();
                 case KINGBASE_ES:
                     return new KingbaseKeyGenerator();
+                case DM:
+                    return new DmKeyGenerator();
             }
         }
         // 找不到合适的 IKeyGenerator 实现类

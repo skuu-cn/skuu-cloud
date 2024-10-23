@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
  */
 @Data
 public abstract class BaseDO implements Serializable {
-
     /**
      * 创建时间
      */
@@ -42,8 +41,9 @@ public abstract class BaseDO implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE, jdbcType = JdbcType.VARCHAR)
     private String updater;
     /**
-     * 是否删除,1:删除，0：未删除
+     * 是否删除
      */
-    private Integer deleted;
+    @TableLogic
+    private Boolean deleted;
 
 }
