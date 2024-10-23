@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * 单元测试，assert 断言工具类
  *
- * @author dcx
+ * @author 芋道源码
  */
 public class AssertUtils {
 
@@ -33,6 +33,10 @@ public class AssertUtils {
     public static void assertPojoEquals(Object expected, Object actual, String... ignoreFields) {
         Field[] expectedFields = ReflectUtil.getFields(expected.getClass());
         Arrays.stream(expectedFields).forEach(expectedField -> {
+            // 忽略 jacoco 自动生成的 $jacocoData 属性的情况
+            if (expectedField.isSynthetic()) {
+                return;
+            }
             // 如果是忽略的属性，则不进行比对
             if (ArrayUtil.contains(ignoreFields, expectedField.getName())) {
                 return;
@@ -87,11 +91,11 @@ public class AssertUtils {
      */
     public static void assertServiceException(Executable executable, ErrorCode errorCode, Object... messageParams) {
         // 调用方法
-        ServiceException serviceException1 = assertThrows(ServiceException.class, executable);
+        ServiceException serviceException = assertThrows(ServiceException.class, executable);
         // 校验错误码
-        Assertions.assertEquals(errorCode.getCode(), serviceException1.getCode(), "错误码不匹配");
+        Assertions.assertEquals(errorCode.getCode(), serviceException.getCode(), "错误码不匹配");
         String message = ServiceExceptionUtil.doFormat(errorCode.getCode(), errorCode.getMsg(), messageParams);
-        Assertions.assertEquals(message, serviceException1.getMessage(), "错误提示不匹配");
+        Assertions.assertEquals(message, serviceException.getMessage(), "错误提示不匹配");
     }
 
 }

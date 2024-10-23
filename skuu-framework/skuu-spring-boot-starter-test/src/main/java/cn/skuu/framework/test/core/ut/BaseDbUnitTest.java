@@ -1,5 +1,6 @@
 package cn.skuu.framework.test.core.ut;
 
+import cn.hutool.extra.spring.SpringUtil;
 import cn.skuu.framework.datasource.config.SkuuDataSourceAutoConfiguration;
 import cn.skuu.framework.mybatis.config.SkuuMybatisAutoConfiguration;
 import cn.skuu.framework.test.config.SqlInitializationTestConfiguration;
@@ -14,10 +15,10 @@ import org.springframework.test.context.jdbc.Sql;
 
 /**
  * 依赖内存 DB 的单元测试
- *
+ * <p>
  * 注意，Service 层同样适用。对于 Service 层的单元测试，我们针对自己模块的 Mapper 走的是 H2 内存数据库，针对别的模块的 Service 走的是 Mock 方法
  *
- * @author dcx
+ * @author 芋道源码
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = BaseDbUnitTest.Application.class)
 @ActiveProfiles("unit-test") // 设置使用 application-unit-test 配置文件
@@ -34,6 +35,9 @@ public class BaseDbUnitTest {
             // MyBatis 配置类
             SkuuMybatisAutoConfiguration.class, // 自己的 MyBatis 配置类
             MybatisPlusAutoConfiguration.class, // MyBatis 的自动配置类
+
+            // 其它配置类
+            SpringUtil.class
     })
     public static class Application {
     }
