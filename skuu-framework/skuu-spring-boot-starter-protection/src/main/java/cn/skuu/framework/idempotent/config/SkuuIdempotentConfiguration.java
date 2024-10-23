@@ -4,6 +4,7 @@ import cn.skuu.framework.idempotent.core.aop.IdempotentAspect;
 import cn.skuu.framework.idempotent.core.keyresolver.IdempotentKeyResolver;
 import cn.skuu.framework.idempotent.core.keyresolver.impl.DefaultIdempotentKeyResolver;
 import cn.skuu.framework.idempotent.core.keyresolver.impl.ExpressionIdempotentKeyResolver;
+import cn.skuu.framework.idempotent.core.keyresolver.impl.UserIdempotentKeyResolver;
 import cn.skuu.framework.idempotent.core.redis.IdempotentRedisDAO;
 import cn.skuu.framework.redis.config.SkuuRedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -16,7 +17,6 @@ import java.util.List;
 @AutoConfiguration
 @AutoConfigureAfter(SkuuRedisAutoConfiguration.class)
 public class SkuuIdempotentConfiguration {
-
     @Bean
     public IdempotentAspect idempotentAspect(List<IdempotentKeyResolver> keyResolvers, IdempotentRedisDAO idempotentRedisDAO) {
         return new IdempotentAspect(keyResolvers, idempotentRedisDAO);
@@ -35,8 +35,12 @@ public class SkuuIdempotentConfiguration {
     }
 
     @Bean
+    public UserIdempotentKeyResolver userIdempotentKeyResolver() {
+        return new UserIdempotentKeyResolver();
+    }
+
+    @Bean
     public ExpressionIdempotentKeyResolver expressionIdempotentKeyResolver() {
         return new ExpressionIdempotentKeyResolver();
     }
-
 }
