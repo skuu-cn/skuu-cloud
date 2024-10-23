@@ -7,7 +7,6 @@ import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.framework.common.util.collection.CollectionUtils;
 import cn.skuu.framework.common.util.json.JsonUtils;
 import cn.skuu.framework.datapermission.core.rule.DataPermissionRule;
-import cn.skuu.framework.expression.OrExpressionX;
 import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import cn.skuu.framework.mybatis.core.util.MyBatisUtils;
 import cn.skuu.framework.security.core.LoginUser;
@@ -21,9 +20,11 @@ import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
+import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
+import net.sf.jsqlparser.expression.operators.relational.ParenthesedExpressionList;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ import java.util.Set;
  * 注意，使用 DeptDataPermissionRule 时，需要保证表中有 dept_id 部门编号的字段，可自定义。
  *
  * 实际业务场景下，会存在一个经典的问题？当用户修改部门时，冗余的 dept_id 是否需要修改？
- * 1. 一般情况下，dept_id 不进行修改，则会导致用户看到之前的数据。【skuu-server 采用该方案】
+ * 1. 一般情况下，dept_id 不进行修改，则会导致用户看不到之前的数据。【yudao-server 采用该方案】
  * 2. 部分情况下，希望该用户还是能看到之前的数据，则有两种方式解决：【需要你改造该 DeptDataPermissionRule 的实现代码】
  *  1）编写洗数据的脚本，将 dept_id 修改成新部门的编号；【建议】
  *      最终过滤条件是 WHERE dept_id = ?
@@ -45,7 +46,7 @@ import java.util.Set;
  *  3）想要保证原 dept_id 和 user_id 都可以看的到，此时使用 dept_id 和 user_id 一起过滤；
  *      最终过滤条件是 WHERE dept_id = ? OR user_id IN (?, ?, ? ...)
  *
- * @author dcx
+ * @author skuu
  */
 @AllArgsConstructor
 @Slf4j
@@ -122,7 +123,7 @@ public class DeptDataPermissionRule implements DataPermissionRule {
 
         // 情况二，即不能查看部门，又不能查看自己，则说明 100% 无权限
         if (CollUtil.isEmpty(deptDataPermission.getDeptIds())
-            && Boolean.FALSE.equals(deptDataPermission.getSelf())) {
+                && Boolean.FALSE.equals(deptDataPermission.getSelf())) {
             return new EqualsTo(null, null); // WHERE null = null，可以保证返回的数据为空
         }
 
@@ -144,7 +145,7 @@ public class DeptDataPermissionRule implements DataPermissionRule {
             return deptExpression;
         }
         // 目前，如果有指定部门 + 可查看自己，采用 OR 条件。即，WHERE (dept_id IN ? OR user_id = ?)
-        return new OrExpressionX(deptExpression, userExpression);
+        return new ParenthesedExpressionList(new OrExpression(deptExpression, userExpression));
     }
 
     private Expression buildDeptExpression(String tableName, Alias tableAlias, Set<Long> deptIds) {
@@ -159,7 +160,8 @@ public class DeptDataPermissionRule implements DataPermissionRule {
         }
         // 拼接条件
         return new InExpression(MyBatisUtils.buildColumn(tableName, tableAlias, columnName),
-                new ExpressionList(CollectionUtils.convertList(deptIds, LongValue::new)));
+                // Parenthesis 的目的，是提供 (1,2,3) 的 () 左右括号
+                new ParenthesedExpressionList(new ExpressionList<LongValue>(CollectionUtils.convertList(deptIds, LongValue::new))));
     }
 
     private Expression buildUserExpression(String tableName, Alias tableAlias, Boolean self, Long userId) {
@@ -183,7 +185,7 @@ public class DeptDataPermissionRule implements DataPermissionRule {
 
     public void addDeptColumn(Class<? extends BaseDO> entityClass, String columnName) {
         String tableName = TableInfoHelper.getTableInfo(entityClass).getTableName();
-       addDeptColumn(tableName, columnName);
+        addDeptColumn(tableName, columnName);
     }
 
     public void addDeptColumn(String tableName, String columnName) {
