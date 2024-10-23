@@ -1,6 +1,7 @@
 package cn.skuu.framework.web.core.filter;
 
-import cn.hutool.extra.servlet.ServletUtil;
+
+import cn.skuu.framework.common.util.servlet.ServletUtils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -14,7 +15,7 @@ import java.io.InputStreamReader;
 /**
  *  Request Body 缓存 Wrapper
  *
- * @author dcx
+ * @author 芋道源码
  */
 public class CacheRequestBodyWrapper extends HttpServletRequestWrapper {
 
@@ -25,7 +26,7 @@ public class CacheRequestBodyWrapper extends HttpServletRequestWrapper {
 
     public CacheRequestBodyWrapper(HttpServletRequest request) {
         super(request);
-        body = ServletUtil.getBodyBytes(request);
+        body = ServletUtils.getBodyBytes(request);
     }
 
     @Override

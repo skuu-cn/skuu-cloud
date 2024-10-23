@@ -1,7 +1,8 @@
 package cn.skuu.framework.web.core.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.skuu.framework.common.enums.RpcConstants;
+import cn.skuu.framework.common.enums.TerminalEnum;
 import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.web.config.WebProperties;
@@ -26,6 +27,13 @@ public class WebFrameworkUtils {
 
     public static final String HEADER_TENANT_ID = "tenant-id";
 
+    /**
+     * 终端的 Header
+     *
+     * @see cn.skuu.framework.common.enums.TerminalEnum
+     */
+    public static final String HEADER_TERMINAL = "terminal";
+
     private static WebProperties properties;
 
     public WebFrameworkUtils(WebProperties webProperties) {
@@ -41,7 +49,7 @@ public class WebFrameworkUtils {
      */
     public static Long getTenantId(HttpServletRequest request) {
         String tenantId = request.getHeader(HEADER_TENANT_ID);
-        return StrUtil.isNotEmpty(tenantId) ? Long.valueOf(tenantId) : null;
+        return NumberUtil.isNumber(tenantId) ? Long.valueOf(tenantId) : null;
     }
 
     public static void setLoginUserId(ServletRequest request, Long userId) {
@@ -51,7 +59,7 @@ public class WebFrameworkUtils {
     /**
      * 设置用户类型
      *
-     * @param request 请求
+     * @param request  请求
      * @param userType 用户类型
      */
     public static void setLoginUserType(ServletRequest request, Integer userType) {
@@ -89,10 +97,10 @@ public class WebFrameworkUtils {
             return userType;
         }
         // 2. 其次，基于 URL 前缀的约定
-        if (request.getRequestURI().startsWith(properties.getAdminApi().getPrefix())) {
+        if (request.getServletPath().startsWith(properties.getAdminApi().getPrefix())) {
             return UserTypeEnum.ADMIN.getValue();
         }
-        if (request.getRequestURI().startsWith(properties.getAppApi().getPrefix())) {
+        if (request.getServletPath().startsWith(properties.getAppApi().getPrefix())) {
             return UserTypeEnum.MEMBER.getValue();
         }
         return null;
@@ -106,6 +114,15 @@ public class WebFrameworkUtils {
     public static Long getLoginUserId() {
         HttpServletRequest request = getRequest();
         return getLoginUserId(request);
+    }
+
+    public static Integer getTerminal() {
+        HttpServletRequest request = getRequest();
+        if (request == null) {
+            return TerminalEnum.UNKNOWN.getTerminal();
+        }
+        String terminalValue = request.getHeader(HEADER_TERMINAL);
+        return NumberUtil.parseInt(terminalValue, TerminalEnum.UNKNOWN.getTerminal());
     }
 
     public static void setCommonResult(ServletRequest request, CommonResult<?> result) {
@@ -133,6 +150,18 @@ public class WebFrameworkUtils {
      */
     public static boolean isRpcRequest(HttpServletRequest request) {
         return request.getRequestURI().startsWith(RpcConstants.RPC_API_PREFIX);
+    }
+
+    /**
+     * 判断是否为 RPC 请求
+     * <p>
+     * 约定大于配置，只要以 Api 结尾，都认为是 RPC 接口
+     *
+     * @param className 类名
+     * @return 是否为 RPC 请求
+     */
+    public static boolean isRpcRequest(String className) {
+        return className.endsWith("Api");
     }
 
 }

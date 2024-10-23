@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.Optional;
 
 /**
  * Swagger 自动配置类，基于 OpenAPI + Springdoc 实现。
- *
+ * <p>
  * 友情提示：
  * 1. Springdoc 文档地址：<a href="https://github.com/springdoc/springdoc-openapi">仓库</a>
  * 2. Swagger 规范，于 2015 更名为 OpenAPI 规范，本质是一个东西
@@ -39,7 +40,8 @@ import java.util.Optional;
 @AutoConfiguration
 @ConditionalOnClass({OpenAPI.class})
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(prefix = "springdoc.api-docs", name = "enabled", havingValue = "true", matchIfMissing = true) // 设置为 false 时，禁用
+@ConditionalOnProperty(prefix = "springdoc.api-docs", name = "enabled", havingValue = "true", matchIfMissing = true)
+// 设置为 false 时，禁用
 public class SkuuSwaggerAutoConfiguration {
 
     // ========== 全局 OpenAPI 配置 ==========
@@ -86,6 +88,7 @@ public class SkuuSwaggerAutoConfiguration {
      * 自定义 OpenAPI 处理器
      */
     @Bean
+    @Primary // 目的：以我们创建的 OpenAPIService Bean 为主，避免一键改包后，启动报错！
     public OpenAPIService openApiBuilder(Optional<OpenAPI> openAPI,
                                          SecurityService securityParser,
                                          SpringDocConfigProperties springDocConfigProperties,
@@ -137,7 +140,7 @@ public class SkuuSwaggerAutoConfiguration {
 
     /**
      * 构建 Authorization 认证请求头参数
-     *
+     * <p>
      * 解决 Knife4j <a href="https://gitee.com/xiaoym/knife4j/issues/I69QBU">Authorize 未生效，请求header里未包含参数</a>
      *
      * @return 认证参数
@@ -149,6 +152,5 @@ public class SkuuSwaggerAutoConfiguration {
                 .in(String.valueOf(SecurityScheme.In.HEADER)) // 请求 header
                 .schema(new StringSchema()._default("Bearer test1").name(WebFrameworkUtils.HEADER_TENANT_ID).description("认证 Token")); // 默认：使用用户编号为 1
     }
-
 }
 

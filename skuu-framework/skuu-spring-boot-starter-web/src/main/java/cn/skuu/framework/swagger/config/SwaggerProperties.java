@@ -13,7 +13,6 @@ import javax.validation.constraints.NotEmpty;
 @ConfigurationProperties("skuu.swagger")
 @Data
 public class SwaggerProperties {
-
     /**
      * 标题
      */
@@ -56,5 +55,4 @@ public class SwaggerProperties {
      */
     @NotEmpty(message = "扫描的 license-url 不能为空")
     private String licenseUrl;
-
 }

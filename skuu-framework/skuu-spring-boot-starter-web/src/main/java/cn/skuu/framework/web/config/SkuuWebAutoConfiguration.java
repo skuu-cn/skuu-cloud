@@ -1,28 +1,23 @@
 package cn.skuu.framework.web.config;
 
 import cn.skuu.framework.common.enums.WebFilterOrderEnum;
-import cn.skuu.framework.web.core.clean.JsoupXssCleaner;
-import cn.skuu.framework.web.core.clean.XssCleaner;
 import cn.skuu.framework.web.core.filter.CacheRequestBodyFilter;
 import cn.skuu.framework.web.core.filter.DemoFilter;
-import cn.skuu.framework.web.core.filter.XssFilter;
 import cn.skuu.framework.web.core.handler.GlobalExceptionHandler;
 import cn.skuu.framework.web.core.handler.GlobalResponseBodyHandler;
-import cn.skuu.framework.web.core.json.XssStringJsonDeserializer;
 import cn.skuu.framework.web.core.util.WebFrameworkUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -33,7 +28,7 @@ import javax.annotation.Resource;
 import javax.servlet.Filter;
 
 @AutoConfiguration
-@EnableConfigurationProperties({WebProperties.class, XssProperties.class})
+@EnableConfigurationProperties(WebProperties.class)
 public class SkuuWebAutoConfiguration implements WebMvcConfigurer {
 
     @Resource
@@ -63,8 +58,9 @@ public class SkuuWebAutoConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public GlobalExceptionHandler globalExceptionHandler() {
-        return new GlobalExceptionHandler();
+        return new GlobalExceptionHandler(applicationName);
     }
 
     @Bean
@@ -107,54 +103,30 @@ public class SkuuWebAutoConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * 创建 XssFilter Bean，解决 Xss 安全问题
-     */
-    @Bean
-    @ConditionalOnBean(XssCleaner.class)
-    public FilterRegistrationBean<XssFilter> xssFilter(XssProperties properties, PathMatcher pathMatcher, XssCleaner xssCleaner) {
-        return createFilterBean(new XssFilter(properties, pathMatcher, xssCleaner), WebFilterOrderEnum.XSS_FILTER);
-    }
-
-    /**
      * 创建 DemoFilter Bean，演示模式
      */
     @Bean
-    @ConditionalOnProperty(value = "skuu.demo", havingValue = "true")
+    @ConditionalOnProperty(value = "yudao.demo", havingValue = "true")
     public FilterRegistrationBean<DemoFilter> demoFilter() {
         return createFilterBean(new DemoFilter(), WebFilterOrderEnum.DEMO_FILTER);
     }
 
-
-    /**
-     * Xss 清理者
-     *
-     * @return XssCleaner
-     */
-    @ConditionalOnMissingBean(XssCleaner.class)
-    @Bean
-    public XssCleaner xssCleaner() {
-        return new JsoupXssCleaner();
-    }
-
-    /**
-     * 注册 Jackson 的序列化器，用于处理 json 类型参数的 xss 过滤
-     *
-     * @return Jackson2ObjectMapperBuilderCustomizer
-     */
-    @Bean
-    @ConditionalOnMissingBean(name = "xssJacksonCustomizer")
-    @ConditionalOnBean(ObjectMapper.class)
-    @ConditionalOnProperty(value = "skuu.xss.enable", havingValue = "true")
-    public Jackson2ObjectMapperBuilderCustomizer xssJacksonCustomizer(XssCleaner xssCleaner) {
-        // 在反序列化时进行 xss 过滤，可以替换使用 XssStringJsonSerializer，在序列化时进行处理
-        return builder -> builder.deserializerByType(String.class, new XssStringJsonDeserializer(xssCleaner));
-    }
-
-
-    private static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {
+    public static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {
         FilterRegistrationBean<T> bean = new FilterRegistrationBean<>(filter);
         bean.setOrder(order);
         return bean;
     }
+
+    /**
+     * 创建 RestTemplate 实例
+     *
+     * @param restTemplateBuilder {@link RestTemplateAutoConfiguration#restTemplateBuilder}
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+        return restTemplateBuilder.build();
+    }
+
 
 }

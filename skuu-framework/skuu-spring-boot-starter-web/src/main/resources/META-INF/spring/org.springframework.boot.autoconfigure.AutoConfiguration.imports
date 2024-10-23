@@ -1,5 +1,4 @@
 cn.skuu.framework.apilog.config.SkuuApiLogAutoConfiguration
-cn.skuu.framework.jackson.config.SkuuJacksonAutoConfiguration
+cn.skuu.framework.jackson.SkuuJacksonAutoConfiguration
 cn.skuu.framework.swagger.config.SkuuSwaggerAutoConfiguration
 cn.skuu.framework.web.config.SkuuWebAutoConfiguration
-cn.skuu.framework.apilog.config.SkuuApiLogRpcAutoConfiguration

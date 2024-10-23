@@ -13,7 +13,7 @@
 
     <name>${project.artifactId}</name>
     <description>Web 框架，全局异常、API 日志等</description>
-    <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
+    <url>https://book.skuu.cn</url>
 
     <dependencies>
         <dependency>
@@ -62,13 +62,6 @@
         <dependency>
             <groupId>org.springdoc</groupId>  <!-- 接口文档 -->
             <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
-
-        <!-- 业务组件 -->
-        <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-infra-api</artifactId> <!-- 需要使用它，进行操作日志的记录 -->
-            <version>${revision}</version>
         </dependency>
 
         <!-- 服务保障相关 -->
