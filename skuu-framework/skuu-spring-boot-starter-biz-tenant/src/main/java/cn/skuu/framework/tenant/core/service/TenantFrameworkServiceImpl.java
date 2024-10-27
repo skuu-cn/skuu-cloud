@@ -1,7 +1,6 @@
 package cn.skuu.framework.tenant.core.service;
 
 import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.framework.common.util.cache.CacheUtils;
 import cn.skuu.system.api.tenant.TenantApi;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -11,10 +10,12 @@ import lombok.SneakyThrows;
 import java.time.Duration;
 import java.util.List;
 
+import static cn.skuu.framework.common.util.cache.CacheUtils.buildAsyncReloadingCache;
+
 /**
  * Tenant 框架 Service 实现类
  *
- * @author dcx
+ * @author 芋道源码
  */
 @RequiredArgsConstructor
 public class TenantFrameworkServiceImpl implements TenantFrameworkService {
@@ -24,7 +25,7 @@ public class TenantFrameworkServiceImpl implements TenantFrameworkService {
     /**
      * 针对 {@link #getTenantIds()} 的缓存
      */
-    private final LoadingCache<Object, List<Long>> getTenantIdsCache = CacheUtils.buildAsyncReloadingCache(
+    private final LoadingCache<Object, List<Long>> getTenantIdsCache = buildAsyncReloadingCache(
             Duration.ofMinutes(1L), // 过期时间 1 分钟
             new CacheLoader<Object, List<Long>>() {
 
@@ -38,7 +39,7 @@ public class TenantFrameworkServiceImpl implements TenantFrameworkService {
     /**
      * 针对 {@link #validTenant(Long)} 的缓存
      */
-    private final LoadingCache<Long, CommonResult<Boolean>> validTenantCache = CacheUtils.buildAsyncReloadingCache(
+    private final LoadingCache<Long, CommonResult<Boolean>> validTenantCache = buildAsyncReloadingCache(
             Duration.ofMinutes(1L), // 过期时间 1 分钟
             new CacheLoader<Long, CommonResult<Boolean>>() {
 

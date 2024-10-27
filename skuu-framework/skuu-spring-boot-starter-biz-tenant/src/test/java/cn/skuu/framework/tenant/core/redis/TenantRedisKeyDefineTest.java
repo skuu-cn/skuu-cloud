@@ -1,6 +1,5 @@
 package cn.skuu.framework.tenant.core.redis;
 
-import cn.skuu.framework.redis.core.RedisKeyDefine;
 import cn.skuu.framework.tenant.core.context.TenantContextHolder;
 import org.junit.jupiter.api.Test;
 

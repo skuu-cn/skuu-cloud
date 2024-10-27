@@ -1,11 +1,15 @@
 package cn.skuu.framework.tenant.core.redis;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.skuu.framework.redis.core.TimeoutRedisCacheManager;
 import cn.skuu.framework.tenant.core.context.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
+
+import java.util.Set;
 
 /**
  * 多租户的 {@link RedisCacheManager} 实现类
@@ -15,18 +19,23 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
  * @author airhead
  */
 @Slf4j
-public class TenantRedisCacheManager extends RedisCacheManager {
+public class TenantRedisCacheManager extends TimeoutRedisCacheManager {
+
+    private final Set<String> ignoreCaches;
 
     public TenantRedisCacheManager(RedisCacheWriter cacheWriter,
-                                   RedisCacheConfiguration defaultCacheConfiguration) {
+                                   RedisCacheConfiguration defaultCacheConfiguration,
+                                   Set<String> ignoreCaches) {
         super(cacheWriter, defaultCacheConfiguration);
+        this.ignoreCaches = ignoreCaches;
     }
 
     @Override
     public Cache getCache(String name) {
         // 如果开启多租户，则 name 拼接租户后缀
         if (!TenantContextHolder.isIgnore()
-            && TenantContextHolder.getTenantId() != null) {
+                && TenantContextHolder.getTenantId() != null
+                && !CollUtil.contains(ignoreCaches, name)) {
             name = name + ":" + TenantContextHolder.getTenantId();
         }
 

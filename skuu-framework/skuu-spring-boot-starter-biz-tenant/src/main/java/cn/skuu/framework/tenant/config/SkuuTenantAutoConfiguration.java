@@ -2,8 +2,13 @@ package cn.skuu.framework.tenant.config;
 
 import cn.skuu.framework.common.enums.WebFilterOrderEnum;
 import cn.skuu.framework.mybatis.core.util.MyBatisUtils;
+import cn.skuu.framework.redis.config.SkuuCacheProperties;
 import cn.skuu.framework.tenant.core.aop.TenantIgnoreAspect;
 import cn.skuu.framework.tenant.core.db.TenantDatabaseInterceptor;
+import cn.skuu.framework.tenant.core.job.TenantJobAspect;
+import cn.skuu.framework.tenant.core.mq.rabbitmq.TenantRabbitMQInitializer;
+import cn.skuu.framework.tenant.core.mq.redis.TenantRedisMessageInterceptor;
+import cn.skuu.framework.tenant.core.mq.rocketmq.TenantRocketMQInitializer;
 import cn.skuu.framework.tenant.core.redis.TenantRedisCacheManager;
 import cn.skuu.framework.tenant.core.security.TenantSecurityWebFilter;
 import cn.skuu.framework.tenant.core.service.TenantFrameworkService;
@@ -15,11 +20,14 @@ import cn.skuu.system.api.tenant.TenantApi;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.cache.BatchStrategies;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -83,23 +91,55 @@ public class SkuuTenantAutoConfiguration {
 
     // ========== Job ==========
 
-//    @Bean
-//    @ConditionalOnClass(name = "com.xxl.job.core.handler.annotation.XxlJob")
-//    public TenantJobAspect tenantJobAspect(TenantFrameworkService tenantFrameworkService) {
-//        return new TenantJobAspect(tenantFrameworkService);
-//    }
+    @Bean
+    @ConditionalOnClass(name = "com.xxl.job.core.handler.annotation.XxlJob")
+    public TenantJobAspect tenantJobAspect(TenantFrameworkService tenantFrameworkService) {
+        return new TenantJobAspect(tenantFrameworkService);
+    }
+
+    // ========== MQ ==========
+
+    /**
+     * 多租户 Redis 消息队列的配置类
+     *
+     * 为什么要单独一个配置类呢？如果直接把 TenantRedisMessageInterceptor Bean 的初始化放外面，会报 RedisMessageInterceptor 类不存在的错误
+     */
+    @Configuration
+    @ConditionalOnClass(name = "cn.skuu.framework.mq.redis.core.RedisMQTemplate")
+    public static class TenantRedisMQAutoConfiguration {
+
+        @Bean
+        public TenantRedisMessageInterceptor tenantRedisMessageInterceptor() {
+            return new TenantRedisMessageInterceptor();
+        }
+
+    }
+
+    @Bean
+    @ConditionalOnClass(name = "org.springframework.amqp.rabbit.core.RabbitTemplate")
+    public TenantRabbitMQInitializer tenantRabbitMQInitializer() {
+        return new TenantRabbitMQInitializer();
+    }
+
+    @Bean
+    @ConditionalOnClass(name = "org.apache.rocketmq.spring.core.RocketMQTemplate")
+    public TenantRocketMQInitializer tenantRocketMQInitializer() {
+        return new TenantRocketMQInitializer();
+    }
 
     // ========== Redis ==========
 
     @Bean
     @Primary // 引入租户时，tenantRedisCacheManager 为主 Bean
     public RedisCacheManager tenantRedisCacheManager(RedisTemplate<String, Object> redisTemplate,
-                                                     RedisCacheConfiguration redisCacheConfiguration) {
+                                                     RedisCacheConfiguration redisCacheConfiguration,
+                                                     SkuuCacheProperties yudaoCacheProperties,
+                                                     TenantProperties tenantProperties) {
         // 创建 RedisCacheWriter 对象
         RedisConnectionFactory connectionFactory = Objects.requireNonNull(redisTemplate.getConnectionFactory());
-        RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
+        RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory,
+                BatchStrategies.scan(yudaoCacheProperties.getRedisScanBatchSize()));
         // 创建 TenantRedisCacheManager 对象
-        return new TenantRedisCacheManager(cacheWriter, redisCacheConfiguration);
+        return new TenantRedisCacheManager(cacheWriter, redisCacheConfiguration, tenantProperties.getIgnoreCaches());
     }
-
 }
