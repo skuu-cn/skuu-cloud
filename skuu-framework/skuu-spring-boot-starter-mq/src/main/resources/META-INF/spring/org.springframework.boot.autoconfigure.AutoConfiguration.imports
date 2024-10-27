@@ -1,1 +1,3 @@
-cn.skuu.framework.mq.config.SkuuMQAutoConfiguration
+cn.skuu.framework.mq.redis.config.SkuuRedisMQProducerAutoConfiguration
+cn.skuu.framework.mq.redis.config.SkuuRedisMQConsumerAutoConfiguration
+cn.skuu.framework.mq.rabbitmq.config.SkuuRabbitMQAutoConfiguration
