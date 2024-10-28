@@ -13,7 +13,7 @@
 
     <name>${project.artifactId}</name>
     <description>Excel 拓展</description>
-    <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
+    <url>https://book.skuu.cn</url>
 
     <dependencies>
         <dependency>
@@ -21,11 +21,16 @@
             <artifactId>skuu-common</artifactId>
         </dependency>
 
-        <!-- 业务组件 -->
+        <!-- Spring 核心 -->
         <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-biz-dict</artifactId>
-            <optional>true</optional> <!-- 如果希望使用 @DictFormat 注解，需要引入该依赖 -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- RPC 远程调用相关 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <!-- Web 相关 -->
@@ -45,6 +50,29 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId> <!-- 解决 https://github.com/alibaba/easyexcel/issues/3954 问题 -->
+        </dependency>
+
+        <dependency>
+            <groupId>cn.skuu.cloud</groupId>
+            <artifactId>skuu-spring-boot-starter-biz-ip</artifactId>
+            <optional>true</optional> <!-- 设置为 optional，只有在 AreaConvert 的时候使用 -->
+        </dependency>
+
+        <!-- Test 测试相关 -->
+        <dependency>
+            <groupId>cn.skuu.cloud</groupId>
+            <artifactId>skuu-spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

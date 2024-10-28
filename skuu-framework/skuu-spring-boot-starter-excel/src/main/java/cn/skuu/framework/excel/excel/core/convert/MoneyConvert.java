@@ -1,18 +1,22 @@
-package cn.skuu.framework.excel.core.convert;
+package cn.skuu.framework.excel.excel.core.convert;
 
-import cn.skuu.framework.common.util.json.JsonUtils;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
- * Excel Json 转换器
+ * 金额转换器
  *
- * @author dcx
+ * 金额单位：分
+ *
+ * @author 芋道源码
  */
-public class JsonConvert implements Converter<Object> {
+public class MoneyConvert implements Converter<Integer> {
 
     @Override
     public Class<?> supportJavaTypeKey() {
@@ -25,10 +29,11 @@ public class JsonConvert implements Converter<Object> {
     }
 
     @Override
-    public WriteCellData<String> convertToExcelData(Object value, ExcelContentProperty contentProperty,
+    public WriteCellData<String> convertToExcelData(Integer value, ExcelContentProperty contentProperty,
                                                     GlobalConfiguration globalConfiguration) {
-        // 生成 Excel 小表格
-        return new WriteCellData<>(JsonUtils.toJsonString(value));
+        BigDecimal result = BigDecimal.valueOf(value)
+                .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+        return new WriteCellData<>(result.toString());
     }
 
 }

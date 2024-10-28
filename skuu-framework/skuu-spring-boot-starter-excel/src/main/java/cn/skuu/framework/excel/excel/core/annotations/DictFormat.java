@@ -1,4 +1,4 @@
-package cn.skuu.framework.excel.core.annotations;
+package cn.skuu.framework.excel.excel.core.annotations;
 
 import java.lang.annotation.*;
 

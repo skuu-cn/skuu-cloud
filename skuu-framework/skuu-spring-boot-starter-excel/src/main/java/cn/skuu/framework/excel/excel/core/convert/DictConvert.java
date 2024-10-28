@@ -1,8 +1,7 @@
-package cn.skuu.framework.excel.core.convert;
+package cn.skuu.framework.excel.excel.core.convert;
 
 import cn.hutool.core.convert.Convert;
-import cn.skuu.framework.dict.core.util.DictFrameworkUtils;
-import cn.skuu.framework.excel.core.annotations.DictFormat;
+import cn.skuu.framework.excel.excel.core.annotations.DictFormat;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.GlobalConfiguration;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Excel 数据字典转换器
  *
- * @author dcx
+ * @author 芋道源码
  */
 @Slf4j
 public class DictConvert implements Converter<Object> {
@@ -35,14 +34,14 @@ public class DictConvert implements Converter<Object> {
         // 使用字典解析
         String type = getType(contentProperty);
         String label = readCellData.getStringValue();
-        String value = DictFrameworkUtils.parseDictDataValue(type, label);
-        if (value == null) {
+//        String value = DictFrameworkUtils.parseDictDataValue(type, label);
+        if (label == null) {
             log.error("[convertToJavaData][type({}) 解析不掉 label({})]", type, label);
             return null;
         }
         // 将 String 的 value 转换成对应的属性
         Class<?> fieldClazz = contentProperty.getField().getType();
-        return Convert.convert(fieldClazz, value);
+        return Convert.convert(fieldClazz, label);
     }
 
     @Override
@@ -56,13 +55,13 @@ public class DictConvert implements Converter<Object> {
         // 使用字典格式化
         String type = getType(contentProperty);
         String value = String.valueOf(object);
-        String label = DictFrameworkUtils.getDictDataLabel(type, value);
-        if (label == null) {
+//        String label = DictFrameworkUtils.getDictDataLabel(type, value);
+        if (value == null) {
             log.error("[convertToExcelData][type({}) 转换不了 label({})]", type, value);
             return new WriteCellData<>("");
         }
         // 生成 Excel 小表格
-        return new WriteCellData<>(label);
+        return new WriteCellData<>(value);
     }
 
     private static String getType(ExcelContentProperty contentProperty) {
