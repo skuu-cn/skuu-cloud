@@ -5,11 +5,11 @@ import cn.skuu.framework.security.core.context.TransmittableThreadLocalSecurityC
 import cn.skuu.framework.security.core.filter.TokenAuthenticationFilter;
 import cn.skuu.framework.security.core.handler.AccessDeniedHandlerImpl;
 import cn.skuu.framework.security.core.handler.AuthenticationEntryPointImpl;
+import cn.skuu.framework.security.core.rpc.OAuth2TokenClient;
+import cn.skuu.framework.security.core.rpc.PermissionClient;
 import cn.skuu.framework.security.core.service.SecurityFrameworkService;
 import cn.skuu.framework.security.core.service.SecurityFrameworkServiceImpl;
 import cn.skuu.framework.web.core.handler.GlobalExceptionHandler;
-import cn.skuu.system.api.oauth2.OAuth2TokenApi;
-import cn.skuu.system.api.permission.PermissionApi;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 
 /**
  * Spring Security 自动配置类，主要用于相关组件的配置
- *
+ * <p>
  * 注意，不能和 {@link SkuuWebSecurityConfigurerAdapter} 用一个，原因是会导致初始化报错。
  * 参见 https://stackoverflow.com/questions/53847050/spring-boot-delegatebuilder-cannot-be-null-on-autowiring-authenticationmanager 文档。
  *
@@ -77,13 +77,13 @@ public class SkuuSecurityAutoConfiguration {
      */
     @Bean
     public TokenAuthenticationFilter authenticationTokenFilter(GlobalExceptionHandler globalExceptionHandler,
-                                                               OAuth2TokenApi oauth2TokenApi) {
-        return new TokenAuthenticationFilter(securityProperties, globalExceptionHandler, oauth2TokenApi);
+                                                               OAuth2TokenClient oAuth2TokenClient) {
+        return new TokenAuthenticationFilter(securityProperties, globalExceptionHandler, oAuth2TokenClient);
     }
 
     @Bean("ss") // 使用 Spring Security 的缩写，方便使用
-    public SecurityFrameworkService securityFrameworkService(PermissionApi permissionApi) {
-        return new SecurityFrameworkServiceImpl(permissionApi);
+    public SecurityFrameworkService securityFrameworkService(PermissionClient permissionClient) {
+        return new SecurityFrameworkServiceImpl(permissionClient);
     }
 
     /**

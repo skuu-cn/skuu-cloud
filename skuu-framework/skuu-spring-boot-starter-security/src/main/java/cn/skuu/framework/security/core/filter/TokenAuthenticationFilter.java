@@ -8,11 +8,11 @@ import cn.skuu.framework.common.util.json.JsonUtils;
 import cn.skuu.framework.common.util.servlet.ServletUtils;
 import cn.skuu.framework.security.config.SecurityProperties;
 import cn.skuu.framework.security.core.LoginUser;
+import cn.skuu.framework.security.core.dto.OAuth2AccessTokenCheckRespDTO;
+import cn.skuu.framework.security.core.rpc.OAuth2TokenClient;
 import cn.skuu.framework.security.core.util.SecurityFrameworkUtils;
 import cn.skuu.framework.web.core.handler.GlobalExceptionHandler;
 import cn.skuu.framework.web.core.util.WebFrameworkUtils;
-import cn.skuu.system.api.oauth2.OAuth2TokenApi;
-import cn.skuu.system.api.oauth2.dto.OAuth2AccessTokenCheckRespDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final GlobalExceptionHandler globalExceptionHandler;
 
-    private final OAuth2TokenApi oauth2TokenApi;
+    private final OAuth2TokenClient oAuth2TokenClient;
 
     @Override
     @SuppressWarnings("NullableProblems")
@@ -83,7 +83,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private LoginUser buildLoginUserByToken(String token, Integer userType) {
         try {
             // 校验访问令牌
-            OAuth2AccessTokenCheckRespDTO accessToken = oauth2TokenApi.checkAccessToken(token).getCheckedData();
+            OAuth2AccessTokenCheckRespDTO accessToken = oAuth2TokenClient.checkAccessToken(token).getCheckedData();
             if (accessToken == null) {
                 return null;
             }
@@ -107,11 +107,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     /**
      * 模拟登录用户，方便日常开发调试
-     *
+     * <p>
      * 注意，在线上环境下，一定要关闭该功能！！！
      *
-     * @param request 请求
-     * @param token 模拟的 token，格式为 {@link SecurityProperties#getMockSecret()} + 用户编号
+     * @param request  请求
+     * @param token    模拟的 token，格式为 {@link SecurityProperties#getMockSecret()} + 用户编号
      * @param userType 用户类型
      * @return 模拟的 LoginUser
      */
@@ -139,7 +139,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             loginUserStr = URLDecoder.decode(loginUserStr, StandardCharsets.UTF_8.name()); // 解码，解决中文乱码问题
             return JsonUtils.parseObject(loginUserStr, LoginUser.class);
         } catch (Exception ex) {
-            log.error("[buildLoginUserByHeader][解析 LoginUser({}) 发生异常]", loginUserStr, ex);  ;
+            log.error("[buildLoginUserByHeader][解析 LoginUser({}) 发生异常]", loginUserStr, ex);
+            ;
             throw ex;
         }
     }

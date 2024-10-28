@@ -56,11 +56,11 @@
 
 
         <!-- 业务组件 -->
-        <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-system-api</artifactId> <!-- 需要使用它，进行 Token 的校验 -->
-            <version>${revision}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.skuu.cloud</groupId>-->
+<!--            <artifactId>skuu-system-api</artifactId> &lt;!&ndash; 需要使用它，进行 Token 的校验 &ndash;&gt;-->
+<!--            <version>${revision}</version>-->
+<!--        </dependency>-->
 
         <!-- 工具类相关 -->
         <dependency>

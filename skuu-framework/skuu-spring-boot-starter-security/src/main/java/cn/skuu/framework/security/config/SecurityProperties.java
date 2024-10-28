@@ -22,7 +22,7 @@ public class SecurityProperties {
 
     /**
      * HTTP 请求时，访问令牌的请求参数
-     *
+     * <p>
      * 初始目的：解决 WebSocket 无法通过 header 传参，只能通过 token 参数拼接
      */
     @NotEmpty(message = "Token Parameter 不能为空")
@@ -49,5 +49,9 @@ public class SecurityProperties {
      * PasswordEncoder 加密复杂度，越高开销越大
      */
     private Integer passwordEncoderLength = 4;
+
+    private String oAuth2TokenClientUrl;
+    private String permissionClientUrl;
+    private String tenantClientUrl;
 }
 
