@@ -1,7 +1,7 @@
 package cn.skuu.framework.tenant.core.service;
 
 import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.system.api.tenant.TenantApi;
+import cn.skuu.framework.security.core.rpc.TenantClient;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +15,12 @@ import static cn.skuu.framework.common.util.cache.CacheUtils.buildAsyncReloading
 /**
  * Tenant 框架 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @RequiredArgsConstructor
 public class TenantFrameworkServiceImpl implements TenantFrameworkService {
 
-    private final TenantApi tenantApi;
+    private final TenantClient tenantClient;
 
     /**
      * 针对 {@link #getTenantIds()} 的缓存
@@ -31,7 +31,7 @@ public class TenantFrameworkServiceImpl implements TenantFrameworkService {
 
                 @Override
                 public List<Long> load(Object key) {
-                    return tenantApi.getTenantIdList().getCheckedData();
+                    return tenantClient.getTenantIdList().getCheckedData();
                 }
 
             });
@@ -45,7 +45,7 @@ public class TenantFrameworkServiceImpl implements TenantFrameworkService {
 
                 @Override
                 public CommonResult<Boolean> load(Long id) {
-                    return tenantApi.validTenant(id);
+                    return tenantClient.validTenant(id);
                 }
 
             });

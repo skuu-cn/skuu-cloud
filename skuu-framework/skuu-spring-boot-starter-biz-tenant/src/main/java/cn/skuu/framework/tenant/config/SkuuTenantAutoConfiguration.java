@@ -3,6 +3,7 @@ package cn.skuu.framework.tenant.config;
 import cn.skuu.framework.common.enums.WebFilterOrderEnum;
 import cn.skuu.framework.mybatis.core.util.MyBatisUtils;
 import cn.skuu.framework.redis.config.SkuuCacheProperties;
+import cn.skuu.framework.security.core.rpc.TenantClient;
 import cn.skuu.framework.tenant.core.aop.TenantIgnoreAspect;
 import cn.skuu.framework.tenant.core.db.TenantDatabaseInterceptor;
 import cn.skuu.framework.tenant.core.job.TenantJobAspect;
@@ -16,7 +17,6 @@ import cn.skuu.framework.tenant.core.service.TenantFrameworkServiceImpl;
 import cn.skuu.framework.tenant.core.web.TenantContextWebFilter;
 import cn.skuu.framework.web.config.WebProperties;
 import cn.skuu.framework.web.core.handler.GlobalExceptionHandler;
-import cn.skuu.system.api.tenant.TenantApi;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -42,7 +42,7 @@ import java.util.Objects;
 public class SkuuTenantAutoConfiguration {
 
     @Bean
-    public TenantFrameworkService tenantFrameworkService(TenantApi tenantApi) {
+    public TenantFrameworkService tenantFrameworkService(TenantClient tenantApi) {
         return new TenantFrameworkServiceImpl(tenantApi);
     }
 
