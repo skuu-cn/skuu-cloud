@@ -1,23 +1,23 @@
-package cn.skuu.framework.idempotent.core.keyresolver.impl;
+package cn.skuu.framework.ratelimiter.core.keyresolver.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.skuu.framework.idempotent.core.annotation.Idempotent;
-import cn.skuu.framework.idempotent.core.keyresolver.IdempotentKeyResolver;
+import cn.skuu.framework.ratelimiter.core.annotation.RateLimiter;
+import cn.skuu.framework.ratelimiter.core.keyresolver.RateLimiterKeyResolver;
 import cn.skuu.framework.web.core.util.WebFrameworkUtils;
 import org.aspectj.lang.JoinPoint;
 
 /**
- * 用户级别的幂等 Key 解析器，使用方法名 + 方法参数 + userId + userType，组装成一个 Key
+ * 用户级别的限流 Key 解析器，使用方法名 + 方法参数 + userId + userType，组装成一个 Key
  *
  * 为了避免 Key 过长，使用 MD5 进行“压缩”
  *
- * @author skuu
+ * @author 芋道源码
  */
-public class UserIdempotentKeyResolver implements IdempotentKeyResolver {
+public class UserRateLimiterKeyResolver implements RateLimiterKeyResolver {
 
     @Override
-    public String resolver(JoinPoint joinPoint, Idempotent idempotent) {
+    public String resolver(JoinPoint joinPoint, RateLimiter rateLimiter) {
         String methodName = joinPoint.getSignature().toString();
         String argsStr = StrUtil.join(",", joinPoint.getArgs());
         Long userId = WebFrameworkUtils.getLoginUserId();
