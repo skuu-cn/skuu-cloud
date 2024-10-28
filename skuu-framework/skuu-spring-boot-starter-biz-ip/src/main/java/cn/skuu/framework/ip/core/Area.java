@@ -4,6 +4,7 @@ import cn.skuu.framework.ip.core.enums.AreaTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -12,11 +13,12 @@ import java.util.List;
  *
  * 数据可见 resources/area.csv 文件
  *
- * @author dcx
+ * @author 芋道源码
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"parent"}) // 参见 https://gitee.com/yudaocode/yudao-cloud-mini/pulls/2 原因
 public class Area {
 
     /**
