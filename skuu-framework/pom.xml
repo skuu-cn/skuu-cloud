@@ -21,33 +21,35 @@
         2. 业务组件：和业务相关的组件的封装，例如说数据字典、操作日志等等。
         如果是业务组件，Maven 名字会包含 biz
     </description>
-    <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
+    <url>https://book.skuu.cn</url>
 
     <modules>
         <module>skuu-common</module>
-        <module>skuu-spring-boot-starter-env</module>
+        <!--        不需要，环境应该由基础设施层实现-->
+        <!--        <module>skuu-spring-boot-starter-env</module>-->
         <module>skuu-spring-boot-starter-web</module>
-        <module>skuu-spring-boot-starter-mybatis</module>
-        <module>skuu-spring-boot-starter-redis</module>
         <module>skuu-spring-boot-starter-test</module>
-        <module>skuu-spring-boot-starter-file</module>
-        <module>skuu-spring-boot-starter-protection</module>
-        <module>skuu-spring-boot-starter-biz-ip</module>
-        <module>skuu-spring-boot-starter-biz-pay</module>
-        <module>skuu-spring-boot-starter-biz-sms</module>
-        <module>skuu-spring-boot-starter-biz-social</module>
-        <module>skuu-spring-boot-starter-biz-weixin</module>
-        <module>skuu-spring-boot-starter-desensitize</module>
         <module>skuu-spring-boot-starter-monitor</module>
-        <module>skuu-spring-boot-starter-mq</module>
-        <module>skuu-spring-boot-starter-biz-dict</module>
-        <module>skuu-spring-boot-starter-biz-data-permission</module>
-        <module>skuu-spring-boot-starter-biz-operatelog</module>
-        <module>skuu-spring-boot-starter-biz-tenant</module>
-        <module>skuu-spring-boot-starter-excel</module>
+        <module>skuu-spring-boot-starter-mybatis</module>
         <module>skuu-spring-boot-starter-security</module>
-        <module>skuu-spring-boot-starter-flowable</module>
-        <module>skuu-spring-boot-starter-captcha</module>
+        <module>skuu-spring-boot-starter-biz-data-permission</module>
+        <module>skuu-spring-boot-starter-protection</module>
+        <module>skuu-spring-boot-starter-websocket</module>
+
+        <!--这3个有依赖顺序 start-->
+        <module>skuu-spring-boot-starter-redis</module>
+        <module>skuu-spring-boot-starter-mq</module>
+        <module>skuu-spring-boot-starter-biz-tenant</module>
+        <!--这3个有依赖顺序 end-->
+        <module>skuu-spring-boot-starter-biz-ip</module>
+        <module>skuu-spring-boot-starter-excel</module>
+
+        <!--        ai要求jdk版本最低是17-->
+        <!--        <module>skuu-spring-boot-starter-ai</module>-->
+        <!--        后续改成其他的实现-->
+        <!--        <module>skuu-spring-boot-starter-job</module>-->
+        <!--        <module>skuu-spring-boot-starter-rpc</module>-->
+
     </modules>
 
 

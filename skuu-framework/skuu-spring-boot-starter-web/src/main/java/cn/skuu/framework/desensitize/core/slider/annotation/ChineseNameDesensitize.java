@@ -1,7 +1,7 @@
 package cn.skuu.framework.desensitize.core.slider.annotation;
 
-import cn.iocoder.yudao.framework.desensitize.core.base.annotation.DesensitizeBy;
-import cn.iocoder.yudao.framework.desensitize.core.slider.handler.ChineseNameDesensitization;
+import cn.skuu.framework.desensitize.core.base.annotation.DesensitizeBy;
+import cn.skuu.framework.desensitize.core.slider.handler.ChineseNameDesensitization;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 
 import java.lang.annotation.*;

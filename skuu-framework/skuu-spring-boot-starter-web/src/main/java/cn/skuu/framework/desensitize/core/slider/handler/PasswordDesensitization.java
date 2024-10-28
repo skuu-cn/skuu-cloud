@@ -1,6 +1,6 @@
 package cn.skuu.framework.desensitize.core.slider.handler;
 
-import cn.iocoder.yudao.framework.desensitize.core.slider.annotation.PasswordDesensitize;
+import cn.skuu.framework.desensitize.core.slider.annotation.PasswordDesensitize;
 
 /**
  * {@link PasswordDesensitize} 的码脱敏处理器

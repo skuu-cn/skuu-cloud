@@ -37,7 +37,7 @@ public class CommonResult<T> implements Serializable {
 
     /**
      * 将传入的 result 对象，转换成另外一个泛型结果的对象
-     * <p>
+     *
      * 因为 A 方法返回的 CommonResult 对象，不满足调用其的 B 方法的返回，所以需要进行转换。
      *
      * @param result 传入的 result 对象
@@ -99,7 +99,7 @@ public class CommonResult<T> implements Serializable {
      * 判断是否有异常。如果有，则抛出 {@link ServiceException} 异常
      * 如果没有，则返回 {@link #data} 数据
      */
-    @JsonIgnore
+    @JsonIgnore // 避免 jackson 序列化
     public T getCheckedData() {
         checkError();
         return data;

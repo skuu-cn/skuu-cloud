@@ -1,6 +1,6 @@
 package cn.skuu.framework.desensitize.core.slider.handler;
 
-import cn.iocoder.yudao.framework.desensitize.core.slider.annotation.FixedPhoneDesensitize;
+import cn.skuu.framework.desensitize.core.slider.annotation.FixedPhoneDesensitize;
 
 /**
  * {@link FixedPhoneDesensitize} 的脱敏处理器

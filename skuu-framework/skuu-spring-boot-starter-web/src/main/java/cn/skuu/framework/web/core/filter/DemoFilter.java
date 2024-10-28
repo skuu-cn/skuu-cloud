@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 演示 Filter，禁止用户发起写操作，避免影响测试数据
  *
- * @author 芋道源码
+ * @author skuu
  */
 public class DemoFilter extends OncePerRequestFilter {
 

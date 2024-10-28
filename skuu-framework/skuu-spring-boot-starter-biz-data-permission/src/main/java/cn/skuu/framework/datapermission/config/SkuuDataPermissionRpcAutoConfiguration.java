@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * 数据权限针对 RPC 的自动配置类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @AutoConfiguration
 @ConditionalOnClass(name = "feign.RequestInterceptor")

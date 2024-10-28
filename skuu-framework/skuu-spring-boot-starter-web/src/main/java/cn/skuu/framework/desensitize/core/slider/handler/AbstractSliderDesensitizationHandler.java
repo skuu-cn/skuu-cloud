@@ -1,7 +1,7 @@
 package cn.skuu.framework.desensitize.core.slider.handler;
 
-import cn.iocoder.yudao.framework.common.util.spring.SpringExpressionUtils;
-import cn.iocoder.yudao.framework.desensitize.core.base.handler.DesensitizationHandler;
+import cn.skuu.framework.common.util.spring.SpringExpressionUtils;
+import cn.skuu.framework.desensitize.core.base.handler.DesensitizationHandler;
 
 import java.lang.annotation.Annotation;
 

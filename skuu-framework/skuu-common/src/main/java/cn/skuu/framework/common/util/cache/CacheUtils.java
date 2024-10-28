@@ -22,4 +22,14 @@ public class CacheUtils {
                 .build(CacheLoader.asyncReloading(loader, Executors.newCachedThreadPool())); // TODO 芋艿：可能要思考下，未来要不要做成可配置
     }
 
+    /**
+     * 构建同步刷新的 LoadingCache 对象
+     *
+     * @param duration 过期时间
+     * @param loader  CacheLoader 对象
+     * @return LoadingCache 对象
+     */
+    public static <K, V> LoadingCache<K, V> buildCache(Duration duration, CacheLoader<K, V> loader) {
+        return CacheBuilder.newBuilder().refreshAfterWrite(duration).build(loader);
+    }
 }

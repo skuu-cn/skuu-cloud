@@ -8,21 +8,20 @@ import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static cn.skuu.framework.common.util.collection.CollectionUtils.convertList;
 
 /**
  * Array 工具类
  *
- * @author dcx
+ * @author skuu
  */
 public class ArrayUtils {
 
     /**
      * 将 object 和 newElements 合并成一个数组
      *
-     * @param object 对象
+     * @param object      对象
      * @param newElements 数组
-     * @param <T> 泛型
+     * @param <T>         泛型
      * @return 结果数组
      */
     @SafeVarargs
@@ -37,7 +36,7 @@ public class ArrayUtils {
     }
 
     public static <T, V> V[] toArray(Collection<T> from, Function<T, V> mapper) {
-        return toArray(convertList(from, mapper));
+        return toArray(CollectionUtils.convertList(from, mapper));
     }
 
     @SuppressWarnings("unchecked")

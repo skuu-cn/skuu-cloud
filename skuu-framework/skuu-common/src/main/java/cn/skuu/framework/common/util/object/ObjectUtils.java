@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * Object 工具类
  *
- * @author dcx
+ * @author skuu
  */
 public class ObjectUtils {
 

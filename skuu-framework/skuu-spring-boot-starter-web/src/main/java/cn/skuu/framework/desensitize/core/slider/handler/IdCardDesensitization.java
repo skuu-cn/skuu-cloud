@@ -1,6 +1,6 @@
 package cn.skuu.framework.desensitize.core.slider.handler;
 
-import cn.iocoder.yudao.framework.desensitize.core.slider.annotation.IdCardDesensitize;
+import cn.skuu.framework.desensitize.core.slider.annotation.IdCardDesensitize;
 
 /**
  * {@link IdCardDesensitize} 的脱敏处理器

@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Xss 请求 Wrapper
  *
- * @author 芋道源码
+ * @author skuu
  */
 public class XssRequestWrapper extends HttpServletRequestWrapper {
 

@@ -1,6 +1,6 @@
 package cn.skuu.framework.desensitize.core.slider.handler;
 
-import cn.iocoder.yudao.framework.desensitize.core.slider.annotation.SliderDesensitize;
+import cn.skuu.framework.desensitize.core.slider.annotation.SliderDesensitize;
 
 /**
  * {@link SliderDesensitize} 的脱敏处理器

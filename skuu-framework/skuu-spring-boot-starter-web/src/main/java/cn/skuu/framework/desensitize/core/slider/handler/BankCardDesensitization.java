@@ -1,6 +1,6 @@
 package cn.skuu.framework.desensitize.core.slider.handler;
 
-import cn.iocoder.yudao.framework.desensitize.core.slider.annotation.BankCardDesensitize;
+import cn.skuu.framework.desensitize.core.slider.annotation.BankCardDesensitize;
 
 /**
  * {@link BankCardDesensitize} 的脱敏处理器

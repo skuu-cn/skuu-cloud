@@ -38,12 +38,12 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
-//import static cn.iocoder.yudao.framework.common.exception.enums.GlobalErrorCodeConstants.*;
+//import static cn.skuu.framework.common.exception.enums.GlobalErrorCodeConstants.*;
 
 /**
  * 全局异常处理器，将 Exception 翻译成 CommonResult + 对应的异常编号
  *
- * @author 芋道源码
+ * @author skuu
  */
 @RestControllerAdvice
 @AllArgsConstructor
