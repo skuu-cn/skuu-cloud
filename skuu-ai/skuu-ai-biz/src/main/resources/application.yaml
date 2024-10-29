@@ -76,7 +76,7 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
     banner: false # 关闭控制台的 Banner 打印
-  type-aliases-package: ${yudao.info.base-package}.module.*.dal.dataobject
+  type-aliases-package: ${skuu.info.base-package}.module.*.dal.dataobject
   encryptor:
     password: XDV71a+xqStEA3WH # 加解密的秘钥，可使用 https://www.imaegoo.com/2020/aes-key-generator/ 网站生成
 
@@ -111,9 +111,9 @@ spring:
     embedding:
       transformer:
         onnx:
-          model-uri: https://raw.gitcode.com/yudaocode/yudao-demo/raw/master/yudao-static/ai/model.onnx
+          model-uri: https://raw.gitcode.com/yudaocode/skuu-demo/raw/master/skuu-static/ai/model.onnx
         tokenizer:
-          uri: https://raw.gitcode.com/yudaocode/yudao-demo/raw/master/yudao-static/ai/tokenizer.json
+          uri: https://raw.gitcode.com/yudaocode/skuu-demo/raw/master/skuu-static/ai/tokenizer.json
     qianfan: # 文心一言
       api-key: x0cuLZ7XsaTCU08vuJWO87Lg
       secret-key: R9mYF9dl9KASgi5RUq0FQt3wRisSnOcK
@@ -138,7 +138,7 @@ spring:
         tongyi:
           api-key: sk-Zsd81gZYg7
 
-yudao:
+skuu:
   ai:
     deep-seek: # DeepSeek
       enable: true
@@ -163,13 +163,13 @@ yudao:
 
 --- #################### skuu相关配置 ####################
 
-yudao:
+skuu:
   info:
     version: 1.0.0
     base-package: cn.skuu.ai.biz
   web:
     admin-ui:
-      url: http://dashboard.yudao.iocoder.cn # Admin 管理后台 UI 的地址
+      url: http://dashboard.skuu.iocoder.cn # Admin 管理后台 UI 的地址
   xss:
     enable: false
     exclude-urls: # 如下 url，仅仅是为了演示，去掉配置也没关系
@@ -177,7 +177,7 @@ yudao:
   swagger:
     title: 管理后台
     description: 提供管理员管理的所有功能
-    version: ${yudao.info.version}
+    version: ${skuu.info.version}
   tenant: # 多租户相关配置项
     enable: true
 

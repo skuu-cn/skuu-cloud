@@ -1,3 +1,2 @@
 cn.skuu.framework.tenant.config.SkuuTenantRpcAutoConfiguration
 cn.skuu.framework.tenant.config.SkuuTenantAutoConfiguration
-cn.skuu.framework.tenant.config.SkuuTenantMQAutoConfiguration

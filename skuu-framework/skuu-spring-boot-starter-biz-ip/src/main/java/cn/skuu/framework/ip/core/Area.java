@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"parent"}) // 参见 https://gitee.com/yudaocode/yudao-cloud-mini/pulls/2 原因
+@ToString(exclude = {"parent"}) // 参见 https://gitee.com/yudaocode/skuu-cloud-mini/pulls/2 原因
 public class Area {
 
     /**

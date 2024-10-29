@@ -18,7 +18,7 @@ public class MailAccountSaveReqVO {
     @Email(message = "必须是 Email 格式")
     private String mail;
 
-    @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED, example = "yudao")
+    @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED, example = "skuu")
     @NotNull(message = "用户名不能为空")
     private String username;
 

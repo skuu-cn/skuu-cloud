@@ -40,7 +40,7 @@ public class SkuuAiAutoConfiguration {
     // ========== 各种 AI Client 创建 ==========
 
     @Bean
-    @ConditionalOnProperty(value = "yudao.ai.deepseek.enable", havingValue = "true")
+    @ConditionalOnProperty(value = "skuu.ai.deepseek.enable", havingValue = "true")
     public DeepSeekChatModel deepSeekChatModel(SkuuAiProperties skuuAiProperties) {
         SkuuAiProperties.DeepSeekProperties properties = skuuAiProperties.getDeepSeek();
         DeepSeekChatOptions options = DeepSeekChatOptions.builder()
@@ -53,7 +53,7 @@ public class SkuuAiAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "yudao.ai.xinghuo.enable", havingValue = "true")
+    @ConditionalOnProperty(value = "skuu.ai.xinghuo.enable", havingValue = "true")
     public XingHuoChatModel xingHuoChatClient(SkuuAiProperties skuuAiProperties) {
         SkuuAiProperties.XingHuoProperties properties = skuuAiProperties.getXinghuo();
         XingHuoChatOptions options = XingHuoChatOptions.builder()
@@ -66,14 +66,14 @@ public class SkuuAiAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "yudao.ai.midjourney.enable", havingValue = "true")
+    @ConditionalOnProperty(value = "skuu.ai.midjourney.enable", havingValue = "true")
     public MidjourneyApi midjourneyApi(SkuuAiProperties skuuAiProperties) {
         SkuuAiProperties.MidjourneyProperties config = skuuAiProperties.getMidjourney();
         return new MidjourneyApi(config.getBaseUrl(), config.getApiKey(), config.getNotifyUrl());
     }
 
     @Bean
-    @ConditionalOnProperty(value = "yudao.ai.suno.enable", havingValue = "true")
+    @ConditionalOnProperty(value = "skuu.ai.suno.enable", havingValue = "true")
     public SunoApi sunoApi(SkuuAiProperties skuuAiProperties) {
         return new SunoApi(skuuAiProperties.getSuno().getBaseUrl());
     }

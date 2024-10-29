@@ -1,0 +1,1 @@
+package cn.skuu.crm.framework.permission.core;
