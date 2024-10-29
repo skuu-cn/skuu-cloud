@@ -21,6 +21,13 @@
             <artifactId>skuu-common</artifactId>
         </dependency>
 
+        <!--         业务组件-->
+        <dependency>
+            <groupId>cn.skuu.cloud</groupId>
+            <artifactId>skuu-system-api</artifactId> <!-- 需要使用它，进行 Token 的校验 -->
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Web 相关 -->
         <dependency>
             <groupId>cn.skuu.cloud</groupId>

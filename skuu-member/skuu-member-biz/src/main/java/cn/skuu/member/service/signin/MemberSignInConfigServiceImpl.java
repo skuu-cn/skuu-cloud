@@ -5,7 +5,6 @@ import cn.skuu.member.controller.admin.signin.vo.config.MemberSignInConfigUpdate
 import cn.skuu.member.convert.signin.MemberSignInConfigConvert;
 import cn.skuu.member.dal.dataobject.signin.MemberSignInConfigDO;
 import cn.skuu.member.dal.mysql.signin.MemberSignInConfigMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -14,6 +13,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.member.enums.ErrorCodeConstants.SIGN_IN_CONFIG_EXISTS;
+import static cn.skuu.member.enums.ErrorCodeConstants.SIGN_IN_CONFIG_NOT_EXISTS;
 
 /**
  * 签到规则 Service 实现类
@@ -61,7 +62,7 @@ public class MemberSignInConfigServiceImpl implements MemberSignInConfigService 
 
     private void validateSignInConfigExists(Long id) {
         if (memberSignInConfigMapper.selectById(id) == null) {
-            throw exception(ErrorCodeConstants.SIGN_IN_CONFIG_NOT_EXISTS);
+            throw exception(SIGN_IN_CONFIG_NOT_EXISTS);
         }
     }
 
@@ -75,11 +76,11 @@ public class MemberSignInConfigServiceImpl implements MemberSignInConfigService 
         MemberSignInConfigDO config = memberSignInConfigMapper.selectByDay(day);
         // 1. 新增时，config 非空，则说明重复
         if (id == null && config != null) {
-            throw exception(ErrorCodeConstants.SIGN_IN_CONFIG_EXISTS);
+            throw exception(SIGN_IN_CONFIG_EXISTS);
         }
         // 2. 更新时，如果 config 非空，且 id 不相等，则说明重复
         if (id != null && config != null && !config.getId().equals(id)) {
-            throw exception(ErrorCodeConstants.SIGN_IN_CONFIG_EXISTS);
+            throw exception(SIGN_IN_CONFIG_EXISTS);
         }
     }
 

@@ -1,6 +1,5 @@
 package cn.skuu.member.controller.admin.user.vo;
 
-import cn.skuu.framework.common.util.date.DateUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
@@ -10,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static cn.skuu.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY;
 
 /**
  * 会员用户 Base VO，提供给添加、修改、详细的子 VO 使用
@@ -38,7 +38,7 @@ public class MemberUserBaseVO {
     private String name;
 
     @Schema(description = "用户性别", example = "1")
-    private Byte sex;
+    private Integer sex;
 
     @Schema(description = "所在地编号", example = "4371")
     private Long areaId;
@@ -47,7 +47,7 @@ public class MemberUserBaseVO {
     private String areaName;
 
     @Schema(description = "出生日期", example = "2023-03-12")
-    @DateTimeFormat(pattern = DateUtils.FORMAT_YEAR_MONTH_DAY)
+    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY)
     private LocalDateTime birthday;
 
     @Schema(description = "会员备注", example = "我是小备注")

@@ -2,26 +2,28 @@ package cn.skuu.member.service.point;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.common.util.collection.CollectionUtils;
 import cn.skuu.member.controller.admin.point.vo.recrod.MemberPointRecordPageReqVO;
 import cn.skuu.member.controller.app.point.vo.AppMemberPointRecordPageReqVO;
 import cn.skuu.member.dal.dataobject.point.MemberPointRecordDO;
 import cn.skuu.member.dal.dataobject.user.MemberUserDO;
 import cn.skuu.member.dal.mysql.point.MemberPointRecordMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.enums.point.MemberPointBizTypeEnum;
 import cn.skuu.member.service.user.MemberUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
+
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.util.collection.CollectionUtils.convertSet;
+import static cn.skuu.member.enums.ErrorCodeConstants.USER_POINT_NOT_ENOUGH;
 
 
 /**
@@ -47,10 +49,10 @@ public class MemberPointRecordServiceImpl implements MemberPointRecordService {
         if (StringUtils.isNotBlank(pageReqVO.getNickname())) {
             List<MemberUserDO> users = memberUserService.getUserListByNickname(pageReqVO.getNickname());
             // 如果查询用户结果为空直接返回无需继续查询
-            if (users.isEmpty()) {
+            if (CollectionUtils.isEmpty(users)) {
                 return PageResult.empty();
             }
-            userIds = CollectionUtils.convertSet(users, MemberUserDO::getId);
+            userIds = convertSet(users, MemberUserDO::getId);
         }
         // 执行查询
         return memberPointRecordMapper.selectPage(pageReqVO, userIds);
@@ -72,13 +74,13 @@ public class MemberPointRecordServiceImpl implements MemberPointRecordService {
         Integer userPoint = ObjectUtil.defaultIfNull(user.getPoint(), 0);
         int totalPoint = userPoint + point; // 用户变动后的积分
         if (totalPoint < 0) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_POINT_NOT_ENOUGH);
+            throw exception(USER_POINT_NOT_ENOUGH);
         }
 
         // 2. 更新用户积分
         boolean success = memberUserService.updateUserPoint(userId, point);
         if (!success) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_POINT_NOT_ENOUGH);
+            throw exception(USER_POINT_NOT_ENOUGH);
         }
 
         // 3. 增加积分记录

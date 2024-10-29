@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.datapermission.core.annotation.DataPermission;
+import cn.skuu.system.controller.admin.user.vo.profile.UserProfileRespVO;
 import cn.skuu.system.controller.admin.user.vo.profile.UserProfileUpdatePasswordReqVO;
 import cn.skuu.system.controller.admin.user.vo.profile.UserProfileUpdateReqVO;
 import cn.skuu.system.convert.user.UserConvert;
@@ -14,13 +15,12 @@ import cn.skuu.system.dal.dataobject.social.SocialUserDO;
 import cn.skuu.system.dal.dataobject.user.AdminUserDO;
 import cn.skuu.system.service.dept.DeptService;
 import cn.skuu.system.service.dept.PostService;
-import cn.skuu.system.controller.admin.user.vo.profile.UserProfileRespVO;
 import cn.skuu.system.service.permission.PermissionService;
 import cn.skuu.system.service.permission.RoleService;
 import cn.skuu.system.service.social.SocialUserService;
 import cn.skuu.system.service.user.AdminUserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ import static cn.skuu.framework.common.pojo.CommonResult.success;
 import static cn.skuu.framework.security.core.util.SecurityFrameworkUtils.getLoginUserId;
 import static cn.skuu.infra.enums.ErrorCodeConstants.FILE_IS_EMPTY;
 
-@Tag(name =  "管理后台 - 用户个人中心")
+@Tag(name = "管理后台 - 用户个人中心")
 @RestController
 @RequestMapping("/system/user/profile")
 @Validated
@@ -58,27 +58,18 @@ public class UserProfileController {
     @GetMapping("/get")
     @Operation(summary = "获得登录用户信息")
     @DataPermission(enable = false) // 关闭数据权限，避免只查看自己时，查询不到部门。
-    public CommonResult<UserProfileRespVO> profile() {
+    public CommonResult<UserProfileRespVO> getUserProfile() {
         // 获得用户基本信息
         AdminUserDO user = userService.getUser(getLoginUserId());
-        UserProfileRespVO resp = UserConvert.INSTANCE.convert03(user);
         // 获得用户角色
         List<RoleDO> userRoles = roleService.getRoleListFromCache(permissionService.getUserRoleIdListByUserId(user.getId()));
-        resp.setRoles(UserConvert.INSTANCE.convertList(userRoles));
         // 获得部门信息
-        if (user.getDeptId() != null) {
-            DeptDO dept = deptService.getDept(user.getDeptId());
-            resp.setDept(UserConvert.INSTANCE.convert02(dept));
-        }
+        DeptDO dept = user.getDeptId() != null ? deptService.getDept(user.getDeptId()) : null;
         // 获得岗位信息
-        if (CollUtil.isNotEmpty(user.getPostIds())) {
-            List<PostDO> posts = postService.getPostList(user.getPostIds());
-            resp.setPosts(UserConvert.INSTANCE.convertList02(posts));
-        }
+        List<PostDO> posts = CollUtil.isNotEmpty(user.getPostIds()) ? postService.getPostList(user.getPostIds()) : null;
         // 获得社交用户信息
         List<SocialUserDO> socialUsers = socialService.getSocialUserList(user.getId(), UserTypeEnum.ADMIN.getValue());
-        resp.setSocialUsers(UserConvert.INSTANCE.convertList03(socialUsers));
-        return success(resp);
+        return success(UserConvert.INSTANCE.convert(user, userRoles, dept, posts, socialUsers));
     }
 
     @PutMapping("/update")
@@ -95,7 +86,8 @@ public class UserProfileController {
         return success(true);
     }
 
-    @PutMapping("/update-avatar")
+    @RequestMapping(value = "/update-avatar",
+            method = {RequestMethod.POST, RequestMethod.PUT}) // 解决 uni-app 不支持 Put 上传文件的问题
     @Operation(summary = "上传用户个人头像")
     public CommonResult<String> updateUserAvatar(@RequestParam("avatarFile") MultipartFile file) throws Exception {
         if (file.isEmpty()) {

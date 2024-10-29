@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>skuu-system-api</module>
-        <module>skuu-system-biz</module>
+<!--        <module>skuu-system-biz</module>-->
     </modules>
     <artifactId>skuu-system</artifactId>
     <packaging>pom</packaging>

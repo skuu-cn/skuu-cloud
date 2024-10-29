@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 // TODO 芋艿：url
 @Tag(name = "管理后台 - 签到规则")
@@ -33,7 +34,7 @@ public class MemberSignInConfigController {
     @Operation(summary = "创建签到规则")
     @PreAuthorize("@ss.hasPermission('point:sign-in-config:create')")
     public CommonResult<Long> createSignInConfig(@Valid @RequestBody MemberSignInConfigCreateReqVO createReqVO) {
-        return CommonResult.success(signInConfigService.createSignInConfig(createReqVO));
+        return success(signInConfigService.createSignInConfig(createReqVO));
     }
 
     @PutMapping("/update")
@@ -41,7 +42,7 @@ public class MemberSignInConfigController {
     @PreAuthorize("@ss.hasPermission('point:sign-in-config:update')")
     public CommonResult<Boolean> updateSignInConfig(@Valid @RequestBody MemberSignInConfigUpdateReqVO updateReqVO) {
         signInConfigService.updateSignInConfig(updateReqVO);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @DeleteMapping("/delete")
@@ -50,7 +51,7 @@ public class MemberSignInConfigController {
     @PreAuthorize("@ss.hasPermission('point:sign-in-config:delete')")
     public CommonResult<Boolean> deleteSignInConfig(@RequestParam("id") Long id) {
         signInConfigService.deleteSignInConfig(id);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @GetMapping("/get")
@@ -59,7 +60,7 @@ public class MemberSignInConfigController {
     @PreAuthorize("@ss.hasPermission('point:sign-in-config:query')")
     public CommonResult<MemberSignInConfigRespVO> getSignInConfig(@RequestParam("id") Long id) {
         MemberSignInConfigDO signInConfig = signInConfigService.getSignInConfig(id);
-        return CommonResult.success(MemberSignInConfigConvert.INSTANCE.convert(signInConfig));
+        return success(MemberSignInConfigConvert.INSTANCE.convert(signInConfig));
     }
 
     @GetMapping("/list")
@@ -67,7 +68,7 @@ public class MemberSignInConfigController {
     @PreAuthorize("@ss.hasPermission('point:sign-in-config:query')")
     public CommonResult<List<MemberSignInConfigRespVO>> getSignInConfigList() {
         List<MemberSignInConfigDO> list = signInConfigService.getSignInConfigList();
-        return CommonResult.success(MemberSignInConfigConvert.INSTANCE.convertList(list));
+        return success(MemberSignInConfigConvert.INSTANCE.convertList(list));
     }
 
 }

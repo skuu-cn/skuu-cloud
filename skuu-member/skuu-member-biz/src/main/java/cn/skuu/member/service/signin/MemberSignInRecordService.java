@@ -9,7 +9,7 @@ import cn.skuu.member.dal.dataobject.signin.MemberSignInRecordDO;
 /**
  * 签到记录 Service 接口
  *
- * @author skuu
+ * @author 芋道源码
  */
 public interface MemberSignInRecordService {
 

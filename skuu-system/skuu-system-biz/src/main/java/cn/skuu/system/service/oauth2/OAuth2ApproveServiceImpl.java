@@ -13,14 +13,17 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static cn.skuu.framework.common.util.collection.CollectionUtils.convertSet;
 
 /**
  * OAuth2 批准 Service 实现类
  *
- * @author dcx
+ * @author skuu
  */
 @Service
 @Validated

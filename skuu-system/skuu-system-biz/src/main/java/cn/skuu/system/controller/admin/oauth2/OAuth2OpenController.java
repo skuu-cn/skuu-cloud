@@ -8,24 +8,23 @@ import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.common.util.http.HttpUtils;
 import cn.skuu.framework.common.util.json.JsonUtils;
-import cn.skuu.framework.operatelog.core.annotations.OperateLog;
+import cn.skuu.system.controller.admin.oauth2.vo.open.OAuth2OpenAccessTokenRespVO;
+import cn.skuu.system.controller.admin.oauth2.vo.open.OAuth2OpenAuthorizeInfoRespVO;
+import cn.skuu.system.controller.admin.oauth2.vo.open.OAuth2OpenCheckTokenRespVO;
 import cn.skuu.system.convert.oauth2.OAuth2OpenConvert;
 import cn.skuu.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import cn.skuu.system.dal.dataobject.oauth2.OAuth2ApproveDO;
 import cn.skuu.system.dal.dataobject.oauth2.OAuth2ClientDO;
-import cn.skuu.system.util.oauth2.OAuth2Utils;
-import cn.skuu.system.controller.admin.oauth2.vo.open.OAuth2OpenAccessTokenRespVO;
-import cn.skuu.system.controller.admin.oauth2.vo.open.OAuth2OpenAuthorizeInfoRespVO;
-import cn.skuu.system.controller.admin.oauth2.vo.open.OAuth2OpenCheckTokenRespVO;
 import cn.skuu.system.enums.oauth2.OAuth2GrantTypeEnum;
 import cn.skuu.system.service.oauth2.OAuth2ApproveService;
 import cn.skuu.system.service.oauth2.OAuth2ClientService;
 import cn.skuu.system.service.oauth2.OAuth2GrantService;
 import cn.skuu.system.service.oauth2.OAuth2TokenService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import cn.skuu.system.util.oauth2.OAuth2Utils;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,9 +52,9 @@ import static cn.skuu.framework.security.core.util.SecurityFrameworkUtils.getLog
  * 考虑到【本系统】暂时不想做的过于复杂，默认只有获取到 access token 之后，可以访问【本系统】管理后台的 /system-api/* 所有接口，除非手动添加 scope 控制。
  * scope 的使用示例，可见 {@link OAuth2UserController} 类
  *
- * @author dcx
+ * @author skuu
  */
-@Tag(name =  "管理后台 - OAuth2.0 授权")
+@Tag(name = "管理后台 - OAuth2.0 授权")
 @RestController
 @RequestMapping("/system/oauth2")
 @Validated
@@ -95,7 +94,6 @@ public class OAuth2OpenController {
             @Parameter(name = "scope", example = "user_info"),
             @Parameter(name = "refresh_token", example = "123424233"),
     })
-    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
     public CommonResult<OAuth2OpenAccessTokenRespVO> postAccessToken(HttpServletRequest request,
                                                                      @RequestParam("grant_type") String grantType,
                                                                      @RequestParam(value = "code", required = false) String code, // 授权码模式
@@ -106,8 +104,8 @@ public class OAuth2OpenController {
                                                                      @RequestParam(value = "scope", required = false) String scope, // 密码模式
                                                                      @RequestParam(value = "refresh_token", required = false) String refreshToken) { // 刷新模式
         List<String> scopes = OAuth2Utils.buildScopes(scope);
-        // 授权类型
-        OAuth2GrantTypeEnum grantTypeEnum = OAuth2GrantTypeEnum.getByGranType(grantType);
+        // 1.1 校验授权类型
+        OAuth2GrantTypeEnum grantTypeEnum = OAuth2GrantTypeEnum.getByGrantType(grantType);
         if (grantTypeEnum == null) {
             throw exception0(BAD_REQUEST.getCode(), StrUtil.format("未知授权类型({})", grantType));
         }
@@ -115,12 +113,12 @@ public class OAuth2OpenController {
             throw exception0(BAD_REQUEST.getCode(), "Token 接口不支持 implicit 授权模式");
         }
 
-        // 校验客户端
+        // 1.2 校验客户端
         String[] clientIdAndSecret = obtainBasicAuthorization(request);
         OAuth2ClientDO client = oauth2ClientService.validOAuthClientFromCache(clientIdAndSecret[0], clientIdAndSecret[1],
                 grantType, scopes, redirectUri);
 
-        // 根据授权模式，获取访问令牌
+        // 2. 根据授权模式，获取访问令牌
         OAuth2AccessTokenDO accessTokenDO;
         switch (grantTypeEnum) {
             case AUTHORIZATION_CODE:
@@ -146,7 +144,6 @@ public class OAuth2OpenController {
     @PermitAll
     @Operation(summary = "删除访问令牌")
     @Parameter(name = "token", required = true, description = "访问令牌", example = "biu")
-    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
     public CommonResult<Boolean> revokeToken(HttpServletRequest request,
                                              @RequestParam("token") String token) {
         // 校验客户端
@@ -165,7 +162,6 @@ public class OAuth2OpenController {
     @PermitAll
     @Operation(summary = "校验访问令牌")
     @Parameter(name = "token", required = true, description = "访问令牌", example = "biu")
-    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
     public CommonResult<OAuth2OpenCheckTokenRespVO> checkToken(HttpServletRequest request,
                                                                @RequestParam("token") String token) {
         // 校验客户端
@@ -216,7 +212,6 @@ public class OAuth2OpenController {
             @Parameter(name = "auto_approve", required = true, description = "用户是否接受", example = "true"),
             @Parameter(name = "state", example = "1")
     })
-    @OperateLog(enable = false) // 避免 Post 请求被记录操作日志
     public CommonResult<String> approveOrDeny(@RequestParam("response_type") String responseType,
                                               @RequestParam("client_id") String clientId,
                                               @RequestParam(value = "scope", required = false) String scope,

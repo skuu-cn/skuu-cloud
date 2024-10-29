@@ -8,12 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 
 /**
- * System 模块的 Security 配置
+ * Bpm 模块的 Security 配置
  */
-@Configuration(proxyBeanMethods = false, value = "systemSecurityConfiguration")
+@Configuration(proxyBeanMethods = false, value = "bpmSecurityConfiguration")
 public class SecurityConfiguration {
 
-    @Bean("systemAuthorizeRequestsCustomizer")
+    @Bean("bpmAuthorizeRequestsCustomizer")
     public AuthorizeRequestsCustomizer authorizeRequestsCustomizer() {
         return new AuthorizeRequestsCustomizer() {
 

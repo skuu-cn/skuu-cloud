@@ -1,10 +1,8 @@
 package cn.skuu.system.service.dict;
 
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.system.controller.admin.dict.vo.type.DictTypeCreateReqVO;
-import cn.skuu.system.controller.admin.dict.vo.type.DictTypeExportReqVO;
 import cn.skuu.system.controller.admin.dict.vo.type.DictTypePageReqVO;
-import cn.skuu.system.controller.admin.dict.vo.type.DictTypeUpdateReqVO;
+import cn.skuu.system.controller.admin.dict.vo.type.DictTypeSaveReqVO;
 import cn.skuu.system.dal.dataobject.dict.DictTypeDO;
 
 import java.util.List;
@@ -12,24 +10,24 @@ import java.util.List;
 /**
  * 字典类型 Service 接口
  *
- * @author dcx
+ * @author skuu
  */
 public interface DictTypeService {
 
     /**
      * 创建字典类型
      *
-     * @param reqVO 字典类型信息
+     * @param createReqVO 字典类型信息
      * @return 字典类型编号
      */
-    Long createDictType(DictTypeCreateReqVO reqVO);
+    Long createDictType(DictTypeSaveReqVO createReqVO);
 
     /**
      * 更新字典类型
      *
-     * @param reqVO 字典类型信息
+     * @param updateReqVO 字典类型信息
      */
-    void updateDictType(DictTypeUpdateReqVO reqVO);
+    void updateDictType(DictTypeSaveReqVO updateReqVO);
 
     /**
      * 删除字典类型
@@ -41,18 +39,10 @@ public interface DictTypeService {
     /**
      * 获得字典类型分页列表
      *
-     * @param reqVO 分页请求
+     * @param pageReqVO 分页请求
      * @return 字典类型分页列表
      */
-    PageResult<DictTypeDO> getDictTypePage(DictTypePageReqVO reqVO);
-
-    /**
-     * 获得字典类型列表
-     *
-     * @param reqVO 列表请求
-     * @return 字典类型列表
-     */
-    List<DictTypeDO> getDictTypeList(DictTypeExportReqVO reqVO);
+    PageResult<DictTypeDO> getDictTypePage(DictTypePageReqVO pageReqVO);
 
     /**
      * 获得字典类型详情

@@ -14,7 +14,6 @@ import cn.skuu.member.dal.dataobject.level.MemberLevelDO;
 import cn.skuu.member.dal.dataobject.level.MemberLevelRecordDO;
 import cn.skuu.member.dal.dataobject.user.MemberUserDO;
 import cn.skuu.member.dal.mysql.level.MemberLevelMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.enums.MemberExperienceBizTypeEnum;
 import cn.skuu.member.service.user.MemberUserService;
 import com.google.common.annotations.VisibleForTesting;
@@ -30,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.member.enums.ErrorCodeConstants.*;
 
 /**
  * 会员等级 Service 实现类
@@ -89,7 +89,7 @@ public class MemberLevelServiceImpl implements MemberLevelService {
     MemberLevelDO validateLevelExists(Long id) {
         MemberLevelDO levelDO = memberLevelMapper.selectById(id);
         if (levelDO == null) {
-            throw exception(ErrorCodeConstants.LEVEL_NOT_EXISTS);
+            throw exception(LEVEL_NOT_EXISTS);
         }
         return levelDO;
     }
@@ -101,7 +101,7 @@ public class MemberLevelServiceImpl implements MemberLevelService {
                 continue;
             }
             if (id == null || !id.equals(levelDO.getId())) {
-                throw exception(ErrorCodeConstants.LEVEL_NAME_EXISTS, levelDO.getName());
+                throw exception(LEVEL_NAME_EXISTS, levelDO.getName());
             }
         }
     }
@@ -114,7 +114,7 @@ public class MemberLevelServiceImpl implements MemberLevelService {
             }
 
             if (id == null || !id.equals(levelDO.getId())) {
-                throw exception(ErrorCodeConstants.LEVEL_VALUE_EXISTS, levelDO.getLevel(), levelDO.getName());
+                throw exception(LEVEL_VALUE_EXISTS, levelDO.getLevel(), levelDO.getName());
             }
         }
     }
@@ -129,12 +129,12 @@ public class MemberLevelServiceImpl implements MemberLevelService {
             if (levelDO.getLevel() < level) {
                 // 经验大于前一个等级
                 if (experience <= levelDO.getExperience()) {
-                    throw exception(ErrorCodeConstants.LEVEL_EXPERIENCE_MIN, levelDO.getName(), levelDO.getExperience());
+                    throw exception(LEVEL_EXPERIENCE_MIN, levelDO.getName(), levelDO.getExperience());
                 }
             } else if (levelDO.getLevel() > level) {
                 //小于下一个级别
                 if (experience >= levelDO.getExperience()) {
-                    throw exception(ErrorCodeConstants.LEVEL_EXPERIENCE_MAX, levelDO.getName(), levelDO.getExperience());
+                    throw exception(LEVEL_EXPERIENCE_MAX, levelDO.getName(), levelDO.getExperience());
                 }
             }
         }
@@ -155,7 +155,7 @@ public class MemberLevelServiceImpl implements MemberLevelService {
     void validateLevelHasUser(Long id) {
         Long count = memberUserService.getUserCountByLevelId(id);
         if (count > 0) {
-            throw exception(ErrorCodeConstants.LEVEL_HAS_USER);
+            throw exception(LEVEL_HAS_USER);
         }
     }
 
@@ -187,7 +187,7 @@ public class MemberLevelServiceImpl implements MemberLevelService {
     public void updateUserLevel(MemberUserUpdateLevelReqVO updateReqVO) {
         MemberUserDO user = memberUserService.getUser(updateReqVO.getId());
         if (user == null) {
-            throw exception(ErrorCodeConstants.USER_NOT_EXISTS);
+            throw exception(USER_NOT_EXISTS);
         }
         // 等级未发生变化
         if (ObjUtil.equal(user.getLevelId(), updateReqVO.getLevelId())) {

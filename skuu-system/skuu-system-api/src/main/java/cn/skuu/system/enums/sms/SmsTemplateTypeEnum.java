@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 短信的模板类型枚举
  *
- * @author dcx
+ * @author skuu
  */
 @Getter
 @AllArgsConstructor

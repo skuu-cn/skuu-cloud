@@ -3,8 +3,8 @@ package cn.skuu.system.dal.mysql.tenant;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.mybatis.core.mapper.BaseMapperX;
 import cn.skuu.framework.mybatis.core.query.LambdaQueryWrapperX;
-import cn.skuu.system.dal.dataobject.tenant.TenantPackageDO;
 import cn.skuu.system.controller.admin.tenant.vo.packages.TenantPackagePageReqVO;
+import cn.skuu.system.dal.dataobject.tenant.TenantPackageDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 租户套餐 Mapper
  *
- * @author dcx
+ * @author skuu
  */
 @Mapper
 public interface TenantPackageMapper extends BaseMapperX<TenantPackageDO> {

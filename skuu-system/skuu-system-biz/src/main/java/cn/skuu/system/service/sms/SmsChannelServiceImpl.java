@@ -1,19 +1,17 @@
 package cn.skuu.system.service.sms;
 
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.sms.core.client.SmsClientFactory;
-import cn.skuu.framework.sms.core.property.SmsChannelProperties;
-import cn.skuu.system.controller.admin.sms.vo.channel.SmsChannelCreateReqVO;
+import cn.skuu.framework.common.util.object.BeanUtils;
 import cn.skuu.system.controller.admin.sms.vo.channel.SmsChannelPageReqVO;
-import cn.skuu.system.controller.admin.sms.vo.channel.SmsChannelUpdateReqVO;
-import cn.skuu.system.convert.sms.SmsChannelConvert;
+import cn.skuu.system.controller.admin.sms.vo.channel.SmsChannelSaveReqVO;
 import cn.skuu.system.dal.dataobject.sms.SmsChannelDO;
 import cn.skuu.system.dal.mysql.sms.SmsChannelMapper;
-import cn.skuu.system.mq.producer.sms.SmsProducer;
+import cn.skuu.system.framework.sms.core.client.SmsClient;
+import cn.skuu.system.framework.sms.core.client.SmsClientFactory;
+import cn.skuu.system.framework.sms.core.property.SmsChannelProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -39,41 +37,20 @@ public class SmsChannelServiceImpl implements SmsChannelService {
     @Resource
     private SmsTemplateService smsTemplateService;
 
-    @Resource
-    private SmsProducer smsProducer;
-
     @Override
-    @PostConstruct
-    public void initLocalCache() {
-        // 第一步：查询数据
-        List<SmsChannelDO> channels = smsChannelMapper.selectList();
-        log.info("[initLocalCache][缓存短信渠道，数量为:{}]", channels.size());
-
-        // 第二步：构建缓存：创建或更新短信 Client
-        List<SmsChannelProperties> propertiesList = SmsChannelConvert.INSTANCE.convertList02(channels);
-        propertiesList.forEach(properties -> smsClientFactory.createOrUpdateSmsClient(properties));
+    public Long createSmsChannel(SmsChannelSaveReqVO createReqVO) {
+        SmsChannelDO channel = BeanUtils.toBean(createReqVO, SmsChannelDO.class);
+        smsChannelMapper.insert(channel);
+        return channel.getId();
     }
 
     @Override
-    public Long createSmsChannel(SmsChannelCreateReqVO createReqVO) {
-        // 插入
-        SmsChannelDO smsChannel = SmsChannelConvert.INSTANCE.convert(createReqVO);
-        smsChannelMapper.insert(smsChannel);
-        // 发送刷新消息
-        smsProducer.sendSmsChannelRefreshMessage();
-        // 返回
-        return smsChannel.getId();
-    }
-
-    @Override
-    public void updateSmsChannel(SmsChannelUpdateReqVO updateReqVO) {
+    public void updateSmsChannel(SmsChannelSaveReqVO updateReqVO) {
         // 校验存在
         validateSmsChannelExists(updateReqVO.getId());
         // 更新
-        SmsChannelDO updateObj = SmsChannelConvert.INSTANCE.convert(updateReqVO);
+        SmsChannelDO updateObj = BeanUtils.toBean(updateReqVO, SmsChannelDO.class);
         smsChannelMapper.updateById(updateObj);
-        // 发送刷新消息
-        smsProducer.sendSmsChannelRefreshMessage();
     }
 
     @Override
@@ -81,19 +58,19 @@ public class SmsChannelServiceImpl implements SmsChannelService {
         // 校验存在
         validateSmsChannelExists(id);
         // 校验是否有在使用该账号的模版
-        if (smsTemplateService.countByChannelId(id) > 0) {
+        if (smsTemplateService.getSmsTemplateCountByChannelId(id) > 0) {
             throw exception(SMS_CHANNEL_HAS_CHILDREN);
         }
         // 删除
         smsChannelMapper.deleteById(id);
-        // 发送刷新消息
-        smsProducer.sendSmsChannelRefreshMessage();
     }
 
-    private void validateSmsChannelExists(Long id) {
-        if (smsChannelMapper.selectById(id) == null) {
+    private SmsChannelDO validateSmsChannelExists(Long id) {
+        SmsChannelDO channel = smsChannelMapper.selectById(id);
+        if (channel == null) {
             throw exception(SMS_CHANNEL_NOT_EXISTS);
         }
+        return channel;
     }
 
     @Override
@@ -109,6 +86,18 @@ public class SmsChannelServiceImpl implements SmsChannelService {
     @Override
     public PageResult<SmsChannelDO> getSmsChannelPage(SmsChannelPageReqVO pageReqVO) {
         return smsChannelMapper.selectPage(pageReqVO);
+    }
+
+    @Override
+    public SmsClient getSmsClient(Long id) {
+        SmsChannelDO channel = smsChannelMapper.selectById(id);
+        SmsChannelProperties properties = BeanUtils.toBean(channel, SmsChannelProperties.class);
+        return smsClientFactory.createOrUpdateSmsClient(properties);
+    }
+
+    @Override
+    public SmsClient getSmsClient(String code) {
+        return smsClientFactory.getSmsClient(code);
     }
 
 }

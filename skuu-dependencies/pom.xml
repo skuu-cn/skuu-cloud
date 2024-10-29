@@ -11,24 +11,23 @@
 
     <name>${project.artifactId}</name>
     <description>基础 pom 文件，管理整个项目的依赖版本</description>
-    <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
+    <url>https://book.skuu.cn</url>
 
     <properties>
         <revision>1.0.0</revision>
         <!-- 统一依赖管理 -->
-        <spring.boot.version>2.7.10</spring.boot.version>
-        <spring.cloud.version>2021.0.5</spring.cloud.version>
-        <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
+        <spring.boot.version>2.7.18</spring.boot.version>
+        <spring.cloud.version>2021.0.9</spring.cloud.version>
+        <spring.cloud.alibaba.version>2021.0.6.1</spring.cloud.alibaba.version>
         <!-- Web 相关 -->
         <servlet.versoin>2.5</servlet.versoin>
-        <swagger.version>2.2.8</swagger.version>
-        <springdoc.version>1.6.15</springdoc.version>
-        <knife4j.version>4.1.0</knife4j.version>
+        <springdoc.version>1.7.0</springdoc.version>
+        <knife4j.version>4.5.0</knife4j.version>
         <!-- DB 相关 -->
-        <druid.version>1.2.16</druid.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <mybatis-plus-generator.version>3.5.3.1</mybatis-plus-generator.version>
-        <dynamic-datasource.version>3.6.1</dynamic-datasource.version>
+        <druid.version>1.2.23</druid.version>
+        <mybatis.version>3.5.16</mybatis.version>
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <redisson.version>3.18.0</redisson.version>
         <!-- RPC 相关 -->
         <dubbo.version>2.7.18</dubbo.version>
@@ -37,50 +36,65 @@
         <!-- 服务保障相关 -->
         <lock4j.version>2.2.3</lock4j.version>
         <resilience4j.version>1.7.1</resilience4j.version>
+        <!-- 消息队列 -->
+        <rocketmq-spring.version>2.3.1</rocketmq-spring.version>
         <!-- 监控相关 -->
         <skywalking.version>8.12.0</skywalking.version>
-        <spring-boot-admin.version>2.7.10</spring-boot-admin.version>
+        <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
         <opentracing.version>0.33.0</opentracing.version>
         <!-- Test 测试相关 -->
-        <podam.version>7.2.11.RELEASE</podam.version>
-        <jedis-mock.version>1.0.7</jedis-mock.version>
+        <podam.version>7.2.11.RELEASE</podam.version> <!-- Spring Boot 2.X 最多使用 7.2.11 版本 -->
+        <jedis-mock.version>1.1.4</jedis-mock.version>
         <mockito-inline.version>4.11.0</mockito-inline.version>
         <!-- Bpm 工作流相关 -->
         <flowable.version>6.8.0</flowable.version>
         <!-- 工具类相关 -->
-        <captcha-plus.version>1.0.2</captcha-plus.version>
-        <jsoup.version>1.15.4</jsoup.version>
-        <lombok.version>1.18.26</lombok.version>
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
-        <hutool.version>5.8.15</hutool.version>
-        <easyexcel.verion>3.2.1</easyexcel.verion>
-        <velocity.version>2.3</velocity.version>
-        <screw.version>1.0.5</screw.version>
-        <fastjson.version>1.2.83</fastjson.version>
-        <guava.version>31.1-jre</guava.version>
+        <!--Google出品的一款轻量级DI框架-->
         <guice.version>5.1.0</guice.version>
-        <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
-        <commons-net.version>3.8.0</commons-net.version>
+        <!--      生成数据库文档-->
+        <screw.version>1.0.5</screw.version>
+        <captcha-plus.version>1.0.8</captcha-plus.version>
+        <jsoup.version>1.18.1</jsoup.version>
+        <lombok.version>1.18.34</lombok.version>
+        <mapstruct.version>1.6.2</mapstruct.version>
+        <hutool.version>5.8.32</hutool.version>
+        <easyexcel.verion>4.0.3</easyexcel.verion>
+        <velocity.version>2.4</velocity.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <guava.version>33.2.1-jre</guava.version>
+        <transmittable-thread-local.version>2.14.5</transmittable-thread-local.version>
+        <commons-net.version>3.11.1</commons-net.version>
         <jsch.version>0.1.55</jsch.version>
-        <tika-core.version>2.7.0</tika-core.version>
-        <netty-all.version>4.1.90.Final</netty-all.version>
+        <!--        Apache Tika是基于java的内容检测和分析的工具包，可检测并提取来自上千种不同文件类型（如PPT，XLS和PDF）中的元数据和结构化文本-->
+        <tika-core.version>2.9.2</tika-core.version>
         <ip2region.version>2.7.0</ip2region.version>
+        <bizlog-sdk.version>3.0.6</bizlog-sdk.version>
         <reflections.version>0.10.2</reflections.version>
+        <netty.version>4.1.113.Final</netty.version>
+
         <!-- 三方云服务相关 -->
-        <okio.version>3.0.0</okio.version>
-        <okhttp3.version>4.10.0</okhttp3.version>
-        <minio.version>8.5.2</minio.version>
-        <aliyun-java-sdk-core.version>4.6.3</aliyun-java-sdk-core.version>
-        <aliyun-java-sdk-dysmsapi.version>2.2.1</aliyun-java-sdk-dysmsapi.version>
-        <tencentcloud-sdk-java.version>3.1.715</tencentcloud-sdk-java.version>
-        <justauth.version>1.4.0</justauth.version>
-        <jimureport.version>1.5.6</jimureport.version>
-        <xercesImpl.version>2.12.2</xercesImpl.version>
+        <okio.version>3.5.0</okio.version>
+        <okhttp3.version>4.11.0</okhttp3.version>
+        <commons-io.version>2.17.0</commons-io.version>
+        <commons-compress.version>1.27.1</commons-compress.version>
+        <minio.version>8.5.7</minio.version>
+        <justauth.version>1.0.8</justauth.version>
+        <jimureport.version>1.7.8</jimureport.version>
+        <weixin-java.version>4.6.0</weixin-java.version>
+        <!-- 专属于 JDK8 安全漏洞升级 -->
+        <logback.version>1.2.13</logback.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- 统一依赖管理 -->
+            <!-- 统一依赖管理,有顺序要求，版本重复的时候，会以先加载的为主 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -106,31 +120,6 @@
             <!-- 业务组件 -->
             <dependency>
                 <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-operatelog</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-dict</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-sms</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-pay</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-weixin</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
                 <artifactId>skuu-spring-boot-starter-biz-tenant</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -141,22 +130,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-biz-social</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
                 <artifactId>skuu-spring-boot-starter-biz-ip</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-captcha</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-desensitize</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -166,12 +140,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <version>${spring.boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-env</artifactId>
-                <version>${revision}</version>
             </dependency>
 
             <!-- Web 相关 -->
@@ -188,15 +156,11 @@
             </dependency>
 
             <dependency>
-                <groupId>io.swagger.core.v3</groupId> <!-- 接口文档：使用最新版本的 Swagger 模型 -->
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.version}</version>
+                <groupId>cn.skuu.cloud</groupId>
+                <artifactId>skuu-spring-boot-starter-websocket</artifactId>
+                <version>${revision}</version>
             </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId> <!-- 接口文档：使用最新版本的 Swagger 模型 -->
-                <artifactId>swagger-models</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.springdoc</groupId> <!-- 接口文档 UI：解决 knife4j 引入的 Spring Doc 版本太老 -->
                 <artifactId>springdoc-openapi-common</artifactId>
@@ -205,11 +169,6 @@
             <dependency>
                 <groupId>org.springdoc</groupId> <!-- 接口文档 UI：解决 knife4j 引入的 Spring Doc 版本太老 -->
                 <artifactId>springdoc-openapi-webmvc-core</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId> <!-- 接口文档 UI：解决 knife4j 引入的 Spring Doc 版本太老 -->
-                <artifactId>springdoc-openapi-webflux-core</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
             <dependency>
@@ -234,11 +193,11 @@
                 <artifactId>skuu-spring-boot-starter-mybatis</artifactId>
                 <version>${revision}</version>
             </dependency>
-<!--            <dependency> &lt;!&ndash; TODO 芋艿：说不清楚 &ndash;&gt;-->
-<!--                <groupId>org.springdoc</groupId>-->
-<!--                <artifactId>springdoc-openapi-webflux-ui</artifactId>-->
-<!--                <version>${springdoc.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency> &lt;!&ndash; TODO 芋艿：说不清楚 &ndash;&gt;-->
+            <!--                <groupId>org.springdoc</groupId>-->
+            <!--                <artifactId>springdoc-openapi-webflux-ui</artifactId>-->
+            <!--                <version>${springdoc.version}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -253,7 +212,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-generator</artifactId> <!-- 代码生成器，使用它解析表结构 -->
-                <version>${mybatis-plus-generator.version}</version>
+                <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -275,24 +234,9 @@
 
             <!-- RPC 远程调用相关 -->
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>4.1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-common</artifactId> <!-- 兜底，保证在不引入 spring-cloud-starter-dubbo 时，注解等不报错 -->
-                <version>${dubbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-cluster</artifactId> <!-- 兜底，保证在不引入 spring-cloud-starter-dubbo 时，注解等不报错 -->
-                <version>${dubbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-rpc-api</artifactId> <!-- 兜底，保证在不引入 spring-cloud-starter-dubbo 时，注解等不报错 -->
-                <version>${dubbo.version}</version>
+                <groupId>cn.skuu.cloud</groupId>
+                <artifactId>skuu-spring-boot-starter-rpc</artifactId>
+                <version>${revision}</version>
             </dependency>
 
             <!-- Registry 注册中心相关 -->
@@ -305,17 +249,18 @@
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxl-job.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-job</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
             <!-- 消息队列相关 -->
             <dependency>
                 <groupId>cn.skuu.cloud</groupId>
                 <artifactId>skuu-spring-boot-starter-mq</artifactId>
                 <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq-spring.version}</version>
             </dependency>
 
             <!-- 服务保障相关 -->
@@ -451,11 +396,6 @@
 
             <!-- 工作流相关 -->
             <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-flowable</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.flowable</groupId>
                 <artifactId>flowable-spring-boot-starter-process</artifactId>
                 <version>${flowable.version}</version>
@@ -515,6 +455,17 @@
             </dependency>
 
             <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${commons-compress.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId> <!-- 文件类型的识别 -->
                 <version>${tika-core.version}</version>
@@ -530,6 +481,18 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.xingyuv</groupId>
+                <artifactId>spring-boot-starter-justauth</artifactId> <!-- 社交登陆（例如说，个人微信、企业微信等等） -->
+                <version>${justauth.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>cn.hutool</groupId>
+                        <artifactId>hutool-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -554,11 +517,11 @@
                 <version>${guava.version}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.google.inject</groupId>-->
-<!--                <artifactId>guice</artifactId>-->
-<!--                <version>${guice.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.google.inject</groupId>-->
+            <!--                <artifactId>guice</artifactId>-->
+            <!--                <version>${guice.version}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -575,12 +538,6 @@
                 <groupId>com.jcraft</groupId>
                 <artifactId>jsch</artifactId> <!-- 解决 sftp 连接 -->
                 <version>${jsch.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-all</artifactId>
-                <version>${netty-all.version}</version>
             </dependency>
 
             <dependency>
@@ -619,47 +576,30 @@
                 <version>${okhttp3.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.skuu.cloud</groupId>
-                <artifactId>skuu-spring-boot-starter-file</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
 
-            <!-- SMS SDK begin -->
             <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-core</artifactId>
-                <version>${aliyun-java-sdk-core.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>opentracing-api</artifactId>
-                        <groupId>io.opentracing</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>opentracing-util</artifactId>
-                        <groupId>io.opentracing</groupId>
-                    </exclusion>
-                </exclusions>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>${aliyun-java-sdk-dysmsapi.version}</version>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>wx-java-mp-spring-boot-starter</artifactId>
+                <version>${weixin-java.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.tencentcloudapi</groupId>
-                <artifactId>tencentcloud-sdk-java-sms</artifactId>
-                <version>${tencentcloud-sdk-java.version}</version>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>wx-java-miniapp-spring-boot-starter</artifactId>
+                <version>${weixin-java.version}</version>
             </dependency>
-            <!-- SMS SDK end -->
 
             <dependency>
-                <groupId>com.xkcoding.justauth</groupId>
-                <artifactId>justauth-spring-boot-starter</artifactId> <!-- 社交登陆（例如说，个人微信、企业微信等等） -->
+                <groupId>com.xingyuv</groupId>
+                <artifactId>spring-boot-starter-justauth</artifactId> <!-- 社交登陆（例如说，个人微信、企业微信等等） -->
                 <version>${justauth.version}</version>
                 <exclusions>
                     <exclusion>
@@ -680,11 +620,6 @@
                         <artifactId>druid</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>xerces</groupId>
-                <artifactId>xercesImpl</artifactId>
-                <version>${xercesImpl.version}</version>
             </dependency>
 
         </dependencies>

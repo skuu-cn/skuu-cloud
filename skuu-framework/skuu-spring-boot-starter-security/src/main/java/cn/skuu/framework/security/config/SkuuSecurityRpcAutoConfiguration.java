@@ -1,9 +1,9 @@
 package cn.skuu.framework.security.config;
 
 import cn.skuu.framework.security.core.rpc.LoginUserRequestInterceptor;
-import cn.skuu.framework.security.core.rpc.OAuth2TokenClient;
-import cn.skuu.framework.security.core.rpc.PermissionClient;
-import cn.skuu.framework.security.core.rpc.TenantClient;
+import cn.skuu.system.api.oauth2.OAuth2TokenApi;
+import cn.skuu.system.api.permission.PermissionApi;
+import cn.skuu.system.api.tenant.TenantApi;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Bean;
  * @author dcx
  */
 @AutoConfiguration
-@EnableFeignClients(clients = {OAuth2TokenClient.class, // 主要是引入相关的 API 服务
-        PermissionClient.class, TenantClient.class})
+@EnableFeignClients(clients = {OAuth2TokenApi.class, // 主要是引入相关的 API 服务
+        PermissionApi.class, TenantApi.class})
 public class SkuuSecurityRpcAutoConfiguration {
 
     @Bean

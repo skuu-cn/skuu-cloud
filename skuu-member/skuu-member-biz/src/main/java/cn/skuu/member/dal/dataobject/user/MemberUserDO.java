@@ -1,6 +1,9 @@
 package cn.skuu.member.dal.dataobject.user;
 
 import cn.skuu.framework.common.enums.CommonStatusEnum;
+import cn.skuu.framework.common.enums.TerminalEnum;
+import cn.skuu.framework.ip.core.Area;
+import cn.skuu.framework.mybatis.core.type.LongListTypeHandler;
 import cn.skuu.framework.tenant.core.db.TenantBaseDO;
 import cn.skuu.member.dal.dataobject.group.MemberGroupDO;
 import cn.skuu.member.dal.dataobject.level.MemberLevelDO;
@@ -13,13 +16,14 @@ import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 会员用户 DO
  *
  * uk_mobile 索引：基于 {@link #mobile} 字段
  *
- * @author skuu
+ * @author 芋道源码
  */
 @TableName(value = "member_user", autoResultMap = true)
 @KeySequence("member_user_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
@@ -118,8 +122,8 @@ public class MemberUserDO extends TenantBaseDO {
     /**
      * 会员标签列表，以逗号分隔
      */
-    @TableField
-    private String tagIds;
+    @TableField(typeHandler = LongListTypeHandler.class)
+    private List<Long> tagIds;
 
     /**
      * 会员级别编号

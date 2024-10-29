@@ -1,15 +1,17 @@
 package cn.skuu.member.api.point;
 
 import cn.hutool.core.lang.Assert;
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.enums.point.MemberPointBizTypeEnum;
 import cn.skuu.member.service.point.MemberPointRecordService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.pojo.CommonResult.success;
+import static cn.skuu.member.enums.ErrorCodeConstants.POINT_RECORD_BIZ_NOT_SUPPORT;
 
 /**
  * 用户积分的 API 实现类
@@ -28,10 +30,10 @@ public class MemberPointApiImpl implements MemberPointApi {
         Assert.isTrue(point > 0);
         MemberPointBizTypeEnum bizTypeEnum = MemberPointBizTypeEnum.getByType(bizType);
         if (bizTypeEnum == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.POINT_RECORD_BIZ_NOT_SUPPORT);
+            throw exception(POINT_RECORD_BIZ_NOT_SUPPORT);
         }
         memberPointRecordService.createPointRecord(userId, point, bizTypeEnum, bizId);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @Override
@@ -39,10 +41,10 @@ public class MemberPointApiImpl implements MemberPointApi {
         Assert.isTrue(point > 0);
         MemberPointBizTypeEnum bizTypeEnum = MemberPointBizTypeEnum.getByType(bizType);
         if (bizTypeEnum == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.POINT_RECORD_BIZ_NOT_SUPPORT);
+            throw exception(POINT_RECORD_BIZ_NOT_SUPPORT);
         }
         memberPointRecordService.createPointRecord(userId, -point, bizTypeEnum, bizId);
-        return CommonResult.success(true);
+        return success(true);
     }
 
 }

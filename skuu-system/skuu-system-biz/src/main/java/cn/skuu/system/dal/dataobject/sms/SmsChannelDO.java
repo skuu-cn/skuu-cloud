@@ -2,7 +2,7 @@ package cn.skuu.system.dal.dataobject.sms;
 
 import cn.skuu.framework.common.enums.CommonStatusEnum;
 import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
-import cn.skuu.framework.sms.core.enums.SmsChannelEnum;
+import cn.skuu.system.framework.sms.core.enums.SmsChannelEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;

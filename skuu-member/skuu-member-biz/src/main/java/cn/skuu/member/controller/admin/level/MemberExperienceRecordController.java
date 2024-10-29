@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 会员经验记录")
 @RestController
@@ -36,7 +37,7 @@ public class MemberExperienceRecordController {
     @PreAuthorize("@ss.hasPermission('member:experience-record:query')")
     public CommonResult<MemberExperienceRecordRespVO> getExperienceRecord(@RequestParam("id") Long id) {
         MemberExperienceRecordDO experienceLog = experienceLogService.getExperienceRecord(id);
-        return CommonResult.success(MemberExperienceRecordConvert.INSTANCE.convert(experienceLog));
+        return success(MemberExperienceRecordConvert.INSTANCE.convert(experienceLog));
     }
 
     @GetMapping("/page")
@@ -45,7 +46,7 @@ public class MemberExperienceRecordController {
     public CommonResult<PageResult<MemberExperienceRecordRespVO>> getExperienceRecordPage(
             @Valid MemberExperienceRecordPageReqVO pageVO) {
         PageResult<MemberExperienceRecordDO> pageResult = experienceLogService.getExperienceRecordPage(pageVO);
-        return CommonResult.success(MemberExperienceRecordConvert.INSTANCE.convertPage(pageResult));
+        return success(MemberExperienceRecordConvert.INSTANCE.convertPage(pageResult));
     }
 
 }

@@ -1,10 +1,8 @@
 package cn.skuu.member.api.level;
 
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.member.api.level.dto.MemberLevelRespDTO;
 import cn.skuu.member.convert.level.MemberLevelConvert;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.enums.MemberExperienceBizTypeEnum;
 import cn.skuu.member.service.level.MemberLevelService;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.pojo.CommonResult.success;
+import static cn.skuu.member.enums.ErrorCodeConstants.EXPERIENCE_BIZ_NOT_SUPPORT;
 
 /**
  * 会员等级 API 实现类
@@ -27,17 +28,17 @@ public class MemberLevelApiImpl implements MemberLevelApi {
 
     @Override
     public CommonResult<MemberLevelRespDTO> getMemberLevel(Long id) {
-        return CommonResult.success(MemberLevelConvert.INSTANCE.convert02(memberLevelService.getLevel(id)));
+        return success(MemberLevelConvert.INSTANCE.convert02(memberLevelService.getLevel(id)));
     }
 
     @Override
     public CommonResult<Boolean> addExperience(Long userId, Integer experience, Integer bizType, String bizId) {
         MemberExperienceBizTypeEnum bizTypeEnum = MemberExperienceBizTypeEnum.getByType(bizType);
         if (bizTypeEnum == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.EXPERIENCE_BIZ_NOT_SUPPORT);
+            throw exception(EXPERIENCE_BIZ_NOT_SUPPORT);
         }
         memberLevelService.addExperience(userId, experience, bizTypeEnum, bizId);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @Override

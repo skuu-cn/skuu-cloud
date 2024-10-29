@@ -1,6 +1,7 @@
 package cn.skuu.bpm.convert.task;
 
 import cn.skuu.bpm.controller.admin.task.vo.activity.BpmActivityRespVO;
+import cn.skuu.framework.common.util.date.DateUtils;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,9 +13,9 @@ import java.util.List;
 /**
  * BPM 活动 Convert
  *
- * @author skuu
+ * @author 芋道源码
  */
-@Mapper
+@Mapper(uses = DateUtils.class)
 public interface BpmActivityConvert {
 
     BpmActivityConvert INSTANCE = Mappers.getMapper(BpmActivityConvert.class);

@@ -7,9 +7,9 @@ import cn.skuu.system.controller.admin.permission.vo.permission.PermissionAssign
 import cn.skuu.system.controller.admin.permission.vo.permission.PermissionAssignUserRoleReqVO;
 import cn.skuu.system.service.permission.PermissionService;
 import cn.skuu.system.service.tenant.TenantService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +23,9 @@ import static cn.skuu.framework.common.pojo.CommonResult.success;
 /**
  * 权限 Controller，提供赋予用户、角色的权限的 API 接口
  *
- * @author dcx
+ * @author skuu
  */
-@Tag(name =  "管理后台 - 权限")
+@Tag(name = "管理后台 - 权限")
 @RestController
 @RequestMapping("/system/permission")
 public class PermissionController {
@@ -37,10 +37,10 @@ public class PermissionController {
 
     @Operation(summary = "获得角色拥有的菜单编号")
     @Parameter(name = "roleId", description = "角色编号", required = true)
-    @GetMapping("/list-role-resources")
+    @GetMapping("/list-role-menus")
     @PreAuthorize("@ss.hasPermission('system:permission:assign-role-menu')")
-    public CommonResult<Set<Long>> listRoleMenus(Long roleId) {
-        return success(permissionService.getRoleMenuIds(roleId));
+    public CommonResult<Set<Long>> getRoleMenuList(Long roleId) {
+        return success(permissionService.getRoleMenuListByRoleId(roleId));
     }
 
     @PostMapping("/assign-role-menu")

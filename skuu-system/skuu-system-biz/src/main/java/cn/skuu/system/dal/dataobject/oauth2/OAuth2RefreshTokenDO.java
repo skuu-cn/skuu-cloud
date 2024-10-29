@@ -1,7 +1,7 @@
 package cn.skuu.system.dal.dataobject.oauth2;
 
 import cn.skuu.framework.common.enums.UserTypeEnum;
-import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
+import cn.skuu.framework.tenant.core.db.TenantBaseDO;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * OAuth2 刷新令牌
  *
- * @author dcx
+ * @author skuu
  */
 @TableName(value = "system_oauth2_refresh_token", autoResultMap = true)
 // 由于 Oracle 的 SEQ 的名字长度有限制，所以就先用 system_oauth2_access_token_seq 吧，反正也没啥问题
@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class OAuth2RefreshTokenDO extends BaseDO {
+public class OAuth2RefreshTokenDO extends TenantBaseDO {
 
     /**
      * 编号，数据库字典

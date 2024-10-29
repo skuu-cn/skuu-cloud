@@ -8,11 +8,11 @@ import cn.skuu.framework.common.util.json.JsonUtils;
 import cn.skuu.framework.common.util.servlet.ServletUtils;
 import cn.skuu.framework.security.config.SecurityProperties;
 import cn.skuu.framework.security.core.LoginUser;
-import cn.skuu.framework.security.core.dto.OAuth2AccessTokenCheckRespDTO;
-import cn.skuu.framework.security.core.rpc.OAuth2TokenClient;
 import cn.skuu.framework.security.core.util.SecurityFrameworkUtils;
 import cn.skuu.framework.web.core.handler.GlobalExceptionHandler;
 import cn.skuu.framework.web.core.util.WebFrameworkUtils;
+import cn.skuu.system.api.oauth2.OAuth2TokenApi;
+import cn.skuu.system.api.oauth2.dto.OAuth2AccessTokenCheckRespDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final GlobalExceptionHandler globalExceptionHandler;
 
-    private final OAuth2TokenClient oAuth2TokenClient;
+    private final OAuth2TokenApi oauth2TokenApi;
 
     @Override
     @SuppressWarnings("NullableProblems")
@@ -83,7 +83,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private LoginUser buildLoginUserByToken(String token, Integer userType) {
         try {
             // 校验访问令牌
-            OAuth2AccessTokenCheckRespDTO accessToken = oAuth2TokenClient.checkAccessToken(token).getCheckedData();
+            OAuth2AccessTokenCheckRespDTO accessToken = oauth2TokenApi.checkAccessToken(token).getCheckedData();
             if (accessToken == null) {
                 return null;
             }

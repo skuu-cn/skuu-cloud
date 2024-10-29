@@ -1,66 +1,42 @@
 package cn.skuu.system.service.permission;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.skuu.framework.common.util.collection.CollectionUtils;
-import cn.skuu.system.controller.admin.permission.vo.menu.MenuCreateReqVO;
+import cn.hutool.core.util.ObjUtil;
+import cn.skuu.framework.common.enums.CommonStatusEnum;
+import cn.skuu.framework.common.util.object.BeanUtils;
 import cn.skuu.system.controller.admin.permission.vo.menu.MenuListReqVO;
-import cn.skuu.system.controller.admin.permission.vo.menu.MenuUpdateReqVO;
-import cn.skuu.system.convert.permission.MenuConvert;
+import cn.skuu.system.controller.admin.permission.vo.menu.MenuSaveVO;
 import cn.skuu.system.dal.dataobject.permission.MenuDO;
 import cn.skuu.system.dal.mysql.permission.MenuMapper;
-import cn.skuu.system.mq.producer.permission.MenuProducer;
-import cn.skuu.system.service.tenant.TenantService;
+import cn.skuu.system.dal.redis.RedisKeyConstants;
 import cn.skuu.system.enums.permission.MenuTypeEnum;
+import cn.skuu.system.service.tenant.TenantService;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import lombok.Getter;
-import lombok.Setter;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.util.collection.CollectionUtils.convertList;
+import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMap;
+import static cn.skuu.system.dal.dataobject.permission.MenuDO.ID_ROOT;
 import static cn.skuu.system.enums.ErrorCodeConstants.*;
 
 /**
  * 菜单 Service 实现
  *
- * @author dcx
+ * @author skuu
  */
 @Service
 @Slf4j
 public class MenuServiceImpl implements MenuService {
-
-    /**
-     * 菜单缓存
-     * key：菜单编号
-     *
-     * 这里声明 volatile 修饰的原因是，每次刷新时，直接修改指向
-     */
-    @Getter
-    @Setter
-    private volatile Map<Long, MenuDO> menuCache;
-    /**
-     * 权限与菜单缓存
-     * key：权限 {@link MenuDO#getPermission()}
-     * value：MenuDO 数组，因为一个权限可能对应多个 MenuDO 对象
-     *
-     * 这里声明 volatile 修饰的原因是，每次刷新时，直接修改指向
-     */
-    @Getter
-    @Setter
-    private volatile Multimap<String, MenuDO> permissionMenuCache;
 
     @Resource
     private MenuMapper menuMapper;
@@ -70,92 +46,59 @@ public class MenuServiceImpl implements MenuService {
     @Lazy // 延迟，避免循环依赖报错
     private TenantService tenantService;
 
-    @Resource
-    private MenuProducer menuProducer;
-
-    /**
-     * 初始化 {@link #menuCache} 和 {@link #permissionMenuCache} 缓存
-     */
     @Override
-    @PostConstruct
-    public synchronized void initLocalCache() {
-        // 第一步：查询数据
-        List<MenuDO> menuList = menuMapper.selectList();
-        log.info("[initLocalCache][缓存菜单，数量为:{}]", menuList.size());
-
-        // 第二步：构建缓存
-        ImmutableMap.Builder<Long, MenuDO> menuCacheBuilder = ImmutableMap.builder();
-        ImmutableMultimap.Builder<String, MenuDO> permMenuCacheBuilder = ImmutableMultimap.builder();
-        menuList.forEach(menuDO -> {
-            menuCacheBuilder.put(menuDO.getId(), menuDO);
-            if (StrUtil.isNotEmpty(menuDO.getPermission())) { // 会存在 permission 为 null 的情况，导致 put 报 NPE 异常
-                permMenuCacheBuilder.put(menuDO.getPermission(), menuDO);
-            }
-        });
-        menuCache = menuCacheBuilder.build();
-        permissionMenuCache = permMenuCacheBuilder.build();
-    }
-
-    @Override
-    public Long createMenu(MenuCreateReqVO reqVO) {
+    @CacheEvict(value = RedisKeyConstants.PERMISSION_MENU_ID_LIST, key = "#createReqVO.permission",
+            condition = "#createReqVO.permission != null")
+    public Long createMenu(MenuSaveVO createReqVO) {
         // 校验父菜单存在
-        validateParentMenu(reqVO.getParentId(), null);
+        validateParentMenu(createReqVO.getParentId(), null);
         // 校验菜单（自己）
-        validateMenu(reqVO.getParentId(), reqVO.getName(), null);
+        validateMenu(createReqVO.getParentId(), createReqVO.getName(), null);
 
         // 插入数据库
-        MenuDO menu = MenuConvert.INSTANCE.convert(reqVO);
+        MenuDO menu = BeanUtils.toBean(createReqVO, MenuDO.class);
         initMenuProperty(menu);
         menuMapper.insert(menu);
-        // 发送刷新消息
-        menuProducer.sendMenuRefreshMessage();
         // 返回
         return menu.getId();
     }
 
     @Override
-    public void updateMenu(MenuUpdateReqVO reqVO) {
+    @CacheEvict(value = RedisKeyConstants.PERMISSION_MENU_ID_LIST,
+            allEntries = true) // allEntries 清空所有缓存，因为 permission 如果变更，涉及到新老两个 permission。直接清理，简单有效
+    public void updateMenu(MenuSaveVO updateReqVO) {
         // 校验更新的菜单是否存在
-        if (menuMapper.selectById(reqVO.getId()) == null) {
+        if (menuMapper.selectById(updateReqVO.getId()) == null) {
             throw exception(MENU_NOT_EXISTS);
         }
         // 校验父菜单存在
-        validateParentMenu(reqVO.getParentId(), reqVO.getId());
+        validateParentMenu(updateReqVO.getParentId(), updateReqVO.getId());
         // 校验菜单（自己）
-        validateMenu(reqVO.getParentId(), reqVO.getName(), reqVO.getId());
+        validateMenu(updateReqVO.getParentId(), updateReqVO.getName(), updateReqVO.getId());
 
         // 更新到数据库
-        MenuDO updateObject = MenuConvert.INSTANCE.convert(reqVO);
-        initMenuProperty(updateObject);
-        menuMapper.updateById(updateObject);
-        // 发送刷新消息
-        menuProducer.sendMenuRefreshMessage();
+        MenuDO updateObj = BeanUtils.toBean(updateReqVO, MenuDO.class);
+        initMenuProperty(updateObj);
+        menuMapper.updateById(updateObj);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteMenu(Long menuId) {
+    @CacheEvict(value = RedisKeyConstants.PERMISSION_MENU_ID_LIST,
+            allEntries = true) // allEntries 清空所有缓存，因为此时不知道 id 对应的 permission 是多少。直接清理，简单有效
+    public void deleteMenu(Long id) {
         // 校验是否还有子菜单
-        if (menuMapper.selectCountByParentId(menuId) > 0) {
+        if (menuMapper.selectCountByParentId(id) > 0) {
             throw exception(MENU_EXISTS_CHILDREN);
         }
         // 校验删除的菜单是否存在
-        if (menuMapper.selectById(menuId) == null) {
+        if (menuMapper.selectById(id) == null) {
             throw exception(MENU_NOT_EXISTS);
         }
         // 标记删除
-        menuMapper.deleteById(menuId);
+        menuMapper.deleteById(id);
         // 删除授予给角色的权限
-        permissionService.processMenuDeleted(menuId);
-        // 发送刷新消息. 注意，需要事务提交后，在进行发送刷新消息。不然 db 还未提交，结果缓存先刷新了
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-
-            @Override
-            public void afterCommit() {
-                menuProducer.sendMenuRefreshMessage();
-            }
-
-        });
+        permissionService.processMenuDeleted(id);
     }
 
     @Override
@@ -165,10 +108,57 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDO> getMenuListByTenant(MenuListReqVO reqVO) {
+        // 查询所有菜单，并过滤掉关闭的节点
         List<MenuDO> menus = getMenuList(reqVO);
         // 开启多租户的情况下，需要过滤掉未开通的菜单
         tenantService.handleTenantMenu(menuIds -> menus.removeIf(menu -> !CollUtil.contains(menuIds, menu.getId())));
         return menus;
+    }
+
+    @Override
+    public List<MenuDO> filterDisableMenus(List<MenuDO> menuList) {
+        if (CollUtil.isEmpty(menuList)){
+            return Collections.emptyList();
+        }
+        Map<Long, MenuDO> menuMap = convertMap(menuList, MenuDO::getId);
+
+        // 遍历 menu 菜单，查找不是禁用的菜单，添加到 enabledMenus 结果
+        List<MenuDO> enabledMenus = new ArrayList<>();
+        Set<Long> disabledMenuCache = new HashSet<>(); // 存下递归搜索过被禁用的菜单，防止重复的搜索
+        for (MenuDO menu : menuList) {
+            if (isMenuDisabled(menu, menuMap, disabledMenuCache)) {
+                continue;
+            }
+            enabledMenus.add(menu);
+        }
+        return enabledMenus;
+    }
+
+    private boolean isMenuDisabled(MenuDO node, Map<Long, MenuDO> menuMap, Set<Long> disabledMenuCache) {
+        // 如果已经判定是禁用的节点，直接结束
+        if (disabledMenuCache.contains(node.getId())) {
+            return true;
+        }
+
+        // 1. 先判断自身是否禁用
+        if (CommonStatusEnum.isDisable(node.getStatus())) {
+            disabledMenuCache.add(node.getId());
+            return true;
+        }
+
+        // 2. 遍历到 parentId 为根节点，则无需判断
+        Long parentId = node.getParentId();
+        if (ObjUtil.equal(parentId, ID_ROOT)) {
+            return false;
+        }
+
+        // 3. 继续遍历 parent 节点
+        MenuDO parent = menuMap.get(parentId);
+        if (parent == null || isMenuDisabled(parent, menuMap, disabledMenuCache)) {
+            disabledMenuCache.add(node.getId());
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -177,33 +167,10 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuDO> getMenuListFromCache(Collection<Integer> menuTypes, Collection<Integer> menusStatuses) {
-        // 任一一个参数为空，则返回空
-        if (CollectionUtils.isAnyEmpty(menuTypes, menusStatuses)) {
-            return Collections.emptyList();
-        }
-        // 创建新数组，避免缓存被修改
-        return menuCache.values().stream().filter(menu -> menuTypes.contains(menu.getType())
-                        && menusStatuses.contains(menu.getStatus()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<MenuDO> getMenuListFromCache(Collection<Long> menuIds, Collection<Integer> menuTypes,
-                                             Collection<Integer> menusStatuses) {
-        // 任一一个参数为空，则返回空
-        if (CollectionUtils.isAnyEmpty(menuIds, menuTypes, menusStatuses)) {
-            return Collections.emptyList();
-        }
-        return menuCache.values().stream().filter(menu -> menuIds.contains(menu.getId())
-                        && menuTypes.contains(menu.getType())
-                        && menusStatuses.contains(menu.getStatus()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<MenuDO> getMenuListByPermissionFromCache(String permission) {
-        return new ArrayList<>(permissionMenuCache.get(permission));
+    @Cacheable(value = RedisKeyConstants.PERMISSION_MENU_ID_LIST, key = "#permission")
+    public List<Long> getMenuIdListByPermissionFromCache(String permission) {
+        List<MenuDO> menus = menuMapper.selectListByPermission(permission);
+        return convertList(menus, MenuDO::getId);
     }
 
     @Override
@@ -211,19 +178,28 @@ public class MenuServiceImpl implements MenuService {
         return menuMapper.selectById(id);
     }
 
+    @Override
+    public List<MenuDO> getMenuList(Collection<Long> ids) {
+        // 当 ids 为空时，返回一个空的实例对象
+        if (CollUtil.isEmpty(ids)) {
+            return Lists.newArrayList();
+        }
+        return menuMapper.selectBatchIds(ids);
+    }
+
     /**
      * 校验父菜单是否合法
-     *
+     * <p>
      * 1. 不能设置自己为父菜单
      * 2. 父菜单不存在
      * 3. 父菜单必须是 {@link MenuTypeEnum#MENU} 菜单类型
      *
      * @param parentId 父菜单编号
-     * @param childId 当前菜单编号
+     * @param childId  当前菜单编号
      */
     @VisibleForTesting
     void validateParentMenu(Long parentId, Long childId) {
-        if (parentId == null || MenuDO.ID_ROOT.equals(parentId)) {
+        if (parentId == null || ID_ROOT.equals(parentId)) {
             return;
         }
         // 不能设置自己为父菜单
@@ -244,12 +220,12 @@ public class MenuServiceImpl implements MenuService {
 
     /**
      * 校验菜单是否合法
-     *
+     * <p>
      * 1. 校验相同父菜单编号下，是否存在相同的菜单名
      *
-     * @param name 菜单名字
+     * @param name     菜单名字
      * @param parentId 父菜单编号
-     * @param id 菜单编号
+     * @param id       菜单编号
      */
     @VisibleForTesting
     void validateMenu(Long parentId, String name, Long id) {
@@ -268,7 +244,7 @@ public class MenuServiceImpl implements MenuService {
 
     /**
      * 初始化菜单的通用属性。
-     *
+     * <p>
      * 例如说，只有目录或者菜单类型的菜单，才设置 icon
      *
      * @param menu 菜单

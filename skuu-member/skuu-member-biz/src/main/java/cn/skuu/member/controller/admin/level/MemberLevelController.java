@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 会员等级")
 @RestController
@@ -30,7 +31,7 @@ public class MemberLevelController {
     @Operation(summary = "创建会员等级")
     @PreAuthorize("@ss.hasPermission('member:level:create')")
     public CommonResult<Long> createLevel(@Valid @RequestBody MemberLevelCreateReqVO createReqVO) {
-        return CommonResult.success(levelService.createLevel(createReqVO));
+        return success(levelService.createLevel(createReqVO));
     }
 
     @PutMapping("/update")
@@ -38,7 +39,7 @@ public class MemberLevelController {
     @PreAuthorize("@ss.hasPermission('member:level:update')")
     public CommonResult<Boolean> updateLevel(@Valid @RequestBody MemberLevelUpdateReqVO updateReqVO) {
         levelService.updateLevel(updateReqVO);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @DeleteMapping("/delete")
@@ -47,7 +48,7 @@ public class MemberLevelController {
     @PreAuthorize("@ss.hasPermission('member:level:delete')")
     public CommonResult<Boolean> deleteLevel(@RequestParam("id") Long id) {
         levelService.deleteLevel(id);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @GetMapping("/get")
@@ -56,7 +57,7 @@ public class MemberLevelController {
     @PreAuthorize("@ss.hasPermission('member:level:query')")
     public CommonResult<MemberLevelRespVO> getLevel(@RequestParam("id") Long id) {
         MemberLevelDO level = levelService.getLevel(id);
-        return CommonResult.success(MemberLevelConvert.INSTANCE.convert(level));
+        return success(MemberLevelConvert.INSTANCE.convert(level));
     }
 
     @GetMapping("/list-all-simple")
@@ -65,7 +66,7 @@ public class MemberLevelController {
         // 获用户列表，只要开启状态的
         List<MemberLevelDO> list = levelService.getEnableLevelList();
         // 排序后，返回给前端
-        return CommonResult.success(MemberLevelConvert.INSTANCE.convertSimpleList(list));
+        return success(MemberLevelConvert.INSTANCE.convertSimpleList(list));
     }
 
     @GetMapping("/list")
@@ -73,7 +74,7 @@ public class MemberLevelController {
     @PreAuthorize("@ss.hasPermission('member:level:query')")
     public CommonResult<List<MemberLevelRespVO>> getLevelList(@Valid MemberLevelListReqVO listReqVO) {
         List<MemberLevelDO> result = levelService.getLevelList(listReqVO);
-        return CommonResult.success(MemberLevelConvert.INSTANCE.convertList(result));
+        return success(MemberLevelConvert.INSTANCE.convertList(result));
     }
 
 }

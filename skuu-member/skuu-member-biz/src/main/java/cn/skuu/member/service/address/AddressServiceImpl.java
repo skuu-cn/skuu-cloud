@@ -6,7 +6,6 @@ import cn.skuu.member.controller.app.address.vo.AppAddressUpdateReqVO;
 import cn.skuu.member.convert.address.AddressConvert;
 import cn.skuu.member.dal.dataobject.address.MemberAddressDO;
 import cn.skuu.member.dal.mysql.address.MemberAddressMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -15,11 +14,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.member.enums.ErrorCodeConstants.ADDRESS_NOT_EXISTS;
 
 /**
  * 用户收件地址 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated
@@ -74,7 +74,7 @@ public class AddressServiceImpl implements AddressService {
     private void validAddressExists(Long userId, Long id) {
         MemberAddressDO addressDO = getAddress(userId, id);
         if (addressDO == null) {
-            throw exception(ErrorCodeConstants.ADDRESS_NOT_EXISTS);
+            throw exception(ADDRESS_NOT_EXISTS);
         }
     }
 

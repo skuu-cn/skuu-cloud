@@ -3,10 +3,11 @@ package cn.skuu.report.controller.admin.goview;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.framework.operatelog.core.annotations.OperateLog;
 import cn.skuu.report.controller.admin.goview.vo.data.GoViewDataGetBySqlReqVO;
 import cn.skuu.report.controller.admin.goview.vo.data.GoViewDataRespVO;
 import cn.skuu.report.service.goview.GoViewDataService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 import static cn.skuu.framework.common.pojo.CommonResult.success;
 
-//@Tag(name = "管理后台 - GoView 数据", description = "提供 SQL、HTTP 等数据查询的能力")
+@Tag(name = "管理后台 - GoView 数据", description = "提供 SQL、HTTP 等数据查询的能力")
 @RestController
 @RequestMapping("/report/go-view/data")
 @Validated
@@ -32,17 +33,15 @@ public class GoViewDataController {
     private GoViewDataService goViewDataService;
 
     @RequestMapping("/get-by-sql")
-//    @Operation(summary = "使用 SQL 查询数据")
+    @Operation(summary = "使用 SQL 查询数据")
     @PreAuthorize("@ss.hasPermission('report:go-view-data:get-by-sql')")
-    @OperateLog(enable = false) // 不记录操作日志，因为不需要
     public CommonResult<GoViewDataRespVO> getDataBySQL(@Valid @RequestBody GoViewDataGetBySqlReqVO reqVO) {
         return success(goViewDataService.getDataBySQL(reqVO.getSql()));
     }
 
     @RequestMapping("/get-by-http")
-//    @Operation(summary = "使用 HTTP 查询数据", description = "这个只是示例接口，实际应该每个查询，都要写一个接口")
+    @Operation(summary = "使用 HTTP 查询数据", description = "这个只是示例接口，实际应该每个查询，都要写一个接口")
     @PreAuthorize("@ss.hasPermission('report:go-view-data:get-by-http')")
-    @OperateLog(enable = false) // 不记录操作日志，因为不需要
     public CommonResult<GoViewDataRespVO> getDataByHttp(
             @RequestParam(required = false) Map<String, String> params,
             @RequestBody(required = false) String body) { // params、body 按照需要去接收，这里仅仅是示例

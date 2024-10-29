@@ -2,7 +2,6 @@ package cn.skuu.system.controller.admin.notify.vo.message;
 
 import cn.skuu.framework.common.pojo.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

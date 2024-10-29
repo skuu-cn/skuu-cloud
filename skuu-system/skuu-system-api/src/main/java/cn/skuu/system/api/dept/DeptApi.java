@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
 @Tag(name = "RPC 服务 - 部门")
@@ -43,8 +42,14 @@ public interface DeptApi {
      * @param ids 部门编号数组
      * @return 部门 Map
      */
-    default Map<Long, DeptRespDTO> getDeptMap(Set<Long> ids) {
-        return CollectionUtils.convertMap(getDeptList(ids).getCheckedData(), DeptRespDTO::getId);
+    default Map<Long, DeptRespDTO> getDeptMap(Collection<Long> ids) {
+        List<DeptRespDTO> list = getDeptList(ids).getCheckedData();
+        return CollectionUtils.convertMap(list, DeptRespDTO::getId);
     }
+
+    @GetMapping(PREFIX + "/list-child")
+    @Operation(summary = "获得指定部门的所有子部门")
+    @Parameter(name = "id", description = "部门编号", example = "1024", required = true)
+    CommonResult<List<DeptRespDTO>> getChildDeptList(@RequestParam("id") Long id);
 
 }

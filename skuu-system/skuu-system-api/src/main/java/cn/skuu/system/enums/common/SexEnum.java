@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 性别的枚举值
  *
- * @author dcx
+ * @author skuu
  */
 @Getter
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public enum SexEnum {
     /** 女 */
     FEMALE(2),
     /* 未知 */
-    UNKNOWN(3);
+    UNKNOWN(0);
 
     /**
      * 性别

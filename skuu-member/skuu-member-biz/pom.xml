@@ -5,7 +5,7 @@
     <parent>
         <groupId>cn.skuu.cloud</groupId>
         <artifactId>skuu-member</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>skuu-member-biz</artifactId>
@@ -22,11 +22,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.skuu.cloud</groupId>
-            <artifactId>skuu-spring-boot-starter-env</artifactId>
         </dependency>
 
         <!-- 依赖服务 -->

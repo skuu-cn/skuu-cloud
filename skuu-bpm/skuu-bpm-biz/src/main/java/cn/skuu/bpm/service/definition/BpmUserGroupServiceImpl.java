@@ -1,17 +1,13 @@
 package cn.skuu.bpm.service.definition;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupCreateReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupPageReqVO;
-import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupUpdateReqVO;
-import cn.skuu.bpm.convert.definition.BpmUserGroupConvert;
+import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupSaveReqVO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmUserGroupDO;
 import cn.skuu.bpm.dal.mysql.definition.BpmUserGroupMapper;
-import cn.skuu.bpm.enums.ErrorCodeConstants;
 import cn.skuu.framework.common.enums.CommonStatusEnum;
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.common.util.collection.CollectionUtils;
+import cn.skuu.framework.common.util.object.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,14 +15,16 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import static cn.skuu.bpm.enums.ErrorCodeConstants.USER_GROUP_IS_DISABLE;
+import static cn.skuu.bpm.enums.ErrorCodeConstants.USER_GROUP_NOT_EXISTS;
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMap;
 
 /**
  * 用户组 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated
@@ -36,20 +34,18 @@ public class BpmUserGroupServiceImpl implements BpmUserGroupService {
     private BpmUserGroupMapper userGroupMapper;
 
     @Override
-    public Long createUserGroup(BpmUserGroupCreateReqVO createReqVO) {
-        // 插入
-        BpmUserGroupDO userGroup = BpmUserGroupConvert.INSTANCE.convert(createReqVO);
+    public Long createUserGroup(BpmUserGroupSaveReqVO createReqVO) {
+        BpmUserGroupDO userGroup = BeanUtils.toBean(createReqVO, BpmUserGroupDO.class);
         userGroupMapper.insert(userGroup);
-        // 返回
         return userGroup.getId();
     }
 
     @Override
-    public void updateUserGroup(BpmUserGroupUpdateReqVO updateReqVO) {
+    public void updateUserGroup(BpmUserGroupSaveReqVO updateReqVO) {
         // 校验存在
-        this.validateUserGroupExists(updateReqVO.getId());
+        validateUserGroupExists(updateReqVO.getId());
         // 更新
-        BpmUserGroupDO updateObj = BpmUserGroupConvert.INSTANCE.convert(updateReqVO);
+        BpmUserGroupDO updateObj = BeanUtils.toBean(updateReqVO, BpmUserGroupDO.class);
         userGroupMapper.updateById(updateObj);
     }
 
@@ -63,7 +59,7 @@ public class BpmUserGroupServiceImpl implements BpmUserGroupService {
 
     private void validateUserGroupExists(Long id) {
         if (userGroupMapper.selectById(id) == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_GROUP_NOT_EXISTS);
+            throw exception(USER_GROUP_NOT_EXISTS);
         }
     }
 
@@ -89,21 +85,21 @@ public class BpmUserGroupServiceImpl implements BpmUserGroupService {
     }
 
     @Override
-    public void validUserGroups(Set<Long> ids) {
+    public void validUserGroups(Collection<Long> ids) {
         if (CollUtil.isEmpty(ids)) {
             return;
         }
         // 获得用户组信息
         List<BpmUserGroupDO> userGroups = userGroupMapper.selectBatchIds(ids);
-        Map<Long, BpmUserGroupDO> userGroupMap = CollectionUtils.convertMap(userGroups, BpmUserGroupDO::getId);
+        Map<Long, BpmUserGroupDO> userGroupMap = convertMap(userGroups, BpmUserGroupDO::getId);
         // 校验
         ids.forEach(id -> {
             BpmUserGroupDO userGroup = userGroupMap.get(id);
             if (userGroup == null) {
-                throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_GROUP_NOT_EXISTS);
+                throw exception(USER_GROUP_NOT_EXISTS);
             }
             if (!CommonStatusEnum.ENABLE.getStatus().equals(userGroup.getStatus())) {
-                throw exception(ErrorCodeConstants.USER_GROUP_IS_DISABLE, userGroup.getName());
+                throw exception(USER_GROUP_IS_DISABLE, userGroup.getName());
             }
         });
     }

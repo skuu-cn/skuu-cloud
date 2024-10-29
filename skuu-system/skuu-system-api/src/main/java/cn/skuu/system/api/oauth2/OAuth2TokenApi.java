@@ -5,17 +5,17 @@ import cn.skuu.system.api.oauth2.dto.OAuth2AccessTokenCheckRespDTO;
 import cn.skuu.system.api.oauth2.dto.OAuth2AccessTokenCreateReqDTO;
 import cn.skuu.system.api.oauth2.dto.OAuth2AccessTokenRespDTO;
 import cn.skuu.system.enums.ApiConstants;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
-@Tag(name =  "RPC 服务 - OAuth2.0 令牌")
+@Tag(name = "RPC 服务 - OAuth2.0 令牌")
 public interface OAuth2TokenApi {
 
     String PREFIX = ApiConstants.PREFIX + "/oauth2/token";
@@ -44,7 +44,7 @@ public interface OAuth2TokenApi {
     @Operation(summary = "刷新访问令牌")
     @Parameters({
         @Parameter(name = "refreshToken", description = "刷新令牌", required = true, example = "haha"),
-        @Parameter(name = "clientId", description = "客户端编号", required = true, example = "skuuyuanma")
+        @Parameter(name = "clientId", description = "客户端编号", required = true, example = "yudaoyuanma")
     })
     CommonResult<OAuth2AccessTokenRespDTO> refreshAccessToken(@RequestParam("refreshToken") String refreshToken,
                                                               @RequestParam("clientId") String clientId);

@@ -2,7 +2,6 @@ package cn.skuu.member.service.group;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.member.controller.admin.group.vo.MemberGroupCreateReqVO;
 import cn.skuu.member.controller.admin.group.vo.MemberGroupPageReqVO;
@@ -10,7 +9,6 @@ import cn.skuu.member.controller.admin.group.vo.MemberGroupUpdateReqVO;
 import cn.skuu.member.convert.group.MemberGroupConvert;
 import cn.skuu.member.dal.dataobject.group.MemberGroupDO;
 import cn.skuu.member.dal.mysql.group.MemberGroupMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.service.user.MemberUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +17,9 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.member.enums.ErrorCodeConstants.GROUP_HAS_USER;
+import static cn.skuu.member.enums.ErrorCodeConstants.GROUP_NOT_EXISTS;
 
 /**
  * 用户分组 Service 实现类
@@ -65,14 +66,14 @@ public class MemberGroupServiceImpl implements MemberGroupService {
 
     void validateGroupExists(Long id) {
         if (memberGroupMapper.selectById(id) == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.GROUP_NOT_EXISTS);
+            throw exception(GROUP_NOT_EXISTS);
         }
     }
 
     void validateGroupHasUser(Long id) {
         Long count = memberUserService.getUserCountByGroupId(id);
         if (count > 0) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.GROUP_HAS_USER);
+            throw exception(GROUP_HAS_USER);
         }
     }
 

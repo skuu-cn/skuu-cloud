@@ -11,6 +11,8 @@ import cn.skuu.framework.tenant.core.context.TenantContextHolder;
 import cn.skuu.framework.web.core.util.WebFrameworkUtils;
 import cn.skuu.system.api.oauth2.OAuth2TokenApi;
 import cn.skuu.system.api.oauth2.dto.OAuth2AccessTokenCheckRespDTO;
+import cn.skuu.system.api.permission.PermissionApi;
+import cn.skuu.system.enums.permission.RoleCodeEnum;
 import lombok.RequiredArgsConstructor;
 import org.jeecg.modules.jmreport.api.JmReportTokenServiceI;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +38,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
     private static final String AUTHORIZATION_FORMAT = SecurityFrameworkUtils.AUTHORIZATION_BEARER + " %s";
 
     private final OAuth2TokenApi oauth2TokenApi;
+    private final PermissionApi permissionApi;
 
     private final SecurityProperties securityProperties;
 
@@ -51,7 +54,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         HttpServletRequest request = ServletUtils.getRequest();
         String token = request.getHeader(JM_TOKEN_HEADER);
 
-        // 设置到 skuu 系统的 token
+        // 设置到 yudao 系统的 token
         HttpHeaders headers = new HttpHeaders();
         headers.add(securityProperties.getTokenHeader(), String.format(AUTHORIZATION_FORMAT, token));
         return headers;
@@ -126,6 +129,25 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         TenantContextHolder.setIgnore(false);
         TenantContextHolder.setTenantId(user.getTenantId());
         return user;
+    }
+
+    @Override
+    public String[] getRoles(String token) {
+        // 参见文档 https://help.jeecg.com/jimureport/prodSafe.html 文档
+        // 适配：如果是本系统的管理员，则转换成 jimu 报表的管理员
+        Long userId = SecurityFrameworkUtils.getLoginUserId();
+        return permissionApi.hasAnyRoles(userId, RoleCodeEnum.SUPER_ADMIN.getCode()).getCheckedData()
+                ? new String[]{"admin"} : null;
+    }
+
+    @Override
+    public String getTenantId() {
+        // 补充说明：不能直接通过 TenantContext 获取，因为 jimu 报表前端请求时，没有带上 tenant-id Header
+        LoginUser loginUser = SecurityFrameworkUtils.getLoginUser();
+        if (loginUser == null) {
+            return null;
+        }
+        return StrUtil.toStringOrNull(loginUser.getTenantId());
     }
 
 }

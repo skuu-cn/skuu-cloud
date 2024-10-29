@@ -3,7 +3,7 @@ package cn.skuu.system.service.member;
 /**
  * Member Service 接口
  *
- * @author dcx
+ * @author skuu
  */
 public interface MemberService {
 

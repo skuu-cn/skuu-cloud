@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.skuu.framework.common.core.KeyValue;
 import cn.skuu.framework.common.util.cache.CacheUtils;
 import cn.skuu.framework.security.core.LoginUser;
-import cn.skuu.framework.security.core.rpc.PermissionClient;
 import cn.skuu.framework.security.core.util.SecurityFrameworkUtils;
+import cn.skuu.system.api.permission.PermissionApi;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ import static cn.skuu.framework.security.core.util.SecurityFrameworkUtils.getLog
 @AllArgsConstructor
 public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
 
-    private final PermissionClient permissionClient;
+    private final PermissionApi permissionApi;
 
     /**
      * 针对 {@link #hasAnyRoles(String...)} 的缓存
@@ -36,7 +36,7 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
 
                 @Override
                 public Boolean load(KeyValue<Long, List<String>> key) {
-                    return permissionClient.hasAnyRoles(key.getKey(), key.getValue().toArray(new String[0])).getCheckedData();
+                    return permissionApi.hasAnyRoles(key.getKey(), key.getValue().toArray(new String[0])).getCheckedData();
                 }
 
             });
@@ -50,7 +50,7 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService {
 
                 @Override
                 public Boolean load(KeyValue<Long, List<String>> key) {
-                    return permissionClient.hasAnyPermissions(key.getKey(), key.getValue().toArray(new String[0])).getCheckedData();
+                    return permissionApi.hasAnyPermissions(key.getKey(), key.getValue().toArray(new String[0])).getCheckedData();
                 }
 
             });

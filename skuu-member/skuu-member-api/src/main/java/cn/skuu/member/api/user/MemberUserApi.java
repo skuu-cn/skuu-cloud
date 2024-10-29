@@ -1,7 +1,6 @@
 package cn.skuu.member.api.user;
 
 import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.framework.common.util.collection.CollectionUtils;
 import cn.skuu.member.api.user.dto.MemberUserRespDTO;
 import cn.skuu.member.enums.ApiConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMap;
 
 @FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
 @Tag(name = "RPC 服务 - 会员用户")
@@ -40,7 +40,7 @@ public interface MemberUserApi {
      */
     default Map<Long, MemberUserRespDTO> getUserMap(Collection<Long> ids) {
         List<MemberUserRespDTO> list = getUserList(ids).getCheckedData();
-        return CollectionUtils.convertMap(list, MemberUserRespDTO::getId);
+        return convertMap(list, MemberUserRespDTO::getId);
     }
 
     @GetMapping(PREFIX + "/list-by-nickname")
@@ -52,5 +52,10 @@ public interface MemberUserApi {
     @Operation(summary = "基于手机号，精准匹配用户")
     @Parameter(name = "mobile", description = "基于手机号，精准匹配用户", required = true, example = "1560")
     CommonResult<MemberUserRespDTO> getUserByMobile(@RequestParam("mobile") String mobile);
+
+    @GetMapping(PREFIX + "/valid")
+    @Operation(summary = "校验用户是否存在")
+    @Parameter(name = "id", description = "用户编号", required = true, example = "1")
+    CommonResult<Boolean> validateUser(@RequestParam("id") Long id);
 
 }

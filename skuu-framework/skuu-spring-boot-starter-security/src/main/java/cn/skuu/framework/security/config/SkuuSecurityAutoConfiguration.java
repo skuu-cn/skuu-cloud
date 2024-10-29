@@ -5,11 +5,11 @@ import cn.skuu.framework.security.core.context.TransmittableThreadLocalSecurityC
 import cn.skuu.framework.security.core.filter.TokenAuthenticationFilter;
 import cn.skuu.framework.security.core.handler.AccessDeniedHandlerImpl;
 import cn.skuu.framework.security.core.handler.AuthenticationEntryPointImpl;
-import cn.skuu.framework.security.core.rpc.OAuth2TokenClient;
-import cn.skuu.framework.security.core.rpc.PermissionClient;
 import cn.skuu.framework.security.core.service.SecurityFrameworkService;
 import cn.skuu.framework.security.core.service.SecurityFrameworkServiceImpl;
 import cn.skuu.framework.web.core.handler.GlobalExceptionHandler;
+import cn.skuu.system.api.oauth2.OAuth2TokenApi;
+import cn.skuu.system.api.permission.PermissionApi;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -77,13 +77,13 @@ public class SkuuSecurityAutoConfiguration {
      */
     @Bean
     public TokenAuthenticationFilter authenticationTokenFilter(GlobalExceptionHandler globalExceptionHandler,
-                                                               OAuth2TokenClient oAuth2TokenClient) {
-        return new TokenAuthenticationFilter(securityProperties, globalExceptionHandler, oAuth2TokenClient);
+                                                               OAuth2TokenApi oAuth2TokenApi) {
+        return new TokenAuthenticationFilter(securityProperties, globalExceptionHandler, oAuth2TokenApi);
     }
 
     @Bean("ss") // 使用 Spring Security 的缩写，方便使用
-    public SecurityFrameworkService securityFrameworkService(PermissionClient permissionClient) {
-        return new SecurityFrameworkServiceImpl(permissionClient);
+    public SecurityFrameworkService securityFrameworkService(PermissionApi permissionApi) {
+        return new SecurityFrameworkServiceImpl(permissionApi);
     }
 
     /**

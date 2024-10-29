@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 会员设置")
 @RestController
@@ -30,7 +31,7 @@ public class MemberConfigController {
     @PreAuthorize("@ss.hasPermission('member:config:save')")
     public CommonResult<Boolean> saveConfig(@Valid @RequestBody MemberConfigSaveReqVO saveReqVO) {
         memberConfigService.saveConfig(saveReqVO);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @GetMapping("/get")
@@ -38,7 +39,7 @@ public class MemberConfigController {
     @PreAuthorize("@ss.hasPermission('member:config:query')")
     public CommonResult<MemberConfigRespVO> getConfig() {
         MemberConfigDO config = memberConfigService.getConfig();
-        return CommonResult.success(MemberConfigConvert.INSTANCE.convert(config));
+        return success(MemberConfigConvert.INSTANCE.convert(config));
     }
 
 }

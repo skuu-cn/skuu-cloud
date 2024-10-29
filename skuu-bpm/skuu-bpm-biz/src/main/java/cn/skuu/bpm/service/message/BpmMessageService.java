@@ -3,6 +3,7 @@ package cn.skuu.bpm.service.message;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenProcessInstanceApproveReqDTO;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenProcessInstanceRejectReqDTO;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenTaskCreatedReqDTO;
+import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenTaskTimeoutReqDTO;
 
 import javax.validation.Valid;
 
@@ -11,7 +12,7 @@ import javax.validation.Valid;
  *
  * TODO 芋艿：未来支持消息的可配置；不同的流程，在什么场景下，需要发送什么消息，消息的内容是什么；
  *
- * @author skuu
+ * @author 芋道源码
  */
 public interface BpmMessageService {
 
@@ -35,5 +36,12 @@ public interface BpmMessageService {
      * @param reqDTO 发送信息
      */
     void sendMessageWhenTaskAssigned(@Valid BpmMessageSendWhenTaskCreatedReqDTO reqDTO);
+
+    /**
+     * 发送任务审批超时的消息
+     *
+     * @param reqDTO 发送信息
+     */
+    void sendMessageWhenTaskTimeout(@Valid BpmMessageSendWhenTaskTimeoutReqDTO reqDTO);
 
 }

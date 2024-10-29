@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 项目的启动类
  *
- * @author skuu
+ *
+ * @author 芋道源码
  */
 @SpringBootApplication
 public class MemberServerApplication {

@@ -5,6 +5,7 @@ import cn.skuu.bpm.enums.message.BpmMessageEnum;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenProcessInstanceApproveReqDTO;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenProcessInstanceRejectReqDTO;
 import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenTaskCreatedReqDTO;
+import cn.skuu.bpm.service.message.dto.BpmMessageSendWhenTaskTimeoutReqDTO;
 import cn.skuu.framework.web.config.WebProperties;
 import cn.skuu.system.api.sms.SmsSendApi;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * BPM 消息 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated
@@ -37,7 +38,7 @@ public class BpmMessageServiceImpl implements BpmMessageService {
         templateParams.put("processInstanceName", reqDTO.getProcessInstanceName());
         templateParams.put("detailUrl", getProcessInstanceDetailUrl(reqDTO.getProcessInstanceId()));
         smsSendApi.sendSingleSmsToAdmin(BpmMessageConvert.INSTANCE.convert(reqDTO.getStartUserId(),
-                BpmMessageEnum.PROCESS_INSTANCE_APPROVE.getSmsTemplateCode(), templateParams));
+                BpmMessageEnum.PROCESS_INSTANCE_APPROVE.getSmsTemplateCode(), templateParams)).checkError();
     }
 
     @Override
@@ -47,7 +48,7 @@ public class BpmMessageServiceImpl implements BpmMessageService {
         templateParams.put("reason", reqDTO.getReason());
         templateParams.put("detailUrl", getProcessInstanceDetailUrl(reqDTO.getProcessInstanceId()));
         smsSendApi.sendSingleSmsToAdmin(BpmMessageConvert.INSTANCE.convert(reqDTO.getStartUserId(),
-                BpmMessageEnum.PROCESS_INSTANCE_REJECT.getSmsTemplateCode(), templateParams));
+                BpmMessageEnum.PROCESS_INSTANCE_REJECT.getSmsTemplateCode(), templateParams)).checkError();
     }
 
     @Override
@@ -58,7 +59,17 @@ public class BpmMessageServiceImpl implements BpmMessageService {
         templateParams.put("startUserNickname", reqDTO.getStartUserNickname());
         templateParams.put("detailUrl", getProcessInstanceDetailUrl(reqDTO.getProcessInstanceId()));
         smsSendApi.sendSingleSmsToAdmin(BpmMessageConvert.INSTANCE.convert(reqDTO.getAssigneeUserId(),
-                BpmMessageEnum.TASK_ASSIGNED.getSmsTemplateCode(), templateParams));
+                BpmMessageEnum.TASK_ASSIGNED.getSmsTemplateCode(), templateParams)).checkError();
+    }
+
+    @Override
+    public void sendMessageWhenTaskTimeout(BpmMessageSendWhenTaskTimeoutReqDTO reqDTO) {
+        Map<String, Object> templateParams = new HashMap<>();
+        templateParams.put("processInstanceName", reqDTO.getProcessInstanceName());
+        templateParams.put("taskName", reqDTO.getTaskName());
+        templateParams.put("detailUrl", getProcessInstanceDetailUrl(reqDTO.getProcessInstanceId()));
+        smsSendApi.sendSingleSmsToAdmin(BpmMessageConvert.INSTANCE.convert(reqDTO.getAssigneeUserId(),
+                BpmMessageEnum.TASK_TIMEOUT.getSmsTemplateCode(), templateParams)).checkError();
     }
 
     private String getProcessInstanceDetailUrl(String taskId) {

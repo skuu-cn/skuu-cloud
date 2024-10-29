@@ -2,25 +2,27 @@ package cn.skuu.member.service.user;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.skuu.framework.common.enums.CommonStatusEnum;
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
+import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.common.util.object.BeanUtils;
-import cn.skuu.framework.common.util.servlet.ServletUtils;
 import cn.skuu.member.controller.admin.user.vo.MemberUserPageReqVO;
 import cn.skuu.member.controller.admin.user.vo.MemberUserUpdateReqVO;
 import cn.skuu.member.controller.app.user.vo.*;
+import cn.skuu.member.convert.auth.AuthConvert;
 import cn.skuu.member.convert.user.MemberUserConvert;
 import cn.skuu.member.dal.dataobject.user.MemberUserDO;
 import cn.skuu.member.dal.mysql.user.MemberUserMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.mq.producer.user.MemberUserProducer;
 import cn.skuu.system.api.sms.SmsCodeApi;
 import cn.skuu.system.api.sms.dto.code.SmsCodeUseReqDTO;
+import cn.skuu.system.api.social.SocialClientApi;
+import cn.skuu.system.api.social.dto.SocialWxPhoneNumberInfoRespDTO;
 import cn.skuu.system.enums.sms.SmsSceneEnum;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +38,14 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.util.servlet.ServletUtils.getClientIP;
+import static cn.skuu.member.enums.ErrorCodeConstants.*;
 
 /**
  * 会员 User Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Valid
@@ -53,8 +58,8 @@ public class MemberUserServiceImpl implements MemberUserService {
     @Resource
     private SmsCodeApi smsCodeApi;
 
-//    @Resource
-//    private SocialClientApi socialClientApi;
+    @Resource
+    private SocialClientApi socialClientApi;
 
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -156,11 +161,11 @@ public class MemberUserServiceImpl implements MemberUserService {
         // 补充说明：从安全性来说，老手机也校验 oldCode 验证码会更安全。但是由于 uni-app 商城界面暂时没做，所以这里不强制校验
         if (StrUtil.isNotEmpty(reqVO.getOldCode())) {
             smsCodeApi.useSmsCode(new SmsCodeUseReqDTO().setMobile(user.getMobile()).setCode(reqVO.getOldCode())
-                    .setScene(SmsSceneEnum.MEMBER_UPDATE_MOBILE.getScene()).setUsedIp(ServletUtils.getClientIP())).getCheckedData();
+                    .setScene(SmsSceneEnum.MEMBER_UPDATE_MOBILE.getScene()).setUsedIp(getClientIP())).getCheckedData();
         }
         // 2.2 使用新验证码
         smsCodeApi.useSmsCode(new SmsCodeUseReqDTO().setMobile(reqVO.getMobile()).setCode(reqVO.getCode())
-                .setScene(SmsSceneEnum.MEMBER_UPDATE_MOBILE.getScene()).setUsedIp(ServletUtils.getClientIP())).getCheckedData();
+                .setScene(SmsSceneEnum.MEMBER_UPDATE_MOBILE.getScene()).setUsedIp(getClientIP())).getCheckedData();
 
         // 3. 更新用户手机
         memberUserMapper.updateById(MemberUserDO.builder().id(userId).mobile(reqVO.getMobile()).build());
@@ -169,47 +174,47 @@ public class MemberUserServiceImpl implements MemberUserService {
     @Override
     public void updateUserMobileByWeixin(Long userId, AppMemberUserUpdateMobileByWeixinReqVO reqVO) {
         // 1.1 获得对应的手机号信息
-//        SocialWxPhoneNumberInfoRespDTO phoneNumberInfo = socialClientApi.getWxMaPhoneNumberInfo(
-//                UserTypeEnum.MEMBER.getValue(), reqVO.getCode()).getCheckedData();
-//        Assert.notNull(phoneNumberInfo, "获得手机信息失败，结果为空");
-//        // 1.2 校验新手机是否已经被绑定
-//        validateMobileUnique(userId, phoneNumberInfo.getPhoneNumber());
-//
-//        // 2. 更新用户手机
-//        memberUserMapper.updateById(MemberUserDO.builder().id(userId).mobile(phoneNumberInfo.getPhoneNumber()).build());
+        SocialWxPhoneNumberInfoRespDTO phoneNumberInfo = socialClientApi.getWxMaPhoneNumberInfo(
+                UserTypeEnum.MEMBER.getValue(), reqVO.getCode()).getCheckedData();
+        Assert.notNull(phoneNumberInfo, "获得手机信息失败，结果为空");
+        // 1.2 校验新手机是否已经被绑定
+        validateMobileUnique(userId, phoneNumberInfo.getPhoneNumber());
+
+        // 2. 更新用户手机
+        memberUserMapper.updateById(MemberUserDO.builder().id(userId).mobile(phoneNumberInfo.getPhoneNumber()).build());
     }
 
     @Override
     public void updateUserPassword(Long userId, AppMemberUserUpdatePasswordReqVO reqVO) {
-//        // 检测用户是否存在
-//        MemberUserDO user = validateUserExists(userId);
-//        // 校验验证码
-//        smsCodeApi.useSmsCode(new SmsCodeUseReqDTO().setMobile(user.getMobile()).setCode(reqVO.getCode())
-//                .setScene(SmsSceneEnum.MEMBER_UPDATE_PASSWORD.getScene()).setUsedIp(ServletUtils.getClientIP())).getCheckedData();
-//
-//        // 更新用户密码
-//        memberUserMapper.updateById(MemberUserDO.builder().id(userId)
-//                .password(passwordEncoder.encode(reqVO.getPassword())).build());
+        // 检测用户是否存在
+        MemberUserDO user = validateUserExists(userId);
+        // 校验验证码
+        smsCodeApi.useSmsCode(new SmsCodeUseReqDTO().setMobile(user.getMobile()).setCode(reqVO.getCode())
+                .setScene(SmsSceneEnum.MEMBER_UPDATE_PASSWORD.getScene()).setUsedIp(getClientIP())).getCheckedData();
+
+        // 更新用户密码
+        memberUserMapper.updateById(MemberUserDO.builder().id(userId)
+                .password(passwordEncoder.encode(reqVO.getPassword())).build());
     }
 
     @Override
     public void resetUserPassword(AppMemberUserResetPasswordReqVO reqVO) {
         // 检验用户是否存在
-//        MemberUserDO user = validateUserExists(reqVO.getMobile());
-//
-//        // 使用验证码
-//        smsCodeApi.useSmsCode(AuthConvert.INSTANCE.convert(reqVO, SmsSceneEnum.MEMBER_RESET_PASSWORD,
-//                ServletUtils.getClientIP())).getCheckedData();
-//
-//        // 更新密码
-//        memberUserMapper.updateById(MemberUserDO.builder().id(user.getId())
-//                .password(passwordEncoder.encode(reqVO.getPassword())).build());
+        MemberUserDO user = validateUserExists(reqVO.getMobile());
+
+        // 使用验证码
+        smsCodeApi.useSmsCode(AuthConvert.INSTANCE.convert(reqVO, SmsSceneEnum.MEMBER_RESET_PASSWORD,
+                getClientIP())).getCheckedData();
+
+        // 更新密码
+        memberUserMapper.updateById(MemberUserDO.builder().id(user.getId())
+                .password(passwordEncoder.encode(reqVO.getPassword())).build());
     }
 
     private MemberUserDO validateUserExists(String mobile) {
         MemberUserDO user = memberUserMapper.selectByMobile(mobile);
         if (user == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_MOBILE_NOT_EXISTS);
+            throw exception(USER_MOBILE_NOT_EXISTS);
         }
         return user;
     }
@@ -249,7 +254,7 @@ public class MemberUserServiceImpl implements MemberUserService {
         }
         MemberUserDO user = memberUserMapper.selectById(id);
         if (user == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_NOT_EXISTS);
+            throw exception(USER_NOT_EXISTS);
         }
         return user;
     }
@@ -265,10 +270,10 @@ public class MemberUserServiceImpl implements MemberUserService {
         }
         // 如果 id 为空，说明不用比较是否为相同 id 的用户
         if (id == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_MOBILE_USED, mobile);
+            throw exception(USER_MOBILE_USED, mobile);
         }
         if (!user.getId().equals(id)) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.USER_MOBILE_USED, mobile);
+            throw exception(USER_MOBILE_USED, mobile);
         }
     }
 

@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * OAuth2 授权类型（模式）的枚举
  *
- * @author dcx
+ * @author skuu
  */
 @AllArgsConstructor
 @Getter
@@ -22,7 +22,7 @@ public enum OAuth2GrantTypeEnum {
 
     private final String grantType;
 
-    public static OAuth2GrantTypeEnum getByGranType(String grantType) {
+    public static OAuth2GrantTypeEnum getByGrantType(String grantType) {
         return ArrayUtil.firstMatch(o -> o.getGrantType().equals(grantType), values());
     }
 

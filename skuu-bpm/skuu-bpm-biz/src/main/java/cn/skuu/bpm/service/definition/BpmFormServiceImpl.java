@@ -1,18 +1,16 @@
 package cn.skuu.bpm.service.definition;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
-import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.common.util.json.JsonUtils;
-import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormCreateReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormPageReqVO;
-import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormUpdateReqVO;
-import cn.skuu.bpm.convert.definition.BpmFormConvert;
+import cn.skuu.bpm.controller.admin.definition.vo.form.BpmFormSaveReqVO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmFormDO;
 import cn.skuu.bpm.dal.mysql.definition.BpmFormMapper;
 import cn.skuu.bpm.enums.ErrorCodeConstants;
-import cn.skuu.bpm.enums.definition.BpmModelFormTypeEnum;
 import cn.skuu.bpm.service.definition.dto.BpmFormFieldRespDTO;
-import cn.skuu.bpm.service.definition.dto.BpmModelMetaInfoRespDTO;
+import cn.skuu.framework.common.pojo.PageResult;
+import cn.skuu.framework.common.util.json.JsonUtils;
+import cn.skuu.framework.common.util.object.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -34,22 +32,22 @@ public class BpmFormServiceImpl implements BpmFormService {
     private BpmFormMapper formMapper;
 
     @Override
-    public Long createForm(BpmFormCreateReqVO createReqVO) {
-        this.checkFields(createReqVO.getFields());
+    public Long createForm(BpmFormSaveReqVO createReqVO) {
+        this.validateFields(createReqVO.getFields());
         // 插入
-        BpmFormDO form = BpmFormConvert.INSTANCE.convert(createReqVO);
+        BpmFormDO form = BeanUtils.toBean(createReqVO, BpmFormDO.class);
         formMapper.insert(form);
         // 返回
         return form.getId();
     }
 
     @Override
-    public void updateForm(BpmFormUpdateReqVO updateReqVO) {
-        this.checkFields(updateReqVO.getFields());
+    public void updateForm(BpmFormSaveReqVO updateReqVO) {
+        validateFields(updateReqVO.getFields());
         // 校验存在
-        this.validateFormExists(updateReqVO.getId());
+        validateFormExists(updateReqVO.getId());
         // 更新
-        BpmFormDO updateObj = BpmFormConvert.INSTANCE.convert(updateReqVO);
+        BpmFormDO updateObj = BeanUtils.toBean(updateReqVO, BpmFormDO.class);
         formMapper.updateById(updateObj);
     }
 
@@ -79,6 +77,9 @@ public class BpmFormServiceImpl implements BpmFormService {
 
     @Override
     public List<BpmFormDO> getFormList(Collection<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
         return formMapper.selectBatchIds(ids);
     }
 
@@ -87,30 +88,12 @@ public class BpmFormServiceImpl implements BpmFormService {
         return formMapper.selectPage(pageReqVO);
     }
 
-
-    @Override
-    public BpmFormDO checkFormConfig(String configStr) {
-        BpmModelMetaInfoRespDTO metaInfo = JsonUtils.parseObject(configStr, BpmModelMetaInfoRespDTO.class);
-        if (metaInfo == null || metaInfo.getFormType() == null) {
-            throw exception(ErrorCodeConstants.MODEL_DEPLOY_FAIL_FORM_NOT_CONFIG);
-        }
-        // 校验表单存在
-        if (Objects.equals(metaInfo.getFormType(), BpmModelFormTypeEnum.NORMAL.getType())) {
-            BpmFormDO form = getForm(metaInfo.getFormId());
-            if (form == null) {
-                throw exception(ErrorCodeConstants.FORM_NOT_EXISTS);
-            }
-            return form;
-        }
-        return null;
-    }
-
     /**
      * 校验 Field，避免 field 重复
      *
      * @param fields field 数组
      */
-    private void checkFields(List<String> fields) {
+    private void validateFields(List<String> fields) {
         if (true) { // TODO 芋艿：兼容 Vue3 工作流：因为采用了新的表单设计器，所以暂时不校验
             return;
         }

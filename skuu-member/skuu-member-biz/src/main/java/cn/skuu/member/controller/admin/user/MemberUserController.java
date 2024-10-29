@@ -24,7 +24,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static cn.skuu.framework.common.pojo.CommonResult.success;
 import static cn.skuu.framework.common.util.collection.CollectionUtils.convertSet;
@@ -72,14 +76,6 @@ public class MemberUserController {
         return success(true);
     }
 
-    @PutMapping("/update-balance")
-    @Operation(summary = "更新会员用户余额")
-    @PreAuthorize("@ss.hasPermission('member:user:update-balance')")
-    public CommonResult<Boolean> updateUserBalance(@Valid @RequestBody Long id) {
-        // todo @jason：增加一个【修改余额】
-        return success(true);
-    }
-
     @GetMapping("/get")
     @Operation(summary = "获得会员用户")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
@@ -99,10 +95,12 @@ public class MemberUserController {
         }
 
         // 处理用户标签返显
-//        Set<Long> tagIds = pageResult.getList().stream()
-//                .map(MemberUserDO::getTagIds)
-//                .collect(Collectors.toSet());
-        List<MemberTagDO> tags = memberTagService.getTagList();
+        Set<Long> tagIds = pageResult.getList().stream()
+                .map(MemberUserDO::getTagIds)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        List<MemberTagDO> tags = memberTagService.getTagList(tagIds);
         // 处理用户级别返显
         List<MemberLevelDO> levels = memberLevelService.getLevelList(
                 convertSet(pageResult.getList(), MemberUserDO::getLevelId));

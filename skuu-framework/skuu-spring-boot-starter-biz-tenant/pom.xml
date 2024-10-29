@@ -73,6 +73,12 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>cn.skuu.cloud</groupId>
+            <artifactId>skuu-system-api</artifactId> <!-- 需要使用它，进行 Token 的校验 -->
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Test 测试相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -3,7 +3,7 @@ package cn.skuu.gateway.filter.security;
 import cn.hutool.core.util.StrUtil;
 import cn.skuu.framework.common.core.KeyValue;
 import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.framework.common.util.cache.CacheUtils;
+import cn.skuu.framework.common.util.date.LocalDateTimeUtils;
 import cn.skuu.framework.common.util.json.JsonUtils;
 import cn.skuu.gateway.util.SecurityFrameworkUtils;
 import cn.skuu.gateway.util.WebFrameworkUtils;
@@ -26,12 +26,14 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
 
+import static cn.skuu.framework.common.util.cache.CacheUtils.buildAsyncReloadingCache;
+
 /**
  * Token 过滤器，验证 token 的有效性
  * 1. 验证通过时，将 userId、userType、tenantId 通过 Header 转发给服务
  * 2. 验证不通过，还是会转发给服务。因为，接口是否需要登录的校验，还是交给服务自身处理
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Component
 public class TokenAuthenticationFilter implements GlobalFilter, Ordered {
@@ -59,7 +61,7 @@ public class TokenAuthenticationFilter implements GlobalFilter, Ordered {
      * key1：多租户的编号
      * key2：访问令牌
      */
-    private final LoadingCache<KeyValue<Long, String>, LoginUser> loginUserCache = CacheUtils.buildAsyncReloadingCache(Duration.ofMinutes(1),
+    private final LoadingCache<KeyValue<Long, String>, LoginUser> loginUserCache = buildAsyncReloadingCache(Duration.ofMinutes(1),
             new CacheLoader<KeyValue<Long, String>, LoginUser>() {
 
                 @Override
@@ -93,7 +95,8 @@ public class TokenAuthenticationFilter implements GlobalFilter, Ordered {
         // 重要说明：defaultIfEmpty 作用，保证 Mono.empty() 情况，可以继续执行 `flatMap 的 chain.filter(exchange)` 逻辑，避免返回给前端空的 Response！！
         return getLoginUser(exchange, token).defaultIfEmpty(LOGIN_USER_EMPTY).flatMap(user -> {
             // 1. 无用户，直接 filter 继续请求
-            if (user == LOGIN_USER_EMPTY) {
+            if (user == LOGIN_USER_EMPTY || // 下面 expiresTime 的判断，为了解决 token 实际已经过期的情况
+                    user.getExpiresTime() == null || LocalDateTimeUtils.beforeNow(user.getExpiresTime())) {
                 return chain.filter(exchange);
             }
 
@@ -151,7 +154,9 @@ public class TokenAuthenticationFilter implements GlobalFilter, Ordered {
         // 创建登录用户
         OAuth2AccessTokenCheckRespDTO tokenInfo = result.getData();
         return new LoginUser().setId(tokenInfo.getUserId()).setUserType(tokenInfo.getUserType())
-                .setTenantId(tokenInfo.getTenantId()).setScopes(tokenInfo.getScopes());
+                .setInfo(tokenInfo.getUserInfo()) // 额外的用户信息
+                .setTenantId(tokenInfo.getTenantId()).setScopes(tokenInfo.getScopes())
+                .setExpiresTime(tokenInfo.getExpiresTime());
     }
 
     @Override

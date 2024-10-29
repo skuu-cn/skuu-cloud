@@ -5,12 +5,11 @@ import cn.skuu.bpm.api.task.BpmProcessInstanceApi;
 import cn.skuu.bpm.api.task.dto.BpmProcessInstanceCreateReqDTO;
 import cn.skuu.bpm.controller.admin.oa.vo.BpmOALeaveCreateReqVO;
 import cn.skuu.bpm.controller.admin.oa.vo.BpmOALeavePageReqVO;
-import cn.skuu.bpm.convert.oa.BpmOALeaveConvert;
 import cn.skuu.bpm.dal.dataobject.oa.BpmOALeaveDO;
 import cn.skuu.bpm.dal.mysql.oa.BpmOALeaveMapper;
-import cn.skuu.bpm.enums.ErrorCodeConstants;
-import cn.skuu.bpm.enums.task.BpmProcessInstanceResultEnum;
+import cn.skuu.bpm.enums.task.BpmTaskStatusEnum;
 import cn.skuu.framework.common.pojo.PageResult;
+import cn.skuu.framework.common.util.object.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -19,13 +18,14 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cn.skuu.bpm.enums.ErrorCodeConstants.OA_LEAVE_NOT_EXISTS;
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
 
 /**
  * OA 请假申请 Service 实现类
  *
  * @author jason
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated
@@ -47,8 +47,8 @@ public class BpmOALeaveServiceImpl implements BpmOALeaveService {
     public Long createLeave(Long userId, BpmOALeaveCreateReqVO createReqVO) {
         // 插入 OA 请假单
         long day = LocalDateTimeUtil.between(createReqVO.getStartTime(), createReqVO.getEndTime()).toDays();
-        BpmOALeaveDO leave = BpmOALeaveConvert.INSTANCE.convert(createReqVO).setUserId(userId).setDay(day)
-                .setResult(BpmProcessInstanceResultEnum.PROCESS.getResult());
+        BpmOALeaveDO leave = BeanUtils.toBean(createReqVO, BpmOALeaveDO.class)
+                .setUserId(userId).setDay(day).setStatus(BpmTaskStatusEnum.RUNNING.getStatus());
         leaveMapper.insert(leave);
 
         // 发起 BPM 流程
@@ -56,7 +56,8 @@ public class BpmOALeaveServiceImpl implements BpmOALeaveService {
         processInstanceVariables.put("day", day);
         String processInstanceId = processInstanceApi.createProcessInstance(userId,
                 new BpmProcessInstanceCreateReqDTO().setProcessDefinitionKey(PROCESS_KEY)
-                        .setVariables(processInstanceVariables).setBusinessKey(String.valueOf(leave.getId())));
+                        .setVariables(processInstanceVariables).setBusinessKey(String.valueOf(leave.getId()))
+                        .setStartUserSelectAssignees(createReqVO.getStartUserSelectAssignees())).getCheckedData();
 
         // 将工作流的编号，更新到 OA 请假单中
         leaveMapper.updateById(new BpmOALeaveDO().setId(leave.getId()).setProcessInstanceId(processInstanceId));
@@ -64,14 +65,14 @@ public class BpmOALeaveServiceImpl implements BpmOALeaveService {
     }
 
     @Override
-    public void updateLeaveResult(Long id, Integer result) {
+    public void updateLeaveStatus(Long id, Integer status) {
         validateLeaveExists(id);
-        leaveMapper.updateById(new BpmOALeaveDO().setId(id).setResult(result));
+        leaveMapper.updateById(new BpmOALeaveDO().setId(id).setStatus(status));
     }
 
     private void validateLeaveExists(Long id) {
         if (leaveMapper.selectById(id) == null) {
-            throw exception(ErrorCodeConstants.OA_LEAVE_NOT_EXISTS);
+            throw exception(OA_LEAVE_NOT_EXISTS);
         }
     }
 

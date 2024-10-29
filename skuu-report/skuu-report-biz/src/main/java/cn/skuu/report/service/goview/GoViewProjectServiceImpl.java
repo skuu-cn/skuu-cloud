@@ -19,7 +19,7 @@ import static cn.skuu.report.enums.ErrorCodeConstants.GO_VIEW_PROJECT_NOT_EXISTS
 /**
  * GoView 项目 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated

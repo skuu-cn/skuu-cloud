@@ -3,8 +3,8 @@ package cn.skuu.system.api.sms;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.system.api.sms.dto.send.SmsSendSingleToUserReqDTO;
 import cn.skuu.system.enums.ApiConstants;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 
 @FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
-@Tag(name =  "RPC 服务 - 短信发送")
+@Tag(name = "RPC 服务 - 短信发送")
 public interface SmsSendApi {
 
     String PREFIX = ApiConstants.PREFIX + "/sms/send";

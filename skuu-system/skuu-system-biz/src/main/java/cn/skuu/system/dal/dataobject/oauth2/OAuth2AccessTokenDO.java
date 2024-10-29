@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OAuth2 访问令牌 DO
@@ -19,7 +20,7 @@ import java.util.List;
  * 如下字段，暂时未使用，暂时不支持：
  * user_name、authentication（用户信息）
  *
- * @author dcx
+ * @author skuu
  */
 @TableName(value = "system_oauth2_access_token", autoResultMap = true)
 @KeySequence("system_oauth2_access_token_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
@@ -50,6 +51,11 @@ public class OAuth2AccessTokenDO extends TenantBaseDO {
      * 枚举 {@link UserTypeEnum}
      */
     private Integer userType;
+    /**
+     * 用户信息
+     */
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Map<String, String> userInfo;
     /**
      * 客户端编号
      *

@@ -11,10 +11,10 @@ import cn.skuu.framework.file.core.client.local.LocalFileClient;
 import cn.skuu.framework.file.core.client.local.LocalFileClientConfig;
 import cn.skuu.framework.file.core.enums.FileStorageEnum;
 import cn.skuu.framework.test.core.ut.BaseDbUnitTest;
-import cn.skuu.infra.dal.dataobject.file.FileConfigDO;
 import cn.skuu.infra.controller.admin.file.vo.config.FileConfigCreateReqVO;
 import cn.skuu.infra.controller.admin.file.vo.config.FileConfigPageReqVO;
 import cn.skuu.infra.controller.admin.file.vo.config.FileConfigUpdateReqVO;
+import cn.skuu.infra.dal.dataobject.file.FileConfigDO;
 import cn.skuu.infra.dal.mysql.file.FileConfigMapper;
 import cn.skuu.infra.mq.producer.file.FileConfigProducer;
 import lombok.Data;
@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import static cn.hutool.core.util.RandomUtil.randomEle;
 import static cn.skuu.framework.common.util.date.LocalDateTimeUtils.buildTime;
 import static cn.skuu.framework.common.util.object.ObjectUtils.cloneIgnoreId;
 import static cn.skuu.framework.test.core.util.AssertUtils.assertPojoEquals;
@@ -214,7 +213,7 @@ public class FileConfigServiceImplTest extends BaseDbUnitTest {
        fileConfigMapper.insert(cloneIgnoreId(dbFileConfig, o -> o.setCreateTime(LocalDateTimeUtil.parse("2020-11-23", DatePattern.NORM_DATE_PATTERN))));
        // 准备参数
        FileConfigPageReqVO reqVO = new FileConfigPageReqVO();
-       reqVO.setName("芋道");
+       reqVO.setName("skuu");
        reqVO.setStorage(FileStorageEnum.LOCAL.getStorage());
        reqVO.setCreateTime((new LocalDateTime[]{buildTime(2020, 1, 1),
                buildTime(2020, 1, 24)}));

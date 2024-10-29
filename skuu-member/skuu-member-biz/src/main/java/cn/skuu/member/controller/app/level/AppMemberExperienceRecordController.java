@@ -3,7 +3,6 @@ package cn.skuu.member.controller.app.level;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.common.pojo.PageParam;
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.security.core.annotations.PreAuthenticated;
 import cn.skuu.member.controller.app.level.vo.experience.AppMemberExperienceRecordRespVO;
 import cn.skuu.member.convert.level.MemberExperienceRecordConvert;
 import cn.skuu.member.dal.dataobject.level.MemberExperienceRecordDO;
@@ -32,7 +31,6 @@ public class AppMemberExperienceRecordController {
 
     @GetMapping("/page")
     @Operation(summary = "获得会员经验记录分页")
-    @PreAuthenticated
     public CommonResult<PageResult<AppMemberExperienceRecordRespVO>> getExperienceRecordPage(
             @Valid PageParam pageParam) {
         PageResult<MemberExperienceRecordDO> pageResult = experienceLogService.getExperienceRecordPage(

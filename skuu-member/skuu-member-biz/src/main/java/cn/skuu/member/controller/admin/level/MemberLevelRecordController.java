@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 会员等级记录")
 @RestController
@@ -36,7 +37,7 @@ public class MemberLevelRecordController {
     @PreAuthorize("@ss.hasPermission('member:level-record:query')")
     public CommonResult<MemberLevelRecordRespVO> getLevelRecord(@RequestParam("id") Long id) {
         MemberLevelRecordDO levelLog = levelLogService.getLevelRecord(id);
-        return CommonResult.success(MemberLevelRecordConvert.INSTANCE.convert(levelLog));
+        return success(MemberLevelRecordConvert.INSTANCE.convert(levelLog));
     }
 
     @GetMapping("/page")
@@ -45,7 +46,7 @@ public class MemberLevelRecordController {
     public CommonResult<PageResult<MemberLevelRecordRespVO>> getLevelRecordPage(
             @Valid MemberLevelRecordPageReqVO pageVO) {
         PageResult<MemberLevelRecordDO> pageResult = levelLogService.getLevelRecordPage(pageVO);
-        return CommonResult.success(MemberLevelRecordConvert.INSTANCE.convertPage(pageResult));
+        return success(MemberLevelRecordConvert.INSTANCE.convertPage(pageResult));
     }
 
 }

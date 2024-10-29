@@ -1,8 +1,8 @@
 package cn.skuu.system.dal.dataobject.sms;
 
-import cn.skuu.system.enums.sms.SmsTemplateTypeEnum;
 import cn.skuu.framework.common.enums.CommonStatusEnum;
 import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
+import cn.skuu.system.enums.sms.SmsTemplateTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

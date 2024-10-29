@@ -10,7 +10,7 @@ import javax.validation.Valid;
  *
  * 提供用户的登录、登出的能力
  *
- * @author dcx
+ * @author skuu
  */
 public interface AdminAuthService {
 
@@ -69,5 +69,13 @@ public interface AdminAuthService {
      * @return 登录结果
      */
     AuthLoginRespVO refreshToken(String refreshToken);
+
+    /**
+     * 用户注册
+     *
+     * @param createReqVO 注册用户
+     * @return 注册结果
+     */
+    AuthLoginRespVO register(AuthRegisterReqVO createReqVO);
 
 }

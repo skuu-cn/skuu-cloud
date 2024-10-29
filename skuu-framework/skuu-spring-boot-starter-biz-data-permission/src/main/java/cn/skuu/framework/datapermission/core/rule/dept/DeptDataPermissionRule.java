@@ -10,9 +10,9 @@ import cn.skuu.framework.datapermission.core.rule.DataPermissionRule;
 import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import cn.skuu.framework.mybatis.core.util.MyBatisUtils;
 import cn.skuu.framework.security.core.LoginUser;
-import cn.skuu.framework.security.core.dto.DeptDataPermissionRespDTO;
-import cn.skuu.framework.security.core.rpc.PermissionClient;
 import cn.skuu.framework.security.core.util.SecurityFrameworkUtils;
+import cn.skuu.system.api.permission.PermissionApi;
+import cn.skuu.system.api.permission.dto.DeptDataPermissionRespDTO;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +62,7 @@ public class DeptDataPermissionRule implements DataPermissionRule {
 
     static final Expression EXPRESSION_NULL = new NullValue();
 
-    private final PermissionClient permissionClient;
+    private final PermissionApi permissionApi;
 
     /**
      * 基于部门的表字段配置
@@ -106,7 +106,7 @@ public class DeptDataPermissionRule implements DataPermissionRule {
         DeptDataPermissionRespDTO deptDataPermission = loginUser.getContext(CONTEXT_KEY, DeptDataPermissionRespDTO.class);
         // 从上下文中拿不到，则调用逻辑进行获取
         if (deptDataPermission == null) {
-            deptDataPermission = permissionClient.getDeptDataPermission(loginUser.getId()).getCheckedData();
+            deptDataPermission = permissionApi.getDeptDataPermission(loginUser.getId()).getCheckedData();
             if (deptDataPermission == null) {
                 log.error("[getExpression][LoginUser({}) 获取数据权限为 null]", JsonUtils.toJsonString(loginUser));
                 throw new NullPointerException(String.format("LoginUser(%d) Table(%s/%s) 未返回数据权限",

@@ -3,7 +3,6 @@ package cn.skuu.member.controller.app.point;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.common.util.object.BeanUtils;
-import cn.skuu.framework.security.core.annotations.PreAuthenticated;
 import cn.skuu.member.controller.app.point.vo.AppMemberPointRecordPageReqVO;
 import cn.skuu.member.controller.app.point.vo.AppMemberPointRecordRespVO;
 import cn.skuu.member.dal.dataobject.point.MemberPointRecordDO;
@@ -32,7 +31,6 @@ public class AppMemberPointRecordController {
 
     @GetMapping("/page")
     @Operation(summary = "获得用户积分记录分页")
-    @PreAuthenticated
     public CommonResult<PageResult<AppMemberPointRecordRespVO>> getPointRecordPage(
             @Valid AppMemberPointRecordPageReqVO pageReqVO) {
         PageResult<MemberPointRecordDO> pageResult = pointRecordService.getPointRecordPage(getLoginUserId(), pageReqVO);

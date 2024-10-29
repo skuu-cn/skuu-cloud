@@ -4,9 +4,9 @@ import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.mybatis.core.mapper.BaseMapperX;
 import cn.skuu.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.skuu.framework.mybatis.core.query.QueryWrapperX;
-import cn.skuu.system.dal.dataobject.notify.NotifyMessageDO;
 import cn.skuu.system.controller.admin.notify.vo.message.NotifyMessageMyPageReqVO;
 import cn.skuu.system.controller.admin.notify.vo.message.NotifyMessagePageReqVO;
+import cn.skuu.system.dal.dataobject.notify.NotifyMessageDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;

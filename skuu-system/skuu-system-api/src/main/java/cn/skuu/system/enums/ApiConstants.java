@@ -1,12 +1,11 @@
 package cn.skuu.system.enums;
 
-
 import cn.skuu.framework.common.enums.RpcConstants;
 
 /**
  * API 相关的枚举
  *
- * @author dcx
+ * @author skuu
  */
 public class ApiConstants {
 

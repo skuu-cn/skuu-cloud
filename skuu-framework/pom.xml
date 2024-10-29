@@ -31,6 +31,7 @@
         <module>skuu-spring-boot-starter-test</module>
         <module>skuu-spring-boot-starter-monitor</module>
         <module>skuu-spring-boot-starter-mybatis</module>
+        <module>skuu-spring-boot-starter-rpc</module>
         <module>skuu-spring-boot-starter-security</module>
         <module>skuu-spring-boot-starter-biz-data-permission</module>
         <module>skuu-spring-boot-starter-protection</module>

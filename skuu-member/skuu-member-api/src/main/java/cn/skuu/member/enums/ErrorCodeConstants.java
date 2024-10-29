@@ -1,6 +1,5 @@
 package cn.skuu.member.enums;
 
-
 import cn.skuu.framework.common.exception.ErrorCode;
 
 /**

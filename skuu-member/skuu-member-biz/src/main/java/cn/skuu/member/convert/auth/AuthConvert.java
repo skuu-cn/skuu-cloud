@@ -9,6 +9,7 @@ import cn.skuu.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import cn.skuu.system.api.sms.dto.code.SmsCodeValidateReqDTO;
 import cn.skuu.system.api.social.dto.SocialUserBindReqDTO;
 import cn.skuu.system.api.social.dto.SocialUserUnbindReqDTO;
+import cn.skuu.system.api.social.dto.SocialWxJsapiSignatureRespDTO;
 import cn.skuu.system.enums.sms.SmsSceneEnum;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -29,6 +30,6 @@ public interface AuthConvert {
 
     SmsCodeValidateReqDTO convert(AppAuthSmsValidateReqVO bean);
 
-//    SocialWxJsapiSignatureRespDTO convert(SocialWxJsapiSignatureRespDTO bean);
+    SocialWxJsapiSignatureRespDTO convert(SocialWxJsapiSignatureRespDTO bean);
 
 }

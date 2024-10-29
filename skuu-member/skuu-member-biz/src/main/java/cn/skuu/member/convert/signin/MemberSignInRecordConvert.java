@@ -3,7 +3,6 @@ package cn.skuu.member.convert.signin;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.common.util.collection.CollectionUtils;
 import cn.skuu.framework.common.util.collection.MapUtils;
 import cn.skuu.framework.common.util.date.DateUtils;
 import cn.skuu.member.controller.admin.signin.vo.record.MemberSignInRecordRespVO;
@@ -18,11 +17,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMap;
 
 /**
  * 签到记录 Convert
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Mapper
 public interface MemberSignInRecordConvert {
@@ -32,7 +32,7 @@ public interface MemberSignInRecordConvert {
     default PageResult<MemberSignInRecordRespVO> convertPage(PageResult<MemberSignInRecordDO> pageResult, List<MemberUserDO> users) {
         PageResult<MemberSignInRecordRespVO> voPageResult = convertPage(pageResult);
         // user 拼接
-        Map<Long, MemberUserDO> userMap = CollectionUtils.convertMap(users, MemberUserDO::getId);
+        Map<Long, MemberUserDO> userMap = convertMap(users, MemberUserDO::getId);
         voPageResult.getList().forEach(record -> MapUtils.findAndThen(userMap, record.getUserId(),
                 memberUserRespDTO -> record.setNickname(memberUserRespDTO.getNickname())));
         return voPageResult;

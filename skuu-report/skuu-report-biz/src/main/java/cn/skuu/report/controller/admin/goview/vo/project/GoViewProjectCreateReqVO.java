@@ -1,14 +1,15 @@
 package cn.skuu.report.controller.admin.goview.vo.project;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
-//@Schema(description = "管理后台 - GoView 项目创建 Request VO")
+@Schema(description = "管理后台 - GoView 项目创建 Request VO")
 @Data
 public class GoViewProjectCreateReqVO {
 
-//    @Schema(description = "项目名称", required = true, example = "王五")
+    @Schema(description = "项目名称", requiredMode = Schema.RequiredMode.REQUIRED, example = "王五")
     @NotEmpty(message = "项目名称不能为空")
     private String name;
 

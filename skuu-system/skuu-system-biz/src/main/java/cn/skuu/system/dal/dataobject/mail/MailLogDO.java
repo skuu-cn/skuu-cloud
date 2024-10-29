@@ -3,13 +3,14 @@ package cn.skuu.system.dal.dataobject.mail;
 import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
 import cn.skuu.system.enums.mail.MailSendStatusEnum;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -20,6 +21,7 @@ import java.util.Map;
  * @since 2022-03-21
  */
 @TableName(value = "system_mail_log", autoResultMap = true)
+@KeySequence("system_mail_log_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -108,7 +110,7 @@ public class MailLogDO extends BaseDO implements Serializable {
     /**
      * 发送时间
      */
-    private Date sendTime;
+    private LocalDateTime sendTime;
     /**
      * 发送返回的消息 ID
      */

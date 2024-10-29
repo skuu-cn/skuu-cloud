@@ -2,14 +2,16 @@ package cn.skuu.gateway.filter.security;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 登录用户信息
  *
- * copy from skuu-spring-boot-starter-security 的 LoginUser 类
+ * copy from yudao-spring-boot-starter-security 的 LoginUser 类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Data
 public class LoginUser {
@@ -23,6 +25,10 @@ public class LoginUser {
      */
     private Integer userType;
     /**
+     * 额外的用户信息
+     */
+    private Map<String, String> info;
+    /**
      * 租户编号
      */
     private Long tenantId;
@@ -30,5 +36,9 @@ public class LoginUser {
      * 授权范围
      */
     private List<String> scopes;
+    /**
+     * 过期时间
+     */
+    private LocalDateTime expiresTime;
 
 }

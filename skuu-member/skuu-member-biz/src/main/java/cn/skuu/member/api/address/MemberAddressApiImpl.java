@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 /**
  * 用户收件地址 API 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @RestController // 提供 RESTful API 接口，给 Feign 调用
 @Validated
@@ -24,12 +25,12 @@ public class MemberAddressApiImpl implements MemberAddressApi {
 
     @Override
     public CommonResult<MemberAddressRespDTO> getAddress(Long id, Long userId) {
-        return CommonResult.success(AddressConvert.INSTANCE.convert02(addressService.getAddress(userId, id)));
+        return success(AddressConvert.INSTANCE.convert02(addressService.getAddress(userId, id)));
     }
 
     @Override
     public CommonResult<MemberAddressRespDTO> getDefaultAddress(Long userId) {
-        return CommonResult.success(AddressConvert.INSTANCE.convert02(addressService.getDefaultUserAddress(userId)));
+        return success(AddressConvert.INSTANCE.convert02(addressService.getDefaultUserAddress(userId)));
     }
 
 }

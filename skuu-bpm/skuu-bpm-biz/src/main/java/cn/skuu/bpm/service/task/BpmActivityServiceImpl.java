@@ -1,7 +1,5 @@
 package cn.skuu.bpm.service.task;
 
-import cn.skuu.bpm.controller.admin.task.vo.activity.BpmActivityRespVO;
-import cn.skuu.bpm.convert.task.BpmActivityConvert;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.history.HistoricActivityInstance;
@@ -15,7 +13,7 @@ import java.util.List;
 /**
  * BPM 活动实例 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Slf4j
@@ -26,10 +24,9 @@ public class BpmActivityServiceImpl implements BpmActivityService {
     private HistoryService historyService;
 
     @Override
-    public List<BpmActivityRespVO> getActivityListByProcessInstanceId(String processInstanceId) {
-        List<HistoricActivityInstance> activityList = historyService.createHistoricActivityInstanceQuery()
-                .processInstanceId(processInstanceId).list();
-        return BpmActivityConvert.INSTANCE.convertList(activityList);
+    public List<HistoricActivityInstance> getActivityListByProcessInstanceId(String processInstanceId) {
+        return historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId)
+                .orderByHistoricActivityInstanceStartTime().asc().list();
     }
 
     @Override

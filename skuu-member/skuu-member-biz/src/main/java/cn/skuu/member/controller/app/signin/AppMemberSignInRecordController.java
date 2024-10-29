@@ -3,7 +3,6 @@ package cn.skuu.member.controller.app.signin;
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.framework.common.pojo.PageParam;
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.framework.security.core.annotations.PreAuthenticated;
 import cn.skuu.member.controller.app.signin.vo.record.AppMemberSignInRecordRespVO;
 import cn.skuu.member.controller.app.signin.vo.record.AppMemberSignInRecordSummaryRespVO;
 import cn.skuu.member.convert.signin.MemberSignInRecordConvert;
@@ -33,14 +32,12 @@ public class AppMemberSignInRecordController {
 
     @GetMapping("/get-summary")
     @Operation(summary = "获得个人签到统计")
-    @PreAuthenticated
     public CommonResult<AppMemberSignInRecordSummaryRespVO> getSignInRecordSummary() {
         return success(signInRecordService.getSignInRecordSummary(getLoginUserId()));
     }
 
     @PostMapping("/create")
     @Operation(summary = "签到")
-    @PreAuthenticated
     public CommonResult<AppMemberSignInRecordRespVO> createSignInRecord() {
         MemberSignInRecordDO recordDO = signInRecordService.createSignRecord(getLoginUserId());
         return success(MemberSignInRecordConvert.INSTANCE.coverRecordToAppRecordVo(recordDO));
@@ -48,7 +45,6 @@ public class AppMemberSignInRecordController {
 
     @GetMapping("/page")
     @Operation(summary = "获得签到记录分页")
-    @PreAuthenticated
     public CommonResult<PageResult<AppMemberSignInRecordRespVO>> getSignRecordPage(PageParam pageParam) {
         PageResult<MemberSignInRecordDO> pageResult = signInRecordService.getSignRecordPage(getLoginUserId(), pageParam);
         return success(MemberSignInRecordConvert.INSTANCE.convertPage02(pageResult));

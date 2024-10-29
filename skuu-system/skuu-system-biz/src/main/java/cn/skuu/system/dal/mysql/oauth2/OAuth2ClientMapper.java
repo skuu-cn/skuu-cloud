@@ -3,15 +3,15 @@ package cn.skuu.system.dal.mysql.oauth2;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.mybatis.core.mapper.BaseMapperX;
 import cn.skuu.framework.mybatis.core.query.LambdaQueryWrapperX;
-import cn.skuu.system.dal.dataobject.oauth2.OAuth2ClientDO;
 import cn.skuu.system.controller.admin.oauth2.vo.client.OAuth2ClientPageReqVO;
+import cn.skuu.system.dal.dataobject.oauth2.OAuth2ClientDO;
 import org.apache.ibatis.annotations.Mapper;
 
 
 /**
  * OAuth2 客户端 Mapper
  *
- * @author dcx
+ * @author skuu
  */
 @Mapper
 public interface OAuth2ClientMapper extends BaseMapperX<OAuth2ClientDO> {

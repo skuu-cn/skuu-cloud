@@ -1,6 +1,6 @@
 /**
  * 属于 bpm 模块的 framework 封装
  *
- * @author skuu
+ * @author 芋道源码
  */
 package cn.skuu.bpm.framework;

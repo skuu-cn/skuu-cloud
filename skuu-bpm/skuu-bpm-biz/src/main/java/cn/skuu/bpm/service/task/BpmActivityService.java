@@ -1,6 +1,5 @@
 package cn.skuu.bpm.service.task;
 
-import cn.skuu.bpm.controller.admin.task.vo.activity.BpmActivityRespVO;
 import org.flowable.engine.history.HistoricActivityInstance;
 
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.List;
 /**
  * BPM 活动实例 Service 接口
  *
- * @author skuu
+ * @author 芋道源码
  */
 public interface BpmActivityService {
 
@@ -18,7 +17,7 @@ public interface BpmActivityService {
      * @param processInstanceId 流程实例的编号
      * @return 活动实例列表
      */
-    List<BpmActivityRespVO> getActivityListByProcessInstanceId(String processInstanceId);
+    List<HistoricActivityInstance> getActivityListByProcessInstanceId(String processInstanceId);
 
     /**
      * 获得执行编号对应的活动实例

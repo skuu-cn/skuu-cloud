@@ -7,8 +7,8 @@ import cn.skuu.framework.common.enums.UserTypeEnum;
 import cn.skuu.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
 import cn.skuu.system.dal.dataobject.oauth2.OAuth2CodeDO;
 import cn.skuu.system.dal.dataobject.user.AdminUserDO;
-import cn.skuu.system.service.auth.AdminAuthService;
 import cn.skuu.system.enums.ErrorCodeConstants;
+import cn.skuu.system.service.auth.AdminAuthService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,7 +19,7 @@ import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.excep
 /**
  * OAuth2 授予 Service 实现类
  *
- * @author dcx
+ * @author skuu
  */
 @Service
 public class OAuth2GrantServiceImpl implements OAuth2GrantService {

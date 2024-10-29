@@ -3,11 +3,9 @@ package cn.skuu.system.service.dept;
 import cn.hutool.core.collection.CollUtil;
 import cn.skuu.framework.common.enums.CommonStatusEnum;
 import cn.skuu.framework.common.pojo.PageResult;
-import cn.skuu.system.controller.admin.dept.vo.post.PostCreateReqVO;
-import cn.skuu.system.controller.admin.dept.vo.post.PostExportReqVO;
+import cn.skuu.framework.common.util.object.BeanUtils;
 import cn.skuu.system.controller.admin.dept.vo.post.PostPageReqVO;
-import cn.skuu.system.controller.admin.dept.vo.post.PostUpdateReqVO;
-import cn.skuu.system.convert.dept.PostConvert;
+import cn.skuu.system.controller.admin.dept.vo.post.PostSaveReqVO;
 import cn.skuu.system.dal.dataobject.dept.PostDO;
 import cn.skuu.system.dal.mysql.dept.PostMapper;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ import static cn.skuu.system.enums.ErrorCodeConstants.*;
 /**
  * 岗位 Service 实现类
  *
- * @author dcx
+ * @author skuu
  */
 @Service
 @Validated
@@ -35,23 +34,23 @@ public class PostServiceImpl implements PostService {
     private PostMapper postMapper;
 
     @Override
-    public Long createPost(PostCreateReqVO reqVO) {
+    public Long createPost(PostSaveReqVO createReqVO) {
         // 校验正确性
-        validatePostForCreateOrUpdate(null, reqVO.getName(), reqVO.getCode());
+        validatePostForCreateOrUpdate(null, createReqVO.getName(), createReqVO.getCode());
 
         // 插入岗位
-        PostDO post = PostConvert.INSTANCE.convert(reqVO);
+        PostDO post = BeanUtils.toBean(createReqVO, PostDO.class);
         postMapper.insert(post);
         return post.getId();
     }
 
     @Override
-    public void updatePost(PostUpdateReqVO reqVO) {
+    public void updatePost(PostSaveReqVO updateReqVO) {
         // 校验正确性
-        validatePostForCreateOrUpdate(reqVO.getId(), reqVO.getName(), reqVO.getCode());
+        validatePostForCreateOrUpdate(updateReqVO.getId(), updateReqVO.getName(), updateReqVO.getCode());
 
         // 更新岗位
-        PostDO updateObj = PostConvert.INSTANCE.convert(reqVO);
+        PostDO updateObj = BeanUtils.toBean(updateReqVO, PostDO.class);
         postMapper.updateById(updateObj);
     }
 
@@ -110,6 +109,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostDO> getPostList(Collection<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return Collections.emptyList();
+        }
+        return postMapper.selectBatchIds(ids);
+    }
+
+    @Override
     public List<PostDO> getPostList(Collection<Long> ids, Collection<Integer> statuses) {
         return postMapper.selectList(ids, statuses);
     }
@@ -117,11 +124,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public PageResult<PostDO> getPostPage(PostPageReqVO reqVO) {
         return postMapper.selectPage(reqVO);
-    }
-
-    @Override
-    public List<PostDO> getPostList(PostExportReqVO reqVO) {
-        return postMapper.selectList(reqVO);
     }
 
     @Override

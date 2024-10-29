@@ -14,7 +14,6 @@ import cn.skuu.member.dal.dataobject.signin.MemberSignInConfigDO;
 import cn.skuu.member.dal.dataobject.signin.MemberSignInRecordDO;
 import cn.skuu.member.dal.dataobject.user.MemberUserDO;
 import cn.skuu.member.dal.mysql.signin.MemberSignInRecordMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.enums.MemberExperienceBizTypeEnum;
 import cn.skuu.member.enums.point.MemberPointBizTypeEnum;
 import cn.skuu.member.service.level.MemberLevelService;
@@ -31,11 +30,12 @@ import java.util.Set;
 
 import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.skuu.framework.common.util.collection.CollectionUtils.convertSet;
+import static cn.skuu.member.enums.ErrorCodeConstants.SIGN_IN_RECORD_TODAY_EXISTS;
 
 /**
  * 签到记录 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated
@@ -75,11 +75,12 @@ public class MemberSignInRecordServiceImpl implements MemberSignInRecordService 
         }
         summary.setTodaySignIn(DateUtils.isToday(lastRecord.getCreateTime()));
 
-        // 4.1 校验今天是否签到，没有签到则直接返回
-        if (!summary.getTodaySignIn()) {
+        // 4.1 检查今天是否未签到且记录不是昨天创建的，如果是则直接返回
+        if (!summary.getTodaySignIn() && !DateUtils.isYesterday(lastRecord.getCreateTime())) {
             return summary;
         }
-        // 4.2 连续签到天数
+
+        // 4.2 要么是今天签到了，要么是昨天的记录，设置连续签到天数
         summary.setContinuousDay(lastRecord.getDay());
         return summary;
     }
@@ -137,7 +138,7 @@ public class MemberSignInRecordServiceImpl implements MemberSignInRecordService 
             return;
         }
         if (DateUtils.isToday(signInRecordDO.getCreateTime())) {
-            throw exception(ErrorCodeConstants.SIGN_IN_RECORD_TODAY_EXISTS);
+            throw exception(SIGN_IN_RECORD_TODAY_EXISTS);
         }
     }
 

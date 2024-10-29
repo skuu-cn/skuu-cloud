@@ -23,7 +23,7 @@ import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
-import org.springframework.http.codec.HttpMessageReader;
+import org.springframework.http.codec.CodecConfigurer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -31,12 +31,12 @@ import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.HandlerStrategies;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,17 +47,18 @@ import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MS_FORMATTER;
 /**
  * 网关的访问日志过滤器
  *
- * 从功能上，它类似 skuu-spring-boot-starter-web 的 ApiAccessLogFilter 过滤器
+ * 从功能上，它类似 yudao-spring-boot-starter-web 的 ApiAccessLogFilter 过滤器
  *
  * TODO 芋艿：如果网关执行异常，不会记录访问日志，后续研究下 https://github.com/Silvmike/webflux-demo/blob/master/tests/src/test/java/ru/hardcoders/demo/webflux/web_handler/filters/logging
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Slf4j
 @Component
 public class AccessLogFilter implements GlobalFilter, Ordered {
 
-    private final List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
+    @Resource
+    private CodecConfigurer codecConfigurer;
 
     /**
      * 打印日志
@@ -137,7 +138,8 @@ public class AccessLogFilter implements GlobalFilter, Ordered {
      */
     private Mono<Void> filterWithRequestBody(ServerWebExchange exchange, GatewayFilterChain chain, AccessLog gatewayLog) {
         // 设置 Request Body 读取时，设置到网关日志
-        ServerRequest serverRequest = ServerRequest.create(exchange, messageReaders);
+        // 此处 codecConfigurer.getReaders() 的目的，是解决 spring.codec.max-in-memory-size 不生效
+        ServerRequest serverRequest = ServerRequest.create(exchange, codecConfigurer.getReaders());
         Mono<String> modifiedBody = serverRequest.bodyToMono(String.class).flatMap(body -> {
             gatewayLog.setRequestBody(body);
             return Mono.just(body);

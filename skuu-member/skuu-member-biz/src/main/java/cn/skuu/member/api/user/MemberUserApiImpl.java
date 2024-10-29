@@ -12,11 +12,14 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.framework.common.pojo.CommonResult.success;
+import static cn.skuu.member.enums.ErrorCodeConstants.USER_MOBILE_NOT_EXISTS;
 
 /**
  * 会员用户的 API 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @RestController // 提供 RESTful API 接口，给 Feign 调用
 @Validated
@@ -28,22 +31,31 @@ public class MemberUserApiImpl implements MemberUserApi {
     @Override
     public CommonResult<MemberUserRespDTO> getUser(Long id) {
         MemberUserDO user = userService.getUser(id);
-        return CommonResult.success(MemberUserConvert.INSTANCE.convert2(user));
+        return success(MemberUserConvert.INSTANCE.convert2(user));
     }
 
     @Override
     public CommonResult<List<MemberUserRespDTO>> getUserList(Collection<Long> ids) {
-        return CommonResult.success(MemberUserConvert.INSTANCE.convertList2(userService.getUserList(ids)));
+        return success(MemberUserConvert.INSTANCE.convertList2(userService.getUserList(ids)));
     }
 
     @Override
     public CommonResult<List<MemberUserRespDTO>> getUserListByNickname(String nickname) {
-        return CommonResult.success(MemberUserConvert.INSTANCE.convertList2(userService.getUserListByNickname(nickname)));
+        return success(MemberUserConvert.INSTANCE.convertList2(userService.getUserListByNickname(nickname)));
     }
 
     @Override
     public CommonResult<MemberUserRespDTO> getUserByMobile(String mobile) {
-        return CommonResult.success(MemberUserConvert.INSTANCE.convert2(userService.getUserByMobile(mobile)));
+        return success(MemberUserConvert.INSTANCE.convert2(userService.getUserByMobile(mobile)));
+    }
+
+    @Override
+    public CommonResult<Boolean> validateUser(Long id) {
+        MemberUserDO user = userService.getUser(id);
+        if (user == null) {
+            throw exception(USER_MOBILE_NOT_EXISTS);
+        }
+        return success(true);
     }
 
 }

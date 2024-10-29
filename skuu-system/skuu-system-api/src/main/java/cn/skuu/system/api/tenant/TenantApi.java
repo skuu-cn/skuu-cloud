@@ -2,9 +2,9 @@ package cn.skuu.system.api.tenant;
 
 import cn.skuu.framework.common.pojo.CommonResult;
 import cn.skuu.system.enums.ApiConstants;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @FeignClient(name = ApiConstants.NAME) // TODO 芋艿：fallbackFactory =
-@Tag(name =  "RPC 服务 - 多租户")
+@Tag(name = "RPC 服务 - 多租户")
 public interface TenantApi {
 
     String PREFIX = ApiConstants.PREFIX + "/tenant";

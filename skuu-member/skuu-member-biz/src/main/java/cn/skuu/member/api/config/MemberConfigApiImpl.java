@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 /**
  * 用户配置 API 实现类
@@ -24,7 +25,7 @@ public class MemberConfigApiImpl implements MemberConfigApi {
 
     @Override
     public CommonResult<MemberConfigRespDTO> getConfig() {
-        return CommonResult.success(MemberConfigConvert.INSTANCE.convert01(memberConfigService.getConfig()));
+        return success(MemberConfigConvert.INSTANCE.convert01(memberConfigService.getConfig()));
     }
 
 }

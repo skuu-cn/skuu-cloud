@@ -1,20 +1,18 @@
 package cn.skuu.bpm.service.definition;
 
-import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupCreateReqVO;
 import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupPageReqVO;
-import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupUpdateReqVO;
+import cn.skuu.bpm.controller.admin.definition.vo.group.BpmUserGroupSaveReqVO;
 import cn.skuu.bpm.dal.dataobject.definition.BpmUserGroupDO;
 import cn.skuu.framework.common.pojo.PageResult;
 
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 用户组 Service 接口
  *
- * @author skuu
+ * @author 芋道源码
  */
 public interface BpmUserGroupService {
 
@@ -24,14 +22,14 @@ public interface BpmUserGroupService {
      * @param createReqVO 创建信息
      * @return 编号
      */
-    Long createUserGroup(@Valid BpmUserGroupCreateReqVO createReqVO);
+    Long createUserGroup(@Valid BpmUserGroupSaveReqVO createReqVO);
 
     /**
      * 更新用户组
      *
      * @param updateReqVO 更新信息
      */
-    void updateUserGroup(@Valid BpmUserGroupUpdateReqVO updateReqVO);
+    void updateUserGroup(@Valid BpmUserGroupSaveReqVO updateReqVO);
 
     /**
      * 删除用户组
@@ -79,6 +77,6 @@ public interface BpmUserGroupService {
      *
      * @param ids 用户组编号数组
      */
-    void validUserGroups(Set<Long> ids);
+    void validUserGroups(Collection<Long> ids);
 
 }

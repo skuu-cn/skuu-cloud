@@ -2,7 +2,6 @@ package cn.skuu.system.controller.admin.user.vo.user;
 
 import cn.skuu.framework.common.pojo.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,10 +19,10 @@ import static cn.skuu.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY
 @EqualsAndHashCode(callSuper = true)
 public class UserPageReqVO extends PageParam {
 
-    @Schema(description = "用户账号，模糊匹配", example = "skuu")
+    @Schema(description = "用户账号，模糊匹配", example = "yudao")
     private String username;
 
-    @Schema(description = "手机号码， 模糊匹配", example = "skuu")
+    @Schema(description = "手机号码，模糊匹配", example = "yudao")
     private String mobile;
 
     @Schema(description = "展示状态，参见 CommonStatusEnum 枚举类", example = "1")

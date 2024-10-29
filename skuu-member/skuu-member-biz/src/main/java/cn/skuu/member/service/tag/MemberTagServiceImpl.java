@@ -3,7 +3,6 @@ package cn.skuu.member.service.tag;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.skuu.framework.common.exception.util.ServiceExceptionUtil;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.member.controller.admin.tag.vo.MemberTagCreateReqVO;
 import cn.skuu.member.controller.admin.tag.vo.MemberTagPageReqVO;
@@ -11,7 +10,6 @@ import cn.skuu.member.controller.admin.tag.vo.MemberTagUpdateReqVO;
 import cn.skuu.member.convert.tag.MemberTagConvert;
 import cn.skuu.member.dal.dataobject.tag.MemberTagDO;
 import cn.skuu.member.dal.mysql.tag.MemberTagMapper;
-import cn.skuu.member.enums.ErrorCodeConstants;
 import cn.skuu.member.service.user.MemberUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -20,11 +18,13 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 
+import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.exception;
+import static cn.skuu.member.enums.ErrorCodeConstants.*;
 
 /**
  * 会员标签 Service 实现类
  *
- * @author skuu
+ * @author 芋道源码
  */
 @Service
 @Validated
@@ -70,7 +70,7 @@ public class MemberTagServiceImpl implements MemberTagService {
 
     private void validateTagExists(Long id) {
         if (memberTagMapper.selectById(id) == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.TAG_NOT_EXISTS);
+            throw exception(TAG_NOT_EXISTS);
         }
     }
 
@@ -85,17 +85,17 @@ public class MemberTagServiceImpl implements MemberTagService {
 
         // 如果 id 为空，说明不用比较是否为相同 id 的标签
         if (id == null) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.TAG_NAME_EXISTS);
+            throw exception(TAG_NAME_EXISTS);
         }
         if (!tag.getId().equals(id)) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.TAG_NAME_EXISTS);
+            throw exception(TAG_NAME_EXISTS);
         }
     }
 
     void validateTagHasUser(Long id) {
         Long count = memberUserService.getUserCountByTagId(id);
         if (count > 0) {
-            throw ServiceExceptionUtil.exception(ErrorCodeConstants.TAG_HAS_USER);
+            throw exception(TAG_HAS_USER);
         }
     }
 

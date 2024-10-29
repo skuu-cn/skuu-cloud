@@ -2,10 +2,10 @@ package cn.skuu.system.dal.dataobject.tenant;
 
 import cn.skuu.framework.common.enums.CommonStatusEnum;
 import cn.skuu.framework.mybatis.core.dataobject.BaseDO;
-import cn.skuu.framework.mybatis.core.type.JsonLongSetTypeHandler;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.*;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * 租户套餐 DO
  *
- * @author dcx
+ * @author skuu
  */
 @TableName(value = "system_tenant_package", autoResultMap = true)
 @KeySequence("system_tenant_package_seq") // 用于 Oracle、PostgreSQL、Kingbase、DB2、H2 数据库的主键自增。如果是 MySQL 等数据库，可不写。
@@ -34,7 +34,7 @@ public class TenantPackageDO extends BaseDO {
      */
     private String name;
     /**
-     * 租户状态
+     * 租户套餐状态
      *
      * 枚举 {@link CommonStatusEnum}
      */
@@ -46,7 +46,7 @@ public class TenantPackageDO extends BaseDO {
     /**
      * 关联的菜单编号
      */
-    @TableField(typeHandler = JsonLongSetTypeHandler.class)
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private Set<Long> menuIds;
 
 }

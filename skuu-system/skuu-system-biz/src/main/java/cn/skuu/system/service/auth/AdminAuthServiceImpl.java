@@ -9,6 +9,7 @@ import cn.skuu.framework.common.util.validation.ValidationUtils;
 import cn.skuu.system.api.logger.dto.LoginLogCreateReqDTO;
 import cn.skuu.system.api.sms.SmsCodeApi;
 import cn.skuu.system.api.social.dto.SocialUserBindReqDTO;
+import cn.skuu.system.api.social.dto.SocialUserRespDTO;
 import cn.skuu.system.controller.admin.auth.vo.*;
 import cn.skuu.system.convert.auth.AuthConvert;
 import cn.skuu.system.dal.dataobject.oauth2.OAuth2AccessTokenDO;
@@ -22,10 +23,10 @@ import cn.skuu.system.service.member.MemberService;
 import cn.skuu.system.service.oauth2.OAuth2TokenService;
 import cn.skuu.system.service.social.SocialUserService;
 import cn.skuu.system.service.user.AdminUserService;
+import com.google.common.annotations.VisibleForTesting;
 import com.xingyuv.captcha.model.common.ResponseModel;
 import com.xingyuv.captcha.model.vo.CaptchaVO;
 import com.xingyuv.captcha.service.CaptchaService;
-import com.google.common.annotations.VisibleForTesting;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ import static cn.skuu.system.enums.ErrorCodeConstants.*;
 /**
  * Auth Service 实现类
  *
- * @author dcx
+ * @author skuu
  */
 @Service
 @Slf4j
@@ -67,7 +68,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
     /**
      * 验证码的开关，默认为 true
      */
-    @Value("${skuu.captcha.enable:true}")
+    @Value("${yudao.captcha.enable:true}")
     private Boolean captchaEnable;
 
     @Override
@@ -84,7 +85,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
             throw exception(AUTH_LOGIN_BAD_CREDENTIALS);
         }
         // 校验是否禁用
-        if (ObjectUtil.notEqual(user.getStatus(), CommonStatusEnum.ENABLE.getStatus())) {
+        if (CommonStatusEnum.isDisable(user.getStatus())) {
             createLoginLog(user.getId(), username, logTypeEnum, LoginResultEnum.USER_DISABLED);
             throw exception(AUTH_LOGIN_USER_DISABLED);
         }
@@ -121,7 +122,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
     @Override
     public AuthLoginRespVO smsLogin(AuthSmsLoginReqVO reqVO) {
         // 校验验证码
-        smsCodeApi.useSmsCode(AuthConvert.INSTANCE.convert(reqVO, SmsSceneEnum.ADMIN_MEMBER_LOGIN.getScene(), getClientIP()));
+        smsCodeApi.useSmsCode(AuthConvert.INSTANCE.convert(reqVO, SmsSceneEnum.ADMIN_MEMBER_LOGIN.getScene(), getClientIP())).checkError();
 
         // 获得用户信息
         AdminUserDO user = userService.getUserByMobile(reqVO.getMobile());
@@ -155,14 +156,14 @@ public class AdminAuthServiceImpl implements AdminAuthService {
     @Override
     public AuthLoginRespVO socialLogin(AuthSocialLoginReqVO reqVO) {
         // 使用 code 授权码，进行登录。然后，获得到绑定的用户编号
-        Long userId = socialUserService.getBindUserId(UserTypeEnum.ADMIN.getValue(), reqVO.getType(),
+        SocialUserRespDTO socialUser = socialUserService.getSocialUserByCode(UserTypeEnum.ADMIN.getValue(), reqVO.getType(),
                 reqVO.getCode(), reqVO.getState());
-        if (userId == null) {
+        if (socialUser == null || socialUser.getUserId() == null) {
             throw exception(AUTH_THIRD_LOGIN_NOT_BIND);
         }
 
         // 获得用户
-        AdminUserDO user = userService.getUser(userId);
+        AdminUserDO user = userService.getUser(socialUser.getUserId());
         if (user == null) {
             throw exception(USER_NOT_EXISTS);
         }
@@ -244,6 +245,35 @@ public class AdminAuthServiceImpl implements AdminAuthService {
 
     private UserTypeEnum getUserType() {
         return UserTypeEnum.ADMIN;
+    }
+
+    @Override
+    public AuthLoginRespVO register(AuthRegisterReqVO registerReqVO) {
+        // 1. 校验验证码
+        validateCaptcha(registerReqVO);
+
+        // 2. 校验用户名是否已存在
+        Long userId = userService.registerUser(registerReqVO);
+
+        // 3. 创建 Token 令牌，记录登录日志
+        return createTokenAfterLoginSuccess(userId, registerReqVO.getUsername(), LoginLogTypeEnum.LOGIN_USERNAME);
+    }
+
+    @VisibleForTesting
+    void validateCaptcha(AuthRegisterReqVO reqVO) {
+        // 如果验证码关闭，则不进行校验
+        if (!captchaEnable) {
+            return;
+        }
+        // 校验验证码
+        ValidationUtils.validate(validator, reqVO, AuthLoginReqVO.CodeEnableGroup.class);
+        CaptchaVO captchaVO = new CaptchaVO();
+        captchaVO.setCaptchaVerification(reqVO.getCaptchaVerification());
+        ResponseModel response = captchaService.verification(captchaVO);
+        // 验证不通过
+        if (!response.isSuccess()) {
+            throw exception(AUTH_REGISTER_CAPTCHA_CODE_ERROR, response.getRepMsg());
+        }
     }
 
 }

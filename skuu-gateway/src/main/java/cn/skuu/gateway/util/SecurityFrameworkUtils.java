@@ -3,17 +3,23 @@ package cn.skuu.gateway.util;
 import cn.hutool.core.map.MapUtil;
 import cn.skuu.framework.common.util.json.JsonUtils;
 import cn.skuu.gateway.filter.security.LoginUser;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * 安全服务工具类
  *
- * copy from skuu-spring-boot-starter-security 的 SecurityFrameworkUtils 类
+ * copy from yudao-spring-boot-starter-security 的 SecurityFrameworkUtils 类
  *
- * @author skuu
+ * @author 芋道源码
  */
+@Slf4j
 public class SecurityFrameworkUtils {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -99,8 +105,16 @@ public class SecurityFrameworkUtils {
      * @param builder 请求
      * @param user 用户
      */
+    @SneakyThrows
     public static void setLoginUserHeader(ServerHttpRequest.Builder builder, LoginUser user) {
-        builder.header(LOGIN_USER_HEADER, JsonUtils.toJsonString(user));
+        try {
+            String userStr = JsonUtils.toJsonString(user);
+            userStr = URLEncoder.encode(userStr, StandardCharsets.UTF_8.name()); // 编码，避免中文乱码
+            builder.header(LOGIN_USER_HEADER, userStr);
+        } catch (Exception ex) {
+            log.error("[setLoginUserHeader][序列化 user({}) 发生异常]", user, ex);
+            throw ex;
+        }
     }
 
 }

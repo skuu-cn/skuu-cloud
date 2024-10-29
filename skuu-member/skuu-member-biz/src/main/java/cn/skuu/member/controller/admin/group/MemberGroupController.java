@@ -17,6 +17,9 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
+
+
 @Tag(name = "管理后台 - 用户分组")
 @RestController
 @RequestMapping("/member/group")
@@ -30,7 +33,7 @@ public class MemberGroupController {
     @Operation(summary = "创建用户分组")
     @PreAuthorize("@ss.hasPermission('member:group:create')")
     public CommonResult<Long> createGroup(@Valid @RequestBody MemberGroupCreateReqVO createReqVO) {
-        return CommonResult.success(groupService.createGroup(createReqVO));
+        return success(groupService.createGroup(createReqVO));
     }
 
     @PutMapping("/update")
@@ -38,7 +41,7 @@ public class MemberGroupController {
     @PreAuthorize("@ss.hasPermission('member:group:update')")
     public CommonResult<Boolean> updateGroup(@Valid @RequestBody MemberGroupUpdateReqVO updateReqVO) {
         groupService.updateGroup(updateReqVO);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @DeleteMapping("/delete")
@@ -47,7 +50,7 @@ public class MemberGroupController {
     @PreAuthorize("@ss.hasPermission('member:group:delete')")
     public CommonResult<Boolean> deleteGroup(@RequestParam("id") Long id) {
         groupService.deleteGroup(id);
-        return CommonResult.success(true);
+        return success(true);
     }
 
     @GetMapping("/get")
@@ -56,7 +59,7 @@ public class MemberGroupController {
     @PreAuthorize("@ss.hasPermission('member:group:query')")
     public CommonResult<MemberGroupRespVO> getGroup(@RequestParam("id") Long id) {
         MemberGroupDO group = groupService.getGroup(id);
-        return CommonResult.success(MemberGroupConvert.INSTANCE.convert(group));
+        return success(MemberGroupConvert.INSTANCE.convert(group));
     }
 
     @GetMapping("/list-all-simple")
@@ -64,7 +67,7 @@ public class MemberGroupController {
     public CommonResult<List<MemberGroupSimpleRespVO>> getSimpleGroupList() {
         // 获用户列表，只要开启状态的
         List<MemberGroupDO> list = groupService.getEnableGroupList();
-        return CommonResult.success(MemberGroupConvert.INSTANCE.convertSimpleList(list));
+        return success(MemberGroupConvert.INSTANCE.convertSimpleList(list));
     }
 
     @GetMapping("/page")
@@ -72,7 +75,7 @@ public class MemberGroupController {
     @PreAuthorize("@ss.hasPermission('member:group:query')")
     public CommonResult<PageResult<MemberGroupRespVO>> getGroupPage(@Valid MemberGroupPageReqVO pageVO) {
         PageResult<MemberGroupDO> pageResult = groupService.getGroupPage(pageVO);
-        return CommonResult.success(MemberGroupConvert.INSTANCE.convertPage(pageResult));
+        return success(MemberGroupConvert.INSTANCE.convertPage(pageResult));
     }
 
 }

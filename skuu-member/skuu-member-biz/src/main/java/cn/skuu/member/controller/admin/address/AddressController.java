@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static cn.skuu.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 用户收件地址")
 @RestController
@@ -34,7 +35,7 @@ public class AddressController {
     @PreAuthorize("@ss.hasPermission('member:user:query')")
     public CommonResult<List<AddressRespVO>> getAddressList(@RequestParam("userId") Long userId) {
         List<MemberAddressDO> list = addressService.getAddressList(userId);
-        return CommonResult.success(AddressConvert.INSTANCE.convertList2(list));
+        return success(AddressConvert.INSTANCE.convertList2(list));
     }
 
 }

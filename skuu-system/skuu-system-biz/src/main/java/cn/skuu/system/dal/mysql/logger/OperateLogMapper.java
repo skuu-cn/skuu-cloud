@@ -1,48 +1,33 @@
 package cn.skuu.system.dal.mysql.logger;
 
-import cn.skuu.framework.common.exception.enums.GlobalErrorCodeConstants;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.mybatis.core.mapper.BaseMapperX;
 import cn.skuu.framework.mybatis.core.query.LambdaQueryWrapperX;
-import cn.skuu.system.dal.dataobject.logger.OperateLogDO;
-import cn.skuu.system.controller.admin.logger.vo.operatelog.OperateLogExportReqVO;
+import cn.skuu.system.api.logger.dto.OperateLogPageReqDTO;
 import cn.skuu.system.controller.admin.logger.vo.operatelog.OperateLogPageReqVO;
+import cn.skuu.system.dal.dataobject.logger.OperateLogDO;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.Collection;
-import java.util.List;
 
 @Mapper
 public interface OperateLogMapper extends BaseMapperX<OperateLogDO> {
 
-    default PageResult<OperateLogDO> selectPage(OperateLogPageReqVO reqVO, Collection<Long> userIds) {
-        LambdaQueryWrapperX<OperateLogDO> query = new LambdaQueryWrapperX<OperateLogDO>()
-                .likeIfPresent(OperateLogDO::getModule, reqVO.getModule())
-                .inIfPresent(OperateLogDO::getUserId, userIds)
-                .eqIfPresent(OperateLogDO::getType, reqVO.getType())
-                .betweenIfPresent(OperateLogDO::getStartTime, reqVO.getStartTime());
-        if (Boolean.TRUE.equals(reqVO.getSuccess())) {
-            query.eq(OperateLogDO::getResultCode, GlobalErrorCodeConstants.SUCCESS.getCode());
-        } else if (Boolean.FALSE.equals(reqVO.getSuccess())) {
-            query.gt(OperateLogDO::getResultCode, GlobalErrorCodeConstants.SUCCESS.getCode());
-        }
-        query.orderByDesc(OperateLogDO::getId); // 降序
-        return selectPage(reqVO, query);
+    default PageResult<OperateLogDO> selectPage(OperateLogPageReqVO pageReqDTO) {
+        return selectPage(pageReqDTO, new LambdaQueryWrapperX<OperateLogDO>()
+                .eqIfPresent(OperateLogDO::getUserId, pageReqDTO.getUserId())
+                .eqIfPresent(OperateLogDO::getBizId, pageReqDTO.getBizId())
+                .likeIfPresent(OperateLogDO::getType, pageReqDTO.getType())
+                .likeIfPresent(OperateLogDO::getSubType, pageReqDTO.getSubType())
+                .likeIfPresent(OperateLogDO::getAction, pageReqDTO.getAction())
+                .betweenIfPresent(OperateLogDO::getCreateTime, pageReqDTO.getCreateTime())
+                .orderByDesc(OperateLogDO::getId));
     }
 
-    default List<OperateLogDO> selectList(OperateLogExportReqVO reqVO, Collection<Long> userIds) {
-        LambdaQueryWrapperX<OperateLogDO> query = new LambdaQueryWrapperX<OperateLogDO>()
-                .likeIfPresent(OperateLogDO::getModule, reqVO.getModule())
-                .inIfPresent(OperateLogDO::getUserId, userIds)
-                .eqIfPresent(OperateLogDO::getType, reqVO.getType())
-                .betweenIfPresent(OperateLogDO::getStartTime, reqVO.getStartTime());
-        if (Boolean.TRUE.equals(reqVO.getSuccess())) {
-            query.eq(OperateLogDO::getResultCode, GlobalErrorCodeConstants.SUCCESS.getCode());
-        } else if (Boolean.FALSE.equals(reqVO.getSuccess())) {
-            query.gt(OperateLogDO::getResultCode, GlobalErrorCodeConstants.SUCCESS.getCode());
-        }
-        query.orderByDesc(OperateLogDO::getId); // 降序
-        return selectList(query);
+    default PageResult<OperateLogDO> selectPage(OperateLogPageReqDTO pageReqDTO) {
+        return selectPage(pageReqDTO, new LambdaQueryWrapperX<OperateLogDO>()
+                .eqIfPresent(OperateLogDO::getType, pageReqDTO.getType())
+                .eqIfPresent(OperateLogDO::getBizId, pageReqDTO.getBizId())
+                .eqIfPresent(OperateLogDO::getUserId, pageReqDTO.getUserId())
+                .orderByDesc(OperateLogDO::getId));
     }
 
 }

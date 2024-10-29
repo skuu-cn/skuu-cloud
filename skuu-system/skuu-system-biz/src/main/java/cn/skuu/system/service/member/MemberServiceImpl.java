@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 /**
  * Member Service 实现类
  *
- * @author dcx
+ * @author skuu
  */
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Value("${skuu.info.base-package}")
+    @Value("${yudao.info.base-package}")
     private String basePackage;
 
     private volatile Object memberUserApi;
@@ -46,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
 
     private Object getMemberUserApi() {
         if (memberUserApi == null) {
-            memberUserApi = SpringUtil.getBean(ClassUtil.loadClass(String.format("%s.member.api.user.MemberUserApi", basePackage)));
+            memberUserApi = SpringUtil.getBean(ClassUtil.loadClass(String.format("%s.module.member.api.user.MemberUserApi", basePackage)));
         }
         return memberUserApi;
     }

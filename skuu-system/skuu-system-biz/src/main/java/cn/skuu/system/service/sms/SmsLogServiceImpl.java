@@ -1,12 +1,10 @@
 package cn.skuu.system.service.sms;
 
-import cn.skuu.framework.common.pojo.CommonResult;
-import cn.skuu.system.controller.admin.sms.vo.log.SmsLogExportReqVO;
+import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.system.controller.admin.sms.vo.log.SmsLogPageReqVO;
 import cn.skuu.system.dal.dataobject.sms.SmsLogDO;
 import cn.skuu.system.dal.dataobject.sms.SmsTemplateDO;
 import cn.skuu.system.dal.mysql.sms.SmsLogMapper;
-import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.system.enums.sms.SmsReceiveStatusEnum;
 import cn.skuu.system.enums.sms.SmsSendStatusEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -55,13 +52,12 @@ public class SmsLogServiceImpl implements SmsLogService {
     }
 
     @Override
-    public void updateSmsSendResult(Long id, Integer sendCode, String sendMsg,
+    public void updateSmsSendResult(Long id, Boolean success,
                                     String apiSendCode, String apiSendMsg,
                                     String apiRequestId, String apiSerialNo) {
-        SmsSendStatusEnum sendStatus = CommonResult.isSuccess(sendCode) ?
-                SmsSendStatusEnum.SUCCESS : SmsSendStatusEnum.FAILURE;
-        smsLogMapper.updateById(SmsLogDO.builder().id(id).sendStatus(sendStatus.getStatus())
-                .sendTime(LocalDateTime.now()).sendCode(sendCode).sendMsg(sendMsg)
+        SmsSendStatusEnum sendStatus = success ? SmsSendStatusEnum.SUCCESS : SmsSendStatusEnum.FAILURE;
+        smsLogMapper.updateById(SmsLogDO.builder().id(id)
+                .sendStatus(sendStatus.getStatus()).sendTime(LocalDateTime.now())
                 .apiSendCode(apiSendCode).apiSendMsg(apiSendMsg)
                 .apiRequestId(apiRequestId).apiSerialNo(apiSerialNo).build());
     }
@@ -78,11 +74,6 @@ public class SmsLogServiceImpl implements SmsLogService {
     @Override
     public PageResult<SmsLogDO> getSmsLogPage(SmsLogPageReqVO pageReqVO) {
         return smsLogMapper.selectPage(pageReqVO);
-    }
-
-    @Override
-    public List<SmsLogDO> getSmsLogList(SmsLogExportReqVO exportReqVO) {
-        return smsLogMapper.selectList(exportReqVO);
     }
 
 }

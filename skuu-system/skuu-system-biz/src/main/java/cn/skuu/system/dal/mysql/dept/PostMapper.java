@@ -3,9 +3,8 @@ package cn.skuu.system.dal.mysql.dept;
 import cn.skuu.framework.common.pojo.PageResult;
 import cn.skuu.framework.mybatis.core.mapper.BaseMapperX;
 import cn.skuu.framework.mybatis.core.query.LambdaQueryWrapperX;
-import cn.skuu.system.dal.dataobject.dept.PostDO;
-import cn.skuu.system.controller.admin.dept.vo.post.PostExportReqVO;
 import cn.skuu.system.controller.admin.dept.vo.post.PostPageReqVO;
+import cn.skuu.system.dal.dataobject.dept.PostDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Collection;
@@ -26,13 +25,6 @@ public interface PostMapper extends BaseMapperX<PostDO> {
                 .likeIfPresent(PostDO::getName, reqVO.getName())
                 .eqIfPresent(PostDO::getStatus, reqVO.getStatus())
                 .orderByDesc(PostDO::getId));
-    }
-
-    default List<PostDO> selectList(PostExportReqVO reqVO) {
-        return selectList(new LambdaQueryWrapperX<PostDO>()
-                .likeIfPresent(PostDO::getCode, reqVO.getCode())
-                .likeIfPresent(PostDO::getName, reqVO.getName())
-                .eqIfPresent(PostDO::getStatus, reqVO.getStatus()));
     }
 
     default PostDO selectByName(String name) {

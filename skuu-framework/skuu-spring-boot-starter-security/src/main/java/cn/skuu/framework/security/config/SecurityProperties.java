@@ -50,8 +50,5 @@ public class SecurityProperties {
      */
     private Integer passwordEncoderLength = 4;
 
-    private String oAuth2TokenClientUrl;
-    private String permissionClientUrl;
-    private String tenantClientUrl;
 }
 
