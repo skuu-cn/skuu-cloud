@@ -1,19 +1,15 @@
 spring:
   application:
     name: system-server
-
   profiles:
     active: local
-
   main:
     allow-circular-references: true # 允许循环依赖，因为项目是三层架构，无法避免这个情况。
     allow-bean-definition-overriding: true # 允许 Bean 覆盖，例如说 Feign 等会存在重复定义的服务
-
   config:
     import:
       - optional:classpath:application-${spring.profiles.active}.yaml # 加载【本地】配置
       - optional:nacos:${spring.application.name}-${spring.profiles.active}.yaml # 加载【Nacos】的配置
-
   # Servlet 配置
   servlet:
     # 文件上传相关配置项
@@ -75,8 +71,6 @@ mybatis-plus:
   encryptor:
     password: XDV71a+xqStEA3WH # 加解密的秘钥，可使用 https://www.imaegoo.com/2020/aes-key-generator/ 网站生成
 
-mybatis-plus-join:
-  banner: false # 关闭控制台的 Banner 打印
 
 # Spring Data Redis 配置
 spring:
@@ -87,7 +81,7 @@ spring:
 
 # VO 转换（数据翻译）相关
 easy-trans:
-  is-enable-global: true # 启用全局翻译（拦截所有 SpringMVC ResponseBody 进行自动翻译 )。如果对于性能要求很高可关闭此配置，或通过 @IgnoreTrans 忽略某个接口
+  is-enable-global: false # 启用全局翻译（拦截所有 SpringMVC ResponseBody 进行自动翻译 )。如果对于性能要求很高可关闭此配置，或通过 @IgnoreTrans 忽略某个接口
 
 --- #################### RPC 远程调用相关配置 ####################
 
