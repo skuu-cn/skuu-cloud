@@ -21,7 +21,7 @@ import static cn.skuu.infra.enums.ErrorCodeConstants.DATA_SOURCE_CONFIG_NOT_OK;
 /**
  * 数据源配置 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

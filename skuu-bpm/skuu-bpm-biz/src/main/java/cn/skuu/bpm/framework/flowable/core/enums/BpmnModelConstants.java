@@ -3,7 +3,7 @@ package cn.skuu.bpm.framework.flowable.core.enums;
 /**
  * BPMN XML 常量信息
  *
- * @author 芋道源码
+ * @author skuu
  */
 public interface BpmnModelConstants {
 

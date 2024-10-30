@@ -22,7 +22,7 @@ import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.excep
 /**
  * BPM 流程分类 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

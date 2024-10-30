@@ -25,7 +25,7 @@ import static cn.skuu.infra.enums.ErrorCodeConstants.API_ERROR_LOG_PROCESSED;
 /**
  * API 错误日志 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

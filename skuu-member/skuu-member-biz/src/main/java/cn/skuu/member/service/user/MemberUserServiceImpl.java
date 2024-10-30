@@ -45,7 +45,7 @@ import static cn.skuu.member.enums.ErrorCodeConstants.*;
 /**
  * 会员 User Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Valid

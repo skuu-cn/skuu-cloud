@@ -32,7 +32,7 @@ public class BpmSimpleModelNodeVO {
     private String name;
 
     // TODO @jason：和 gpt 大模型对了下这个字段的命名，貌似叫 displayText 合适点。可以等最后我们全局替换下。（优先级：低）
-    @Schema(description = "节点展示内容", example = "指定成员: 芋道源码")
+    @Schema(description = "节点展示内容", example = "指定成员: skuu")
     private String showText;
 
     @Schema(description = "子节点")

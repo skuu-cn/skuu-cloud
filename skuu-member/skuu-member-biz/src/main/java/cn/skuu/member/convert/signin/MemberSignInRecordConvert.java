@@ -22,7 +22,7 @@ import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMa
 /**
  * 签到记录 Convert
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Mapper
 public interface MemberSignInRecordConvert {

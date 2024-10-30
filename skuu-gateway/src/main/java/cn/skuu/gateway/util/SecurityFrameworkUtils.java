@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  *
  * copy from skuu-spring-boot-starter-security 的 SecurityFrameworkUtils 类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Slf4j
 public class SecurityFrameworkUtils {

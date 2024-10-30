@@ -16,7 +16,7 @@ import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMa
 /**
  * 流程实例 Service 接口
  *
- * @author 芋道源码
+ * @author skuu
  */
 public interface BpmProcessInstanceService {
 

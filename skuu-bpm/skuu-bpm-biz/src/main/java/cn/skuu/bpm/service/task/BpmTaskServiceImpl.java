@@ -62,7 +62,7 @@ import static cn.skuu.framework.common.util.collection.CollectionUtils.*;
 /**
  * 流程任务实例 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  * @author jason
  */
 @Slf4j

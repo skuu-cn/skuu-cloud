@@ -22,7 +22,7 @@ import static cn.skuu.infra.dal.dataobject.logger.ApiAccessLogDO.RESULT_MSG_MAX_
 /**
  * API 访问日志 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Slf4j
 @Service

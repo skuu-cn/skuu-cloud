@@ -35,7 +35,7 @@ import static cn.skuu.member.enums.ErrorCodeConstants.SIGN_IN_RECORD_TODAY_EXIST
 /**
  * 签到记录 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

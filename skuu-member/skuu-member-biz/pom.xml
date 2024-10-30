@@ -18,12 +18,6 @@
     </description>
 
     <dependencies>
-        <!-- Spring Cloud 基础 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-
         <!-- 依赖服务 -->
         <dependency>
             <groupId>cn.skuu.cloud</groupId>
@@ -71,12 +65,8 @@
 
         <!-- RPC 远程调用相关 -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>cn.skuu.cloud</groupId>
+            <artifactId>skuu-spring-boot-starter-rpc</artifactId>
         </dependency>
 
         <!-- Registry 注册中心相关 -->

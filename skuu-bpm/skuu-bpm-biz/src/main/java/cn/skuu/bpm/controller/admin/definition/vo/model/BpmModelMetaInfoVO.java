@@ -17,7 +17,7 @@ import java.util.List;
  *
  * 最终，它的字段和 {@link cn.skuu.bpm.dal.dataobject.definition.BpmProcessDefinitionInfoDO} 是一致的
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Data
 public class BpmModelMetaInfoVO {

@@ -19,7 +19,7 @@ import static cn.skuu.member.enums.ErrorCodeConstants.ADDRESS_NOT_EXISTS;
 /**
  * 用户收件地址 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

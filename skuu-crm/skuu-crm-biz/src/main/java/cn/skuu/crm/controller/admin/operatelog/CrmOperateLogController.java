@@ -2,13 +2,11 @@ package cn.skuu.crm.controller.admin.operatelog;
 
 import cn.skuu.crm.enums.LogRecordConstants;
 import cn.skuu.crm.enums.common.CrmBizTypeEnum;
-import cn.skuu.system.api.logger.OperateLogApi;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +17,6 @@ import static cn.skuu.crm.enums.LogRecordConstants.*;
 @RequestMapping("/crm/operate-log")
 @Validated
 public class CrmOperateLogController {
-
-    @Resource
-    private OperateLogApi operateLogApi;
 
     /**
      * {@link CrmBizTypeEnum} 与 {@link LogRecordConstants} 的映射关系

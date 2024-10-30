@@ -54,7 +54,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         HttpServletRequest request = ServletUtils.getRequest();
         String token = request.getHeader(JM_TOKEN_HEADER);
 
-        // 设置到 skuu 系统的 token
+        // 设置到 yudao 系统的 token
         HttpHeaders headers = new HttpHeaders();
         headers.add(securityProperties.getTokenHeader(), String.format(AUTHORIZATION_FORMAT, token));
         return headers;

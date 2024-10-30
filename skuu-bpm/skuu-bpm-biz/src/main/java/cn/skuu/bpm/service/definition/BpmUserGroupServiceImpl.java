@@ -24,7 +24,7 @@ import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMa
 /**
  * 用户组 Service 实现类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Service
 @Validated

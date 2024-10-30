@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * copy from skuu-spring-boot-starter-security 的 LoginUser 类
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Data
 public class LoginUser {

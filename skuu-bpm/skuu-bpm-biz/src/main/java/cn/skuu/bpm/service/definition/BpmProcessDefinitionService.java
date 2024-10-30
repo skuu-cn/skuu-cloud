@@ -22,7 +22,7 @@ import static cn.skuu.framework.common.util.collection.CollectionUtils.convertMa
  *
  * @author yunlong.li
  * @author ZJQ
- * @author 芋道源码
+ * @author skuu
  */
 public interface BpmProcessDefinitionService {
 

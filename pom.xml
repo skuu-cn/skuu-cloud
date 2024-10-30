@@ -16,7 +16,7 @@
         <module>skuu-member</module>
         <module>skuu-bpm</module>
         <module>skuu-infra</module>
-<!--        <module>skuu-pay</module>-->
+        <!--        <module>skuu-pay</module>-->
         <module>skuu-report</module>
         <module>skuu-crm</module>
         <module>skuu-erp</module>
@@ -25,7 +25,10 @@
     </modules>
 
     <name>${project.artifactId}</name>
-    <description>skuu项目基础脚手架</description>
+    <description>skuu项目基础脚手架。
+        注意：这种多module的项目架构，最常见的问题就是互相依赖导致的无法打包。这种情况，需要在最外层
+        install，然后根据报错信息依次解决。如果单独只打包出问题的module，会出现顶层的pom和版本信息找不到问题。
+    </description>
     <url>https://book.skuu.cn</url>
 
     <properties>

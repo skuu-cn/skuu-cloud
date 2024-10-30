@@ -20,7 +20,7 @@ import static cn.skuu.framework.common.exception.enums.GlobalErrorCodeConstants.
  *
  * 在功能上，和 skuu-spring-boot-starter-web 的 GlobalExceptionHandler 类是一致的
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Component
 @Order(-1) // 保证优先级高于默认的 Spring Cloud Gateway 的 ErrorWebExceptionHandler 实现

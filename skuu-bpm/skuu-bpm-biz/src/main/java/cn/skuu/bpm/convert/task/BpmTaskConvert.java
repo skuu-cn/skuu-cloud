@@ -34,7 +34,7 @@ import static cn.skuu.framework.common.util.collection.MapUtils.findAndThen;
 /**
  * Bpm 任务 Convert
  *
- * @author 芋道源码
+ * @author skuu
  */
 @Mapper
 public interface BpmTaskConvert {

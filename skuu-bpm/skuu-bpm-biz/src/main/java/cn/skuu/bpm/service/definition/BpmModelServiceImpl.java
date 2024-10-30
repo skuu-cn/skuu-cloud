@@ -45,7 +45,7 @@ import static cn.skuu.framework.common.exception.util.ServiceExceptionUtil.excep
  * 主要进行 Flowable {@link Model} 的维护
  *
  * @author yunlongn
- * @author 芋道源码
+ * @author skuu
  * @author jason
  */
 @Service

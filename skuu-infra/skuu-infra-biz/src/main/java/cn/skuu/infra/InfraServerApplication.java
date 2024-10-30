@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 项目的启动类
  * <p>
  *
- * @author 芋道源码
+ * @author skuu
  */
 @SpringBootApplication
 public class InfraServerApplication {

@@ -13,7 +13,7 @@ import cn.skuu.framework.tracer.core.util.SpringExpressionUtils;
 import cn.skuu.framework.web.core.util.WebFrameworkUtils;
 import cn.skuu.system.api.user.AdminUserApi;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -43,7 +43,7 @@ public class CrmPermissionAspect {
     private AdminUserApi adminUserApi;
 
     @Before("@annotation(crmPermission)")
-    public void doBefore(ProceedingJoinPoint joinPoint, CrmPermission crmPermission) {
+    public void doBefore(JoinPoint joinPoint, CrmPermission crmPermission) {
         // 1.1 获取相关属性值
         Map<String, Object> expressionValues = parseExpressions(joinPoint, crmPermission);
         Integer bizType = StrUtil.isEmpty(crmPermission.bizTypeValue()) ?
@@ -147,7 +147,7 @@ public class CrmPermissionAspect {
         return WebFrameworkUtils.getLoginUserId();
     }
 
-    private static Map<String, Object> parseExpressions(ProceedingJoinPoint joinPoint, CrmPermission crmPermission) {
+    private static Map<String, Object> parseExpressions(JoinPoint joinPoint, CrmPermission crmPermission) {
         // 1. 需要解析的表达式
         List<String> expressionStrings = new ArrayList<>(2);
         expressionStrings.add(crmPermission.bizId());
