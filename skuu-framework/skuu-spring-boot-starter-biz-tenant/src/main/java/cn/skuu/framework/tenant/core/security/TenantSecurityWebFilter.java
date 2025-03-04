@@ -54,6 +54,10 @@ public class TenantSecurityWebFilter extends ApiRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+        Boolean enable = tenantProperties.getEnable();
+        if (!enable) {
+            return;
+        }
         Long tenantId = TenantContextHolder.getTenantId();
         // 1. 登陆的用户，校验是否有权限访问该租户，避免越权问题。
         LoginUser user = SecurityFrameworkUtils.getLoginUser();
@@ -62,7 +66,7 @@ public class TenantSecurityWebFilter extends ApiRequestFilter {
             if (tenantId == null) {
                 tenantId = user.getTenantId();
                 TenantContextHolder.setTenantId(tenantId);
-            // 如果传递了租户编号，则进行比对租户编号，避免越权问题
+                // 如果传递了租户编号，则进行比对租户编号，避免越权问题
             } else if (!Objects.equals(user.getTenantId(), TenantContextHolder.getTenantId())) {
                 log.error("[doFilterInternal][租户({}) User({}/{}) 越权访问租户({}) URL({}/{})]",
                         user.getTenantId(), user.getId(), user.getUserType(),
