@@ -65,6 +65,19 @@ spring:
             - Path=/app-api/member/**
           filters:
             - RewritePath=/app-api/member/v3/api-docs, /v3/api-docs
+        ## user-server 服务
+        - id: user-admin-api # 路由的编号
+          uri: grayLb://user-server
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/admin-api/user/**
+          filters:
+            - RewritePath=/user-api/user/v3/api-docs, /v3/api-docs
+        - id: user-app-api # 路由的编号
+          uri: grayLb://user-server
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/app-api/user/**
+          filters:
+            - RewritePath=/app-api/user/v3/api-docs, /v3/api-docs
         ## bpm-server 服务
         - id: bpm-admin-api # 路由的编号
           uri: grayLb://bpm-server
@@ -194,6 +207,9 @@ knife4j:
       - name: member-server
         service-name: member-server
         url: /admin-api/member/v3/api-docs
+      - name: user-server
+        service-name: user-server
+        url: /admin-api/user/v3/api-docs
       - name: bpm-server
         service-name: bpm-server
         url: /admin-api/bpm/v3/api-docs

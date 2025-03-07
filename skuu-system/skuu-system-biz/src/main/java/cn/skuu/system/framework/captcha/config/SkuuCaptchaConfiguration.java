@@ -14,7 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * @author skuu
  */
 @Configuration(proxyBeanMethods = false)
-public class YudaoCaptchaConfiguration {
+public class SkuuCaptchaConfiguration {
 
     @Bean
     public CaptchaCacheService captchaCacheService(AjCaptchaProperties config,

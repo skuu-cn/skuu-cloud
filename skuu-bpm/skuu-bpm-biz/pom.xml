@@ -76,7 +76,7 @@
 
         <!-- 服务保障相关 TODO 芋艿：暂时去掉 -->
         <!--        <dependency>-->
-        <!--            <groupId>cn.skuu.cloud</groupId>-->
+        <!--            <groupId>cn.skuu.user</groupId>-->
         <!--            <artifactId>skuu-spring-boot-starter-protection</artifactId>-->
         <!--        </dependency>-->
 

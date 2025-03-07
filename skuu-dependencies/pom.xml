@@ -597,18 +597,6 @@
                 <version>${weixin-java.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.xingyuv</groupId>
-                <artifactId>spring-boot-starter-justauth</artifactId> <!-- 社交登陆（例如说，个人微信、企业微信等等） -->
-                <version>${justauth.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>cn.hutool</groupId>
-                        <artifactId>hutool-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
             <!-- 积木报表-->
             <dependency>
                 <groupId>org.jeecgframework.jimureport</groupId>

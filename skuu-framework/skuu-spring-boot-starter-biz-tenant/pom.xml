@@ -46,7 +46,7 @@
 
         <!-- Job 定时任务相关 -->
 <!--        <dependency>-->
-<!--            <groupId>cn.skuu.cloud</groupId>-->
+<!--            <groupId>cn.skuu.user</groupId>-->
 <!--            <artifactId>skuu-spring-boot-starter-job</artifactId>-->
 <!--            <optional>true</optional>-->
 <!--        </dependency>-->
