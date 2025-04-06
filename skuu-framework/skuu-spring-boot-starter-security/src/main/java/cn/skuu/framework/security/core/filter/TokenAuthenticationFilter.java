@@ -57,17 +57,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     securityProperties.getTokenHeader(), securityProperties.getTokenParameter());
             if (StrUtil.isNotEmpty(token)) {
                 Integer userType = WebFrameworkUtils.getLoginUserType(request);
-                try {
-                    // 1.1 基于 token 构建登录用户
-                    loginUser = buildLoginUserByToken(token, userType);
-                    // 1.2 模拟 Login 功能，方便日常开发调试
-                    if (loginUser == null) {
-                        loginUser = mockLoginUser(request, token, userType);
+                Boolean mockEnable = securityProperties.getMockEnable();
+                if (mockEnable) {
+                    loginUser = mockLoginUser(request, token, userType);
+                } else {
+                    try {
+                        // 1.1 基于 token 构建登录用户
+                        loginUser = buildLoginUserByToken(token, userType);
+                    } catch (Throwable ex) {
+                        CommonResult<?> result = globalExceptionHandler.allExceptionHandler(request, ex);
+                        ServletUtils.writeJSON(response, result);
+                        return;
                     }
-                } catch (Throwable ex) {
-                    CommonResult<?> result = globalExceptionHandler.allExceptionHandler(request, ex);
-                    ServletUtils.writeJSON(response, result);
-                    return;
                 }
             }
         }

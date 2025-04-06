@@ -1,6 +1,7 @@
 package cn.skuu.system.controller.admin.tenant.vo.tenant;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -43,6 +44,7 @@ public class TenantSaveReqVO {
 
     @Schema(description = "过期时间", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "过期时间不能为空")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime expireTime;
 
     @Schema(description = "账号数量", requiredMode = Schema.RequiredMode.REQUIRED, example = "1024")
