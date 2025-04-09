@@ -1,7 +1,6 @@
 package cn.skuu.system.service.tenant;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.skuu.framework.common.enums.CommonStatusEnum;
@@ -196,8 +195,8 @@ public class TenantServiceImpl implements TenantService {
         TenantUtils.execute(tenantId, () -> {
             // 获得所有角色
             List<RoleDO> roles = roleService.getRoleList();
-            roles.forEach(role -> Assert.isTrue(tenantId.equals(role.getTenantId()), "角色({}/{}) 租户不匹配",
-                    role.getId(), role.getTenantId(), tenantId)); // 兜底校验
+//            roles.forEach(role -> Assert.isTrue(tenantId.equals(role.getTenantId()), "角色({}/{}) 租户不匹配",
+//                    role.getId(), role.getTenantId(), tenantId)); // 兜底校验
             // 重新分配每个角色的权限
             roles.forEach(role -> {
                 // 如果是租户管理员，重新分配其权限为租户套餐的权限

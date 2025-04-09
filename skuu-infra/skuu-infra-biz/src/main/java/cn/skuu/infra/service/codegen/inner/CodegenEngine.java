@@ -465,7 +465,7 @@ public class CodegenEngine {
     private static String javaModuleFilePath(String path, String module, String src) {
         return "skuu-${table.moduleName}/" + // 顶级模块
                 "skuu-${table.moduleName}-" + module + "/" + // 子模块
-                "src/" + src + "/java/${basePackage}/module/${table.moduleName}/" + path + ".java";
+                "src/" + src + "/java/${basePackage}/${table.moduleName}/" + path + ".java";
     }
 
     private static String mapperXmlFilePath() {

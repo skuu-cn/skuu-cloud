@@ -179,6 +179,9 @@ skuu:
     enable: false # 本地环境，暂时关闭图片验证码，方便登录等接口的测试
   security:
     mock-enable: true
+  tenant: # 多租户相关配置项
+    enable: false
+    ignore-urls:
   access-log: # 访问日志的配置项
     enable: false
   wxa-code:
