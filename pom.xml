@@ -20,7 +20,6 @@
         <module>skuu-report</module>
         <module>skuu-crm</module>
         <module>skuu-erp</module>
-        <module>skuu-user</module>
         <module>skuu-blog</module>
         <!--        ai版本要求jdk版本最低为17-->
         <!--        <module>skuu-ai</module>-->
